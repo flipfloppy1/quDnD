@@ -1,12 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>flipfloppy/quDnD</title>
-</head>
-<body>
-<div id="app"></div>
-<script src="./src/main.ts" type="module"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>quDnD</title>
+    </head>
+    <body>
+        <div class="content">
+            <div class="navbar">
+                <button class="navelement" value="search">Search</button>
+                <button class="navelement" value="creatures">Creatures</button>
+                <button class="navelement" value="objects">Objects</button>
+                <button class="navelement" value="liquids">Liquids</button>
+                <button class="navelement" value="lore">Lore</button>
+                <button class="navelement" value="mechanics">Mechanics</button>
+                <button class="navelement" value="recents">Recents</button>
+                <button class="navelement" value="custom">Custom</button>
+            </div>
+            <div id="searchScreen" class="screen">
+                <h2>Search the Wiki</h2>
+                <div class="searchField">
+                    <input id="searchBox" placeholder="Search CoQ wiki..." />
+                    <p id="searchStatus"></p>
+                </div>
+                <div id="searchResult"></div>
+            </div>
+            <div id="creaturesScreen" class="screen">
+                <h2>Creature Entry</h2>
+            </div>
+            <div id="objectsScreen" class="screen">
+                <h2>Object Entry</h2>
+            </div>
+            <div id="liquidsScreen" class="screen">
+                <h2>Liquid Entry</h2>
+            </div>
+            <div id="loreScreen" class="screen">
+                <h2>Lore Entry</h2>
+            </div>
+            <div id="mechanicsScreen" class="screen">
+                <h2>Mechanic Entry</h2>
+            </div>
+            <div id="recentsScreen" class="screen">
+                <h2>Recently Viewed</h2>
+            </div>
+            <div id="customScreen" class="screen">
+                <h2>Custom Entries</h2>
+            </div>
+        </div>
+        <script src="./src/main.ts" type="module"></script>
+    </body>
 </html>

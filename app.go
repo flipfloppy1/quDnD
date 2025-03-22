@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"io"
+	"net/http"
+	"strings"
 )
 
 // App struct
@@ -21,7 +23,15 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) SearchForPage(query string) string {
+	resp, err := http.Get("https://wiki.cavesofqud.com/index.php?search=" + query + "&fulltext=1")
+	if err != nil {
+		return ""
+	}
+	buf := new(strings.Builder)
+	_, copyErr := io.Copy(buf, resp.Body)
+	if copyErr != nil {
+		return ""
+	}
+	return buf.String()
 }

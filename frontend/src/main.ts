@@ -1,49 +1,68 @@
-import './style.css';
-import './app.css';
+import "./style.css";
+import "./app.css";
 
-import logo from './assets/images/logo-universal.png';
-import {Greet} from '../wailsjs/go/main/App';
+//import logo from "./assets/images/logo-universal.png";
+import { SearchForPage } from "../wailsjs/go/main/App";
+//import { PageInfo } from "../wailsjs/go/models";
 
-// Setup the greet function
-window.greet = function () {
-    // Get name
-    let name = nameElement!.value;
-
-    // Check if the input is empty
-    if (name === "") return;
-
-    // Call App.Greet(name)
-    try {
-        Greet(name)
-            .then((result) => {
-                // Update result with data back from App.Greet()
-                resultElement!.innerText = result;
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    } catch (err) {
-        console.error(err);
+function switchScreen(screen: string) {
+  let screens = document.getElementsByClassName("screen");
+  for (let i = 0; i < screens.length; i++) {
+    let domScreen = screens[i] as HTMLDivElement;
+    if (domScreen.id == screen) {
+      domScreen.style.display = "block";
+    } else {
+      domScreen.style.display = "none";
     }
-};
-
-document.querySelector('#app')!.innerHTML = `
-    <img id="logo" class="logo">
-      <div class="result" id="result">Please enter your name below 👇</div>
-      <div class="input-box" id="input">
-        <input class="input" id="name" type="text" autocomplete="off" />
-        <button class="btn" onclick="greet()">Greet</button>
-      </div>
-    </div>
-`;
-(document.getElementById('logo') as HTMLImageElement).src = logo;
-
-let nameElement = (document.getElementById("name") as HTMLInputElement);
-nameElement.focus();
-let resultElement = document.getElementById("result");
-
-declare global {
-    interface Window {
-        greet: () => void;
-    }
+  }
 }
+
+function setNavHandlers() {
+  let navElems = [].slice.call(
+    document.getElementsByClassName("navelement"),
+  ) as HTMLButtonElement[];
+  navElems.forEach((elem) => {
+    elem.onclick = (event) => {
+      switchScreen((event.target as HTMLButtonElement).value + "Screen");
+      console.log((event.target as HTMLButtonElement).value);
+    };
+  });
+}
+
+function searchText(query: string) {
+  console.log("searchText");
+  let searchStatus = document.getElementById("searchStatus");
+  if (searchStatus) {
+    searchStatus.innerText = "Fetching...";
+  }
+  SearchForPage(query).then((page: string) => {
+    console.log(page);
+    if (searchStatus) {
+      if (page) {
+        searchStatus.innerText = "";
+        let results = document.getElementById("searchResult");
+        if (results) {
+          results.innerHTML = page;
+        }
+      } else {
+        searchStatus.innerText = "No results found!";
+      }
+    }
+  });
+}
+
+function frontendInit() {
+  switchScreen("searchScreen");
+  setNavHandlers();
+
+  let searchBox = document.getElementById("searchBox");
+  if (searchBox) {
+    searchBox.addEventListener("keyup", (event) => {
+      if (event.key == "Enter") {
+        searchText((event.target as HTMLInputElement).value);
+      }
+    });
+  }
+}
+
+frontendInit();
