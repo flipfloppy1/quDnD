@@ -6,10 +6,6 @@ export function GeneratePage(arg1) {
   return window['go']['main']['App']['GeneratePage'](arg1);
 }
 
-export function LoadPages() {
-  return window['go']['main']['App']['LoadPages']();
-}
-
 export function SearchForPage(arg1) {
   return window['go']['main']['App']['SearchForPage'](arg1);
 }

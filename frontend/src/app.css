@@ -77,7 +77,7 @@
     padding: 10px;
     height: auto;
     width: 10%;
-    min-width: 10%;
+    min-width: 100px;
     min-height: 98.3vh;
     background-color: var(--background-primary);
 }

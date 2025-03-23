@@ -2,8 +2,8 @@ import "./style.css";
 import "./app.css";
 
 //import logo from "./assets/images/logo-universal.png";
-import * as go from "../wailsjs/go/main/App";
-//import * as models from "../wailsjs/go/models";
+import * as app from "../wailsjs/go/main/App";
+import * as requests from "../wailsjs/go/main/Requests";
 
 function switchScreen(screen: string) {
   let screens = document.getElementsByClassName("screen");
@@ -30,7 +30,7 @@ function setNavHandlers() {
 }
 
 function goToPage(key: string) {
-  go.GeneratePage(key);
+  app.GeneratePage(key);
 }
 
 function searchText(query: string) {
@@ -39,7 +39,7 @@ function searchText(query: string) {
   if (searchStatus) {
     searchStatus.innerText = "Fetching...";
   }
-  go.SearchForPage(query).then((pages: any) => {
+  app.SearchForPage(query).then((pages: any) => {
     console.log(pages);
     if (searchStatus) {
       if (pages.length) {
@@ -72,7 +72,7 @@ function searchText(query: string) {
 }
 
 function frontendInit() {
-  go.LoadPages();
+  requests.LoadPages();
   switchScreen("searchScreen");
   setNavHandlers();
 

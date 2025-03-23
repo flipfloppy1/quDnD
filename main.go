@@ -46,16 +46,13 @@ type PageInfo struct {
 	pageType Screen
 }
 
-type CategoryMembers struct {
-	categoryMap map[string][]int
-}
-
 //go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+	requests := &Requests{}
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "quDnD",
@@ -68,6 +65,7 @@ func main() {
 		OnStartup:        app.startup,
 		Bind: []any{
 			app,
+			requests,
 		},
 		EnumBind: []any{
 			AllScreens,
