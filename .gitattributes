@@ -1,0 +1,3 @@
+build/** linguist-vendored
+frontend/dist/** linguist-vendored
+frontend/wailsjs/** linguist-vendored
