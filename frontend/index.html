@@ -6,11 +6,14 @@
         <title>quDnD</title>
     </head>
     <body>
+        <div class="loadingIndicator"><p></p></div>
         <div class="content">
             <div class="navbar">
                 <button class="navelement" value="search">Search</button>
+                <button class="navelement" value="character">Character</button>
+                <button class="navelement" value="concepts">Concepts</button>
                 <button class="navelement" value="creatures">Creatures</button>
-                <button class="navelement" value="objects">Objects</button>
+                <button class="navelement" value="items">Items</button>
                 <button class="navelement" value="liquids">Liquids</button>
                 <button class="navelement" value="lore">Lore</button>
                 <button class="navelement" value="mechanics">Mechanics</button>
@@ -23,7 +26,7 @@
                     <input id="searchBox" placeholder="Search CoQ wiki..." />
                     <p id="searchStatus"></p>
                 </div>
-                <div id="searchResult"></div>
+                <div id="searchResults"></div>
             </div>
             <div id="creaturesScreen" class="screen">
                 <h2>Creature Entry</h2>

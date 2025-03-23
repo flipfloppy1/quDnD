@@ -2,8 +2,8 @@ import "./style.css";
 import "./app.css";
 
 //import logo from "./assets/images/logo-universal.png";
-import { SearchForPage } from "../wailsjs/go/main/App";
-//import { PageInfo } from "../wailsjs/go/models";
+import * as go from "../wailsjs/go/main/App";
+//import * as models from "../wailsjs/go/models";
 
 function switchScreen(screen: string) {
   let screens = document.getElementsByClassName("screen");
@@ -29,20 +29,40 @@ function setNavHandlers() {
   });
 }
 
+function goToPage(key: string) {
+  go.GeneratePage(key);
+}
+
 function searchText(query: string) {
   console.log("searchText");
   let searchStatus = document.getElementById("searchStatus");
   if (searchStatus) {
     searchStatus.innerText = "Fetching...";
   }
-  SearchForPage(query).then((page: string) => {
-    console.log(page);
+  go.SearchForPage(query).then((pages: any) => {
+    console.log(pages);
     if (searchStatus) {
-      if (page) {
+      if (pages.length) {
         searchStatus.innerText = "";
-        let results = document.getElementById("searchResult");
+        let results = document.getElementById(
+          "searchResults",
+        ) as HTMLDivElement;
         if (results) {
-          results.innerHTML = page;
+          console.log(pages);
+          results.innerHTML = "";
+          pages.forEach((page: any) => {
+            results.innerHTML = results.innerHTML.concat(
+              `<div class="searchResult"><h3 class="searchLink">` +
+                page.title +
+                `</h3></div>`,
+            );
+            let result = results.lastChild as HTMLDivElement;
+            result.innerHTML = result.innerHTML.concat(page.excerpt);
+            let h3 = result.firstChild?.firstChild as HTMLHeadingElement;
+            h3.onclick = () => {
+              goToPage(page.key);
+            };
+          });
         }
       } else {
         searchStatus.innerText = "No results found!";
@@ -52,6 +72,7 @@ function searchText(query: string) {
 }
 
 function frontendInit() {
+  go.LoadPages();
   switchScreen("searchScreen");
   setNavHandlers();
 

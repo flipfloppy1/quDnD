@@ -10,6 +10,17 @@ import (
 
 type Screen string
 
+type pageSearchResult struct {
+	id      int
+	key     string
+	title   string
+	excerpt string
+}
+
+type pageSearchResults struct {
+	pages []pageSearchResult
+}
+
 const (
 	Search    Screen = "Search"
 	Creatures Screen = "Creatures"
@@ -35,16 +46,16 @@ type PageInfo struct {
 	pageType Screen
 }
 
+type CategoryMembers struct {
+	categoryMap map[string][]int
+}
+
 //go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
-	currScreen := struct {
-		Value  Screen
-		TSName string
-	}{"Search", "SEARCH"}
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "quDnD",
@@ -53,13 +64,12 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		BackgroundColour: &options.RGBA{R: 15, G: 59, B: 58, A: 1},
 		OnStartup:        app.startup,
-		Bind: []interface{}{
+		Bind: []any{
 			app,
-			&currScreen,
 		},
-		EnumBind: []interface{}{
+		EnumBind: []any{
 			AllScreens,
 		},
 	})
