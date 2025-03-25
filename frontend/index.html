@@ -9,19 +9,42 @@
         <div class="loadingIndicator"><p></p></div>
         <div class="content">
             <div class="navbar">
-                <button class="navelement" value="search">Search</button>
-                <button class="navelement" value="character">Character</button>
-                <button class="navelement" value="concepts">Concepts</button>
-                <button class="navelement" value="creatures">Creatures</button>
-                <button class="navelement" value="items">Items</button>
-                <button class="navelement" value="liquids">Liquids</button>
-                <button class="navelement" value="lore">Lore</button>
-                <button class="navelement" value="mechanics">Mechanics</button>
-                <button class="navelement" value="recents">Recents</button>
-                <button class="navelement" value="custom">Custom</button>
+                <button class="navelement" id="searchNav" value="search">
+                    Search
+                </button>
+                <button class="navelement" id="characterNav" value="character">
+                    Character
+                </button>
+                <button class="navelement" id="worldNav" value="world">
+                    World
+                </button>
+                <button class="navelement" id="conceptsNav" value="concepts">
+                    Concepts
+                </button>
+                <button class="navelement" id="creaturesNav" value="creatures">
+                    Creatures
+                </button>
+                <button class="navelement" id="itemsNav" value="items">
+                    Items
+                </button>
+                <button class="navelement" id="liquidsNav" value="liquids">
+                    Liquids
+                </button>
+                <button class="navelement" id="loreNav" value="lore">
+                    Lore
+                </button>
+                <button class="navelement" id="mechanicsNav" value="mechanics">
+                    Mechanics
+                </button>
+                <button class="navelement" id="recentsNav" value="recents">
+                    Recents
+                </button>
+                <button class="navelement" id="customNav" value="custom">
+                    Custom
+                </button>
             </div>
             <div id="searchScreen" class="screen">
-                <h2>Search the Wiki</h2>
+                <h3>Search the Wiki</h3>
                 <div class="searchField">
                     <input id="searchBox" placeholder="Search CoQ wiki..." />
                     <p id="searchStatus"></p>
@@ -29,25 +52,44 @@
                 <div id="searchResults"></div>
             </div>
             <div id="creaturesScreen" class="screen">
-                <h2>Creature Entry</h2>
+                <h3>Creature</h3>
+                <h2 class="entryTitle"></h2>
             </div>
-            <div id="objectsScreen" class="screen">
-                <h2>Object Entry</h2>
+            <div id="characterScreen" class="screen">
+                <h3>Character</h3>
+                <h2 class="entryTitle"></h2>
+            </div>
+            <div id="worldScreen" class="screen">
+                <h3>World</h3>
+                <h2 class="entryTitle"></h2>
+            </div>
+            <div id="conceptsScreen" class="screen">
+                <h3>Concept</h3>
+                <h2 class="entryTitle"></h2>
+            </div>
+            <div id="itemsScreen" class="screen">
+                <h3>Item</h3>
+                <h2 class="entryTitle"></h2>
             </div>
             <div id="liquidsScreen" class="screen">
-                <h2>Liquid Entry</h2>
+                <h3>Liquid</h3>
+                <h2 class="entryTitle"></h2>
             </div>
             <div id="loreScreen" class="screen">
-                <h2>Lore Entry</h2>
+                <h3>Lore</h3>
+                <h2 class="entryTitle"></h2>
             </div>
             <div id="mechanicsScreen" class="screen">
-                <h2>Mechanic Entry</h2>
+                <h3>Mechanic</h3>
+                <h2 class="entryTitle"></h2>
             </div>
             <div id="recentsScreen" class="screen">
-                <h2>Recently Viewed</h2>
+                <h3>Recently</h3>
+                <h2 class="entryTitle"></h2>
             </div>
             <div id="customScreen" class="screen">
-                <h2>Custom Entries</h2>
+                <h3>Custom</h3>
+                <h2 class="entryTitle"></h2>
             </div>
         </div>
         <script src="./src/main.ts" type="module"></script>

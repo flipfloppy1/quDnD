@@ -8,11 +8,28 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 )
 
-type Requests struct {
+type Categories struct {
 	ctx context.Context
+}
+
+var categoryMap map[string][]int
+
+type categoryQueryMember struct {
+	pageid int
+	ns     int
+	title  string
+}
+
+type categoryJsonQuery struct {
+	categorymembers []categoryQueryMember
+}
+
+type categoryJson struct {
+	query categoryJsonQuery
 }
 
 type CategoryMembersJson struct {
@@ -73,7 +90,6 @@ func getCategory(category string) []int {
 		}
 		i++
 	}
-	fmt.Println(members)
 	return members
 }
 
@@ -87,7 +103,7 @@ type CategoryMembers struct {
 	Mechanics []int `json:"mechanics"`
 }
 
-func (r *Requests) LoadPages() CategoryMembers {
+func (c *Categories) LoadCategories() CategoryMembers {
 	cacheDir, err := os.UserCacheDir()
 	if err != nil {
 		fmt.Println("cacheDir error")
@@ -96,7 +112,7 @@ func (r *Requests) LoadPages() CategoryMembers {
 	os.MkdirAll(filepath.Join(cacheDir, "quDnDFiles"), os.FileMode(0777))
 	f, err := os.OpenFile(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"), os.O_RDWR, os.FileMode(0777))
 	if err != nil {
-		categoryMap := make(map[string][]int)
+		categoryMap = make(map[string][]int)
 		categoryMap["liquids"] = getCategory("Category:Liquids")
 		categoryMap["creatures"] = getCategory("Category:Creatures")
 		categoryMap["items"] = getCategory("Category:Items")
@@ -137,6 +153,27 @@ func (r *Requests) LoadPages() CategoryMembers {
 		var categoryJson CategoryMembers
 		json.Unmarshal(fileContents, &categoryJson)
 		f.Close()
+		categoryMap = make(map[string][]int)
+		categoryMap["world"] = categoryJson.World
+		categoryMap["creatures"] = categoryJson.Creatures
+		categoryMap["character"] = categoryJson.Character
+		categoryMap["items"] = categoryJson.Items
+		categoryMap["concepts"] = categoryJson.Concepts
+		categoryMap["mechanics"] = categoryJson.Mechanics
+		categoryMap["liquids"] = categoryJson.Liquids
 		return categoryJson
 	}
+}
+
+func (c *Categories) GetScreen(pageid int) Screen {
+	return Screen(getPageCategory(pageid))
+}
+func getPageCategory(pageid int) string {
+	for cat, ids := range categoryMap {
+		if slices.Contains(ids, pageid) {
+			return cat
+		}
+	}
+
+	return "none"
 }

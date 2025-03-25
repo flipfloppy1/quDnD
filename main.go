@@ -6,9 +6,10 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/linux"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
+	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
-
-type Screen string
 
 type pageSearchResult struct {
 	id      int
@@ -21,38 +22,13 @@ type pageSearchResults struct {
 	pages []pageSearchResult
 }
 
-const (
-	Search    Screen = "Search"
-	Creatures Screen = "Creatures"
-	Objects   Screen = "Objects"
-	Liquids   Screen = "Liquids"
-	Lore      Screen = "Lore"
-	Mechanics Screen = "Mechanics"
-)
-
-var AllScreens = []struct {
-	Value  Screen
-	TSName string
-}{
-	{Search, "SEARCH"},
-	{Creatures, "CREATURES"},
-	{Objects, "OBJECTS"},
-	{Liquids, "LIQUIDS"},
-	{Lore, "LORE"},
-	{Mechanics, "MECHANICS"},
-}
-
-type PageInfo struct {
-	pageType Screen
-}
-
 //go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
-	requests := &Requests{}
+	categories := &Categories{}
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "quDnD",
@@ -65,10 +41,21 @@ func main() {
 		OnStartup:        app.startup,
 		Bind: []any{
 			app,
-			requests,
+			categories,
 		},
 		EnumBind: []any{
 			AllScreens,
+		},
+		Mac: &mac.Options{
+			WebviewIsTransparent: true,
+			WindowIsTranslucent:  false,
+		},
+		Linux: &linux.Options{
+			WindowIsTranslucent: true,
+		},
+		Windows: &windows.Options{
+			WebviewIsTransparent: true,
+			WindowIsTranslucent:  false,
 		},
 	})
 

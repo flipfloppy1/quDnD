@@ -1,4 +1,9 @@
-#screenTitle {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     text-align: start;
 }
 
@@ -25,6 +30,7 @@
 .searchLink {
     color: rgb(100, 180, 140);
     cursor: pointer;
+    user-select: none;
 }
 
 .searchResult {
@@ -69,6 +75,7 @@
 .screen {
     padding: 20px;
     width: 100%;
+    display: none;
 }
 
 .navbar {
@@ -99,4 +106,16 @@
 
 .navelement:active {
     background-color: rgb(20, 40, 60);
+}
+
+.navelement.navactive {
+    background-color: rgb(80, 100, 120);
+}
+
+.navelement.navactive:hover {
+    background-color: rgb(90, 110, 130);
+}
+
+.navelement.navactive:active {
+    background-color: rgb(60, 80, 100);
 }
