@@ -6,6 +6,8 @@ import * as app from "../wailsjs/go/main/App";
 import * as cat from "../wailsjs/go/main/Categories";
 import { main } from "../wailsjs/go/models";
 
+var screenDefaults = new Map<string, HTMLDivElement>();
+
 function switchScreen(screen: string): HTMLDivElement {
   let nav = document.getElementById(screen.replace("Screen", "Nav"));
   if (nav) {
@@ -17,6 +19,7 @@ function switchScreen(screen: string): HTMLDivElement {
     nav.className = "navelement navactive";
   }
   let screens = [].slice.call(document.getElementsByClassName("screen"));
+  console.log(screens);
   for (let i = 0; i < screens.length; i++) {
     let domScreen = screens[i] as HTMLDivElement;
     if (domScreen.id == screen) {
@@ -29,6 +32,19 @@ function switchScreen(screen: string): HTMLDivElement {
   return screens.filter((val: HTMLDivElement) => {
     return val.id === screen;
   })[0];
+}
+
+function wipeScreen(screen: string): HTMLDivElement {
+  let domScreen = document.getElementById(screen) as HTMLDivElement;
+  console.log(domScreen);
+  console.log(screenDefaults.get(screen));
+
+  domScreen.remove();
+  let content = document.getElementsByClassName("content")[0] as HTMLDivElement;
+  content.appendChild(
+    screenDefaults.get(screen)?.cloneNode(true) as HTMLDivElement,
+  );
+  return document.getElementById(screen) as HTMLDivElement;
 }
 
 function setNavHandlers() {
@@ -45,7 +61,19 @@ function setNavHandlers() {
 
 function goToPage(pageid: number) {
   cat.GetScreen(pageid).then((category: main.Screen) => {
+    wipeScreen(category + "Screen");
     let screen = switchScreen(category + "Screen");
+    let parent = screen.parentElement;
+    if (parent) {
+      parent.removeChild(screen);
+      parent.appendChild(
+        screenDefaults
+          .get(category + "Screen")
+          ?.cloneNode(true) as HTMLDivElement,
+      );
+      screen = document.getElementById(category + "Screen") as HTMLDivElement;
+    }
+    screen.style.display = "block";
     (
       screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
     ).innerText = "Loading...";
@@ -53,6 +81,33 @@ function goToPage(pageid: number) {
       (
         screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
       ).innerText = pageInfo.pageTitle;
+      (
+        screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
+      ).onclick = () => {
+        let elem = screen.getElementsByClassName(
+          "wikiDropdown",
+        )[0] as HTMLButtonElement;
+        console.log("Triggered");
+        if (elem.value == "minimized") {
+          elem.value = "maximized";
+          (elem.lastChild as HTMLIFrameElement).style.display = "block";
+          elem.getElementsByTagName("p")[0].innerText = "Minimize wiki page";
+          console.log(elem);
+        } else {
+          elem.value = "minimized";
+          (elem.lastChild as HTMLIFrameElement).style.display = "none";
+          elem.getElementsByTagName("p")[0].innerText = "Expand wiki page";
+        }
+      };
+      let iframe = document.createElement("iframe");
+      iframe.src =
+        "https://wiki.cavesofqud.com/wiki/Special:Redirect/page/" + pageid;
+      iframe.style.display = "none";
+      iframe.style.width = "100%";
+      iframe.style.height = "1000px";
+      (
+        screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
+      ).appendChild(iframe);
     });
   });
 }
@@ -108,6 +163,12 @@ function frontendInit() {
   cat.LoadCategories();
   switchScreen("searchScreen");
   setNavHandlers();
+
+  [].slice
+    .call(document.getElementsByClassName("screen"))
+    .forEach((elem: HTMLDivElement) => {
+      screenDefaults.set(elem.id, elem.cloneNode(true) as HTMLDivElement);
+    });
 
   let searchBox = document.getElementById("searchBox");
   if (searchBox) {

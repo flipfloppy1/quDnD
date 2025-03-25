@@ -44,6 +44,18 @@ h6 {
 .searchLink:hover {
     color: rgb(115, 195, 155);
 }
+.wikiDropdown {
+    background-color: var(--accent-color);
+    color: white;
+    border-style: none;
+    width: 95%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.wikiDropdownLabel {
+    margin-bottom: 20px;
+}
 
 .searchLink:active {
     color: rgb(60, 140, 100);
