@@ -40,7 +40,7 @@ h6 {
 .entryTitle {
     text-align: center;
     margin-bottom: 5px;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .searchResult > .searchmatch {
@@ -62,12 +62,13 @@ h6 {
 .entryCard {
     display: flex;
     flex-direction: column;
-    justify-items: center;
+    justify-content: flex-start;
 }
 
 .entryOverview {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 
 .entryDesc {
@@ -91,6 +92,8 @@ h6 {
     border-style: solid;
     border-radius: 0;
     margin: 10px;
+    min-height: 240px;
+    min-width: 160px;
 }
 
 .entryContent {

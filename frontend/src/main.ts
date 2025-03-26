@@ -35,6 +35,7 @@ function switchScreen(screen: string): HTMLDivElement {
 }
 
 function wipeScreen(screen: string): HTMLDivElement {
+  console.log(screen);
   let domScreen = document.getElementById(screen) as HTMLDivElement;
   console.log(domScreen);
   console.log(screenDefaults.get(screen));
