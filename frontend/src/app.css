@@ -37,6 +37,12 @@ h6 {
     color: rgb(90, 110, 130);
 }
 
+.entryTitle {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
 .searchResult > .searchmatch {
     color: rgb(160, 170, 215);
 }
@@ -51,6 +57,45 @@ h6 {
     width: 95%;
     border-radius: 10px;
     padding: 10px;
+}
+
+.entryCard {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+.entryOverview {
+    display: flex;
+    flex-direction: row;
+}
+
+.entryDesc {
+    padding: 20px;
+    border-color: var(--accent-color);
+    border-width: 5px;
+    background-color: var(--background-primary);
+    border-style: solid;
+    border-radius: 0;
+    margin: 10px;
+    color: rgb(200, 255, 230);
+    font-style: italic;
+    text-align: center;
+}
+
+.entryImg {
+    padding: 5px;
+    border-color: var(--accent-color);
+    border-width: 5px;
+    background-color: var(--background-primary);
+    border-style: solid;
+    border-radius: 0;
+    margin: 10px;
+}
+
+.entryContent {
+    display: flex;
+    flex-direction: column;
 }
 
 .wikiDropdownLabel {

@@ -78,9 +78,33 @@ function goToPage(pageid: number) {
       screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
     ).innerText = "Loading...";
     app.GeneratePage(pageid).then((pageInfo: main.PageInfo) => {
+      let pageidFriendly = (
+        pageInfo.pageTitle.toUpperCase()[0] +
+        pageInfo.pageTitle.toLowerCase().substring(1, pageInfo.pageTitle.length)
+      ).replace(" ", "_");
       (
         screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
       ).innerText = pageInfo.pageTitle;
+      if (pageInfo.description) {
+        let desc = document.createElement("p");
+        desc.className = "entryDesc";
+        desc.innerText = pageInfo.description;
+        (
+          screen.getElementsByClassName("entryCard")[0] as HTMLDivElement
+        ).appendChild(desc);
+      }
+      if (pageInfo.statblock) {
+        // TODO
+      }
+      let entryImg = document.createElement("img");
+      entryImg.className = "entryImg";
+      entryImg.src =
+        "https://wiki.cavesofqud.com/wiki/Special:Redirect/file/" +
+        pageidFriendly +
+        ".png";
+      (
+        screen.getElementsByClassName("entryOverview")[0] as HTMLDivElement
+      ).appendChild(entryImg);
       (
         screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
       ).onclick = () => {
