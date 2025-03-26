@@ -97,15 +97,17 @@ function goToPage(pageid: number) {
       if (pageInfo.statblock) {
         // TODO
       }
-      let entryImg = document.createElement("img");
-      entryImg.className = "entryImg";
-      entryImg.src =
-        "https://wiki.cavesofqud.com/wiki/Special:Redirect/file/" +
-        pageidFriendly +
-        ".png";
-      (
-        screen.getElementsByClassName("entryOverview")[0] as HTMLDivElement
-      ).appendChild(entryImg);
+      if (pageInfo.hasImg) {
+        let entryImg = document.createElement("img");
+        entryImg.className = "entryImg";
+        entryImg.src =
+          "https://wiki.cavesofqud.com/wiki/Special:Redirect/file/" +
+          pageidFriendly +
+          ".png";
+        (
+          screen.getElementsByClassName("entryOverview")[0] as HTMLDivElement
+        ).appendChild(entryImg);
+      }
       (
         screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
       ).onclick = () => {
@@ -115,11 +117,13 @@ function goToPage(pageid: number) {
         console.log("Triggered");
         if (elem.value == "minimized") {
           elem.value = "maximized";
+          elem.className = "wikiDropdown wikiActive";
           (elem.lastChild as HTMLIFrameElement).style.display = "block";
           elem.getElementsByTagName("p")[0].innerText = "Minimize wiki page";
           console.log(elem);
         } else {
           elem.value = "minimized";
+          elem.className = "wikiDropdown";
           (elem.lastChild as HTMLIFrameElement).style.display = "none";
           elem.getElementsByTagName("p")[0].innerText = "Expand wiki page";
         }
@@ -130,6 +134,7 @@ function goToPage(pageid: number) {
       iframe.style.display = "none";
       iframe.style.width = "100%";
       iframe.style.height = "1000px";
+      iframe.className = "wikiFrame";
       (
         screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
       ).appendChild(iframe);

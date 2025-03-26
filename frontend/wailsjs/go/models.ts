@@ -213,6 +213,7 @@ export namespace main {
 	export class PageInfo {
 	    pageType: Screen;
 	    pageTitle: string;
+	    hasImg: boolean;
 	    description?: string;
 	    statblock?: Statblock;
 	
@@ -224,6 +225,7 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.pageType = source["pageType"];
 	        this.pageTitle = source["pageTitle"];
+	        this.hasImg = source["hasImg"];
 	        this.description = source["description"];
 	        this.statblock = this.convertValues(source["statblock"], Statblock);
 	    }

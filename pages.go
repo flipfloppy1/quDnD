@@ -30,6 +30,7 @@ var AllScreens = []struct {
 type PageInfo struct {
 	PageType    Screen     `json:"pageType"`
 	PageTitle   string     `json:"pageTitle"`
+	HasImg      bool       `json:"hasImg"`
 	Description *string    `json:"description"`
 	Statblock   *Statblock `json:"statblock"`
 }

@@ -9,6 +9,8 @@ h6 {
 
 :root {
     --accent-color: rgb(40, 60, 80);
+    --accent-active: rgb(30, 50, 70);
+    --accent-hover: rgb(50, 70, 90);
     --background-primary: rgb(10, 20, 30);
 }
 
@@ -54,9 +56,34 @@ h6 {
     background-color: var(--accent-color);
     color: white;
     border-style: none;
-    width: 95%;
+    width: 100%;
     border-radius: 10px;
     padding: 10px;
+    cursor: pointer;
+}
+
+.wikiDropdown:hover {
+    background-color: var(--accent-hover);
+}
+
+.wikiDropdown:active {
+    background-color: var(--accent-active);
+}
+
+.wikiDropdown.wikiActive {
+    background-color: rgb(80, 100, 120);
+}
+
+.wikiDropdown.wikiActive {
+    background-color: rgb(80, 100, 120);
+}
+
+.wikiDropdown.wikiActive:hover {
+    background-color: rgb(90, 110, 130);
+}
+
+.wikiDropdown.wikiActive:active {
+    background-color: rgb(60, 80, 100);
 }
 
 .entryCard {
@@ -158,6 +185,7 @@ h6 {
     color: white;
     font-weight: 600;
     border-style: none;
+    cursor: pointer;
 }
 
 .navelement:hover {
@@ -178,4 +206,26 @@ h6 {
 
 .navelement.navactive:active {
     background-color: rgb(60, 80, 100);
+}
+
+footer {
+    background-color: var(--background-primary);
+    padding: 20px;
+    width: 100%;
+    margin-left: -20px;
+    margin-bottom: -20px;
+    height: -webkit-fill-available;
+}
+
+.wikiFrame {
+    align-self: center;
+    border-style: solid;
+    margin-left: -4px;
+    border-width: 4px;
+    border-color: var(--background-primary);
+    background-color: var(--background-primary);
+    background-image: url(https://wiki.cavesofqud.com/resources/assets/cavebg.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }

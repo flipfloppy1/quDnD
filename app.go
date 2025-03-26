@@ -310,11 +310,16 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 	nodes, _ := html.ParseFragment(strings.NewReader(resp.Parse.Text.Root), nil)
 	doc := goquery.NewDocumentFromNode(nodes[0])
 	selection := doc.Find(".qud-look-modern-text").Find(".poem").Find("p").Find("span")
-	node := selection.Get(0)
 	var description *string
-	if node != nil {
-		description = &node.FirstChild.Data
+	if len(selection.Nodes) > 0 {
+		if selection.Nodes[0] != nil {
+			if selection.Nodes[0].FirstChild != nil {
+				description = &selection.Nodes[0].FirstChild.Data
+			}
+		}
 	}
+	imgSelect := doc.Find(".infobox-imagearea")
+	hasImg := len(imgSelect.Nodes) > 0
 
-	return PageInfo{Screen(category), resp.Parse.Title, description, nil}
+	return PageInfo{Screen(category), resp.Parse.Title, hasImg, description, nil}
 }
