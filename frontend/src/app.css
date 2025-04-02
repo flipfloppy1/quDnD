@@ -120,6 +120,7 @@ h6 {
     border-radius: 0;
     margin: 10px;
     min-height: 240px;
+    max-height: 240px;
     min-width: 160px;
 }
 
@@ -163,6 +164,7 @@ h6 {
     padding: 20px;
     width: 100%;
     display: none;
+    min-width: 500px;
 }
 
 .navbar {
@@ -228,4 +230,51 @@ footer {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+}
+
+.entryStatblockDropdown {
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.entryStatblockDropdown:hover {
+    background-color: var(--accent-hover);
+}
+
+.entryStatblockDropdown:active {
+    background-color: var(--accent-active);
+}
+
+.statblockContent {
+    padding: 10px;
+}
+
+.statblockACImg {
+    -webkit-mask-box-image: url(assets/images/ac.png);
+    background-color: var(--background-primary);
+    width: 70px;
+    height: 80px;
+}
+
+.statblockAC {
+    display: flex;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    justify-content: center;
+    align-content: center;
+    line-height: 75px;
+    font-size: 18px;
+    margin: 0;
+}
+.statblockACText {
+    color: white;
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    vertical-align: middle;
+    margin: 0;
 }

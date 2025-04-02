@@ -1,5 +1,25 @@
 export namespace main {
 	
+	export enum Stat {
+	    AC = "ac",
+	    SPEED = "speed",
+	    LEVEL = "level",
+	    PROFICIENCY = "proficiency",
+	    HP = "hp",
+	    STR = "str",
+	    DEX = "dex",
+	    CON = "con",
+	    INT = "int",
+	    WIS = "wis",
+	    CHA = "cha",
+	    INITIATIVE = "initiative",
+	    STRSAVE = "strsave",
+	    DEXSAVE = "dexsave",
+	    CONSAVE = "consave",
+	    INTSAVE = "intsave",
+	    WISSAVE = "wissave",
+	    CHASAVE = "chasave",
+	}
 	export enum Screen {
 	    CHARACTER = "character",
 	    CONCEPTS = "concepts",
@@ -157,7 +177,7 @@ export namespace main {
 		}
 	}
 	export class StatOffset {
-	    stat: string;
+	    stat: Stat;
 	    value: string;
 	    reason?: string;
 	    condition?: string;
@@ -213,7 +233,7 @@ export namespace main {
 	export class PageInfo {
 	    pageType: Screen;
 	    pageTitle: string;
-	    hasImg: boolean;
+	    imgSrc?: string;
 	    description?: string;
 	    statblock?: Statblock;
 	
@@ -225,7 +245,7 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.pageType = source["pageType"];
 	        this.pageTitle = source["pageTitle"];
-	        this.hasImg = source["hasImg"];
+	        this.imgSrc = source["imgSrc"];
 	        this.description = source["description"];
 	        this.statblock = this.convertValues(source["statblock"], Statblock);
 	    }

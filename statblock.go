@@ -1,5 +1,13 @@
 package main
 
+import (
+	"fmt"
+	"math"
+	"strconv"
+
+	"github.com/PuerkitoBio/goquery"
+)
+
 type Stat string
 
 const (
@@ -22,6 +30,30 @@ const (
 	WISSave Stat = "wissave"
 	CHASave Stat = "chasave"
 )
+
+var AllStats = []struct {
+	Value  Stat
+	TSName string
+}{
+	{AC, "AC"},
+	{Speed, "SPEED"},
+	{Level, "LEVEL"},
+	{PB, "PROFICIENCY"},
+	{HP, "HP"},
+	{STR, "STR"},
+	{DEX, "DEX"},
+	{CON, "CON"},
+	{INT, "INT"},
+	{WIS, "WIS"},
+	{CHA, "CHA"},
+	{IN, "INITIATIVE"},
+	{STRSave, "STRSAVE"},
+	{DEXSave, "DEXSAVE"},
+	{CONSave, "CONSAVE"},
+	{INTSave, "INTSAVE"},
+	{WISSave, "WISSAVE"},
+	{CHASave, "CHASAVE"},
+}
 
 type DamageType string
 
@@ -121,15 +153,70 @@ type Weapon struct {
 	StatOffsets  []StatOffset        `json:"statOffsets"`
 }
 
-func ComposeStatblock(article string) Statblock {
+func ComposeStatblock(doc *goquery.Document) *Statblock {
+	fmt.Println("Before error?")
 	statblock := Statblock{}
 	statblock.Stats = make(map[Stat]string)
+	avSelect := doc.Find(".qud-stats-av")
+	dvSelect := doc.Find(".qud-stats-dv")
+	speedSelect := doc.Find(".qud-attribute-ms")
+	healthSelect := doc.Find(".qud-stats-health")
+	var av *string
+	var dv *string
+	var health *string
+	var speed *string
 
-	if statblock.Stats[AC] == "" {
-		statblock.Stats[AC] = "10"
+	fmt.Println("Getting ac..")
+
+	if avSelect == nil {
+		return nil
 	}
-	if statblock.Stats[Speed] == "" {
-		statblock.Stats[Speed] = "30"
+
+	if len(avSelect.Nodes) < 1 {
+		return nil
 	}
-	return statblock
+
+	if avSelect.Nodes[0] == nil {
+		return nil
+	} else {
+		fmt.Println("ac")
+		av = &avSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
+		dv = &dvSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
+		dvNum, _ := strconv.Atoi(*dv)
+		dvNum = max(dvNum, int(math.Abs(float64(dvNum))))
+		ac, _ := strconv.Atoi(*av)
+		statblock.Stats[AC] = strconv.Itoa(int(math.Ceil(((float64(ac) + float64(dvNum)) / 3) + 10)))
+		fmt.Println("ac end")
+	}
+
+	fmt.Println("Getting health..")
+
+	if len(healthSelect.Nodes) < 1 {
+		return nil
+	}
+
+	if healthSelect.Nodes[0] == nil {
+		return nil
+	} else {
+		fmt.Println("health")
+		health = &healthSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
+		statblock.Stats[HP] = *health
+		fmt.Println("health end")
+	}
+
+	fmt.Println("Getting speed..")
+
+	if len(speedSelect.Nodes) > 0 {
+		if speedSelect.Nodes[0] != nil {
+			fmt.Println("speed")
+			speed = &speedSelect.Nodes[0].NextSibling.FirstChild.Data
+			speedFloat, _ := strconv.Atoi(*speed)
+			statblock.Stats[Speed] = strconv.Itoa(int(math.Round(((float64(speedFloat)/10)*3)/5) * 5)) // Convert to DnD scales and round to nearest 5ft
+			fmt.Println("speed end")
+		}
+	}
+
+	fmt.Println("Before or after error?")
+
+	return &statblock
 }

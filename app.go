@@ -309,8 +309,11 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 	json.Unmarshal([]byte(qudAction("action=parse&prop=text&pageid="+strconv.Itoa(pageid))), &resp)
 	nodes, _ := html.ParseFragment(strings.NewReader(resp.Parse.Text.Root), nil)
 	doc := goquery.NewDocumentFromNode(nodes[0])
+	var statblock *Statblock
+	statblock = ComposeStatblock(doc)
 	selection := doc.Find(".qud-look-modern-text").Find(".poem").Find("p").Find("span")
 	var description *string
+	var imgLink *string
 	if len(selection.Nodes) > 0 {
 		if selection.Nodes[0] != nil {
 			if selection.Nodes[0].FirstChild != nil {
@@ -319,7 +322,17 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 		}
 	}
 	imgSelect := doc.Find(".infobox-imagearea")
-	hasImg := len(imgSelect.Nodes) > 0
+	if len(imgSelect.Nodes) > 0 {
+		if imgSelect.Nodes[0] != nil {
+			if len(imgSelect.Nodes[0].FirstChild.FirstChild.FirstChild.Attr) > 0 {
+				for _, attr := range imgSelect.Nodes[0].FirstChild.FirstChild.FirstChild.Attr {
+					if attr.Key == "src" {
+						imgLink = &attr.Val
+					}
+				}
+			}
+		}
+	}
 
-	return PageInfo{Screen(category), resp.Parse.Title, hasImg, description, nil}
+	return PageInfo{Screen(category), resp.Parse.Title, imgLink, description, statblock}
 }

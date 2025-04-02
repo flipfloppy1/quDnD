@@ -79,10 +79,6 @@ function goToPage(pageid: number) {
       screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
     ).innerText = "Loading...";
     app.GeneratePage(pageid).then((pageInfo: main.PageInfo) => {
-      let pageidFriendly = (
-        pageInfo.pageTitle.toUpperCase()[0] +
-        pageInfo.pageTitle.toLowerCase().substring(1, pageInfo.pageTitle.length)
-      ).replace(" ", "_");
       (
         screen.getElementsByClassName("entryTitle")[0] as HTMLHeadingElement
       ).innerText = pageInfo.pageTitle;
@@ -94,19 +90,49 @@ function goToPage(pageid: number) {
           screen.getElementsByClassName("entryCard")[0] as HTMLDivElement
         ).appendChild(desc);
       }
-      if (pageInfo.statblock) {
-        // TODO
-      }
-      if (pageInfo.hasImg) {
+      if (pageInfo.imgSrc) {
         let entryImg = document.createElement("img");
         entryImg.className = "entryImg";
-        entryImg.src =
-          "https://wiki.cavesofqud.com/wiki/Special:Redirect/file/" +
-          pageidFriendly +
-          ".png";
+        entryImg.src = "https://wiki.cavesofqud.com" + pageInfo.imgSrc;
         (
           screen.getElementsByClassName("entryOverview")[0] as HTMLDivElement
         ).appendChild(entryImg);
+      }
+      if (pageInfo.statblock) {
+        // TODO
+        let statblockButton = document.createElement("button");
+        statblockButton.className = "entryStatblockDropdown";
+        let statBtnText = document.createElement("p");
+        statBtnText.className = "statblockBtnText";
+        statBtnText.innerText = "Minimize statblock";
+        statblockButton.appendChild(statBtnText);
+        statblockButton.onclick = () => {
+          let dropdown = screen.getElementsByClassName(
+            "entryStatblockDropdown",
+          )[0] as HTMLButtonElement;
+          let statblockContent = dropdown.getElementsByClassName(
+            "statblockContent",
+          )[0] as HTMLDivElement;
+          if (statblockContent.style.display == "none") {
+            statblockContent.style.display = "flex";
+            statBtnText.innerText = "Minimize statblock";
+          } else {
+            statblockContent.style.display = "none";
+            statBtnText.innerText = "Expand statblock";
+          }
+        };
+        screen
+          .getElementsByClassName("entryContent")[0]
+          .appendChild(statblockButton);
+
+        screen
+          .getElementsByClassName("entryStatblockDropdown")[0]
+          .insertAdjacentHTML(
+            "beforeend",
+            `<div class="statblockContent"><div class="statblockAttributes"></div><div class="statblockCoreStats"><div class="statblockAC"><img class="statblockACImg"></img><p class="statblockACText">` +
+              pageInfo.statblock.stats[main.Stat.AC] +
+              `</p></div></div></div>`,
+          );
       }
       (
         screen.getElementsByClassName("wikiDropdown")[0] as HTMLButtonElement
