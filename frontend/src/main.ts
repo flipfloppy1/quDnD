@@ -85,7 +85,7 @@ function goToPage(pageid: number) {
       if (pageInfo.description) {
         let desc = document.createElement("p");
         desc.className = "entryDesc";
-        desc.innerText = pageInfo.description;
+        desc.innerText = pageInfo.description.trim();
         (
           screen.getElementsByClassName("entryCard")[0] as HTMLDivElement
         ).appendChild(desc);
