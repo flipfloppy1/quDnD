@@ -101,6 +101,7 @@ type CategoryMembers struct {
 	Concepts  []int `json:"concepts"`
 	World     []int `json:"world"`
 	Mechanics []int `json:"mechanics"`
+	Mutations []int `json:"mutations"`
 }
 
 func (c *Categories) LoadCategories() CategoryMembers {
@@ -120,6 +121,7 @@ func (c *Categories) LoadCategories() CategoryMembers {
 		categoryMap["concepts"] = getCategory("Category:Concepts")
 		categoryMap["world"] = getCategory("Category:World")
 		categoryMap["mechanics"] = getCategory("Category:Mechanics")
+		categoryMap["mutations"] = getCategory("Category:Mutations")
 
 		f, err = os.Create(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"))
 		if err == nil {
@@ -160,13 +162,19 @@ func (c *Categories) LoadCategories() CategoryMembers {
 		categoryMap["items"] = categoryJson.Items
 		categoryMap["concepts"] = categoryJson.Concepts
 		categoryMap["mechanics"] = categoryJson.Mechanics
+		categoryMap["mutations"] = categoryJson.Mutations
 		categoryMap["liquids"] = categoryJson.Liquids
 		return categoryJson
 	}
 }
 
 func (c *Categories) GetScreen(pageid int) Screen {
-	return Screen(getPageCategory(pageid))
+	category := getPageCategory(pageid)
+	if category == "none" {
+		return Other
+	} else {
+		return Screen(category)
+	}
 }
 func getPageCategory(pageid int) string {
 	for cat, ids := range categoryMap {

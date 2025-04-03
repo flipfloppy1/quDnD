@@ -12,6 +12,8 @@ const (
 	Liquids   Screen = "liquids"
 	Lore      Screen = "lore"
 	Mechanics Screen = "mechanics"
+	Mutations Screen = "mutations"
+	Other     Screen = "other"
 	Custom    Screen = "custom"
 )
 
@@ -26,6 +28,8 @@ var AllScreens = []struct {
 	{Liquids, "LIQUIDS"},
 	{Lore, "LORE"},
 	{Mechanics, "MECHANICS"},
+	{Mutations, "MUTATIONS"},
+	{Other, "OTHER"},
 	{Custom, "CUSTOM"},
 }
 

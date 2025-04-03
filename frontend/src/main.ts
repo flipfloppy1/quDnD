@@ -131,7 +131,9 @@ function goToPage(pageid: number) {
             "beforeend",
             `<div class="statblockContent"><div class="statblockAttributes"></div><div class="statblockCoreStats"><div class="statblockAC"><img class="statblockACImg"></img><p class="statblockACText">` +
               pageInfo.statblock.stats[main.Stat.AC] +
-              `</p></div></div></div>`,
+              `</p></div><div class="statblockHP"><img class="statblockHPImg"></img><p class="statblockHPText">` +
+              pageInfo.statblock.stats[main.Stat.HP] +
+              `</p></div></div>`,
           );
       }
       (

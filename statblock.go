@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -110,7 +111,7 @@ type Statblock struct {
 type WpnProperty string
 
 const (
-	WpnFinesse    WpnProperty = "Finesse;This weapon may use either DEX or STR for both attack and damage rolls, mutually exclusive."
+	WpnFinesse    WpnProperty = "Finesse;This weapon may use either DEX or STR for both attack and damage rolls."
 	WpnAmmunition WpnProperty = "Ammunition;This weapon requires ammunition to fire."
 	WpnHeavy      WpnProperty = "Heavy;Small creatures have disadvantage on attack rolls using this weapon."
 	WpnLight      WpnProperty = "Light;This weapon is two-handed capable."
@@ -120,7 +121,7 @@ const (
 	WpnThrown     WpnProperty = "Thrown;This weapon can be thrown."
 	WpnTwoHanded  WpnProperty = "TwoHanded;This weapon requires two hands to attack with."
 	WpnVersatile  WpnProperty = "Versatile;This weapon can be used with one or two hands."
-	WpnImprovised WpnProperty = "Improvised;This makeshift weapon deals 1d4 damage."
+	WpnImprovised WpnProperty = "Improvised;This makeshift weapon deals 1d4 damage, or the damage of a weapon it resembles."
 	WpnSilvered   WpnProperty = "Silvered;This weapon is effective against certain creatures with nonmagical resistances."
 	WpnNatural    WpnProperty = "Natural;This weapon is a part of this creature's body and can only be disarmed through dismemberment."
 )
@@ -161,12 +162,11 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	dvSelect := doc.Find(".qud-stats-dv")
 	speedSelect := doc.Find(".qud-attribute-ms")
 	healthSelect := doc.Find(".qud-stats-health")
+	attrSelect := doc.Find(".qud-attributes-wrapper")
 	var av *string
 	var dv *string
 	var health *string
 	var speed *string
-
-	fmt.Println("Getting ac..")
 
 	if avSelect == nil {
 		return nil
@@ -179,17 +179,18 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	if avSelect.Nodes[0] == nil {
 		return nil
 	} else {
-		fmt.Println("ac")
 		av = &avSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
 		dv = &dvSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
 		dvNum, _ := strconv.Atoi(*dv)
 		dvNum = max(dvNum, int(math.Abs(float64(dvNum))))
 		ac, _ := strconv.Atoi(*av)
-		statblock.Stats[AC] = strconv.Itoa(int(math.Ceil(((float64(ac) + float64(dvNum)) / 3) + 10)))
-		fmt.Println("ac end")
+		baseAC := (float64(ac)+float64(dvNum))/3 + 10
+		skewMul := 1.15
+		distMiddle := 15.0
+		scale := 2500.0
+		finalAC := (skewMul - (math.Pow((distMiddle-baseAC), 2) / scale) - math.Pow(baseAC, 2)/(2*scale)) * baseAC
+		statblock.Stats[AC] = strconv.Itoa(int(math.Ceil(finalAC)))
 	}
-
-	fmt.Println("Getting health..")
 
 	if len(healthSelect.Nodes) < 1 {
 		return nil
@@ -198,25 +199,49 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	if healthSelect.Nodes[0] == nil {
 		return nil
 	} else {
-		fmt.Println("health")
 		health = &healthSelect.Find(".qud-stat-value").Nodes[0].FirstChild.Data
 		statblock.Stats[HP] = *health
-		fmt.Println("health end")
 	}
-
-	fmt.Println("Getting speed..")
 
 	if len(speedSelect.Nodes) > 0 {
 		if speedSelect.Nodes[0] != nil {
-			fmt.Println("speed")
 			speed = &speedSelect.Nodes[0].NextSibling.FirstChild.Data
 			speedFloat, _ := strconv.Atoi(*speed)
 			statblock.Stats[Speed] = strconv.Itoa(int(math.Round(((float64(speedFloat)/10)*3)/5) * 5)) // Convert to DnD scales and round to nearest 5ft
-			fmt.Println("speed end")
 		}
 	}
 
-	fmt.Println("Before or after error?")
+	if len(attrSelect.Nodes) > 0 {
+		qStr, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-st").Nodes[0].NextSibling.FirstChild.Data)
+		qDex, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-ag").Nodes[0].NextSibling.FirstChild.Data)
+		qCon, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-to").Nodes[0].NextSibling.FirstChild.Data)
+		qInt, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-in").Nodes[0].NextSibling.FirstChild.Data)
+		qWis, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-wi").Nodes[0].NextSibling.FirstChild.Data)
+		qCha, _ := strconv.Atoi(attrSelect.Find(".qud-attribute-eg").Nodes[0].NextSibling.FirstChild.Data)
+		qLvl, _ := strconv.Atoi(strings.TrimSpace(doc.Find(".qud-character-level-value").Nodes[0].FirstChild.Data))
+
+		statblock.Stats[STR] = strconv.Itoa(qStr * 2 / 3)
+		statblock.Stats[DEX] = strconv.Itoa(qDex * 2 / 3)
+		statblock.Stats[CON] = strconv.Itoa(qCon * 2 / 3)
+		statblock.Stats[INT] = strconv.Itoa(qInt * 2 / 3)
+		statblock.Stats[WIS] = strconv.Itoa(qWis * 2 / 3)
+		statblock.Stats[CHA] = strconv.Itoa(qCha * 2 / 3)
+
+		lvl := float64(qLvl) / 5 * 3
+		if lvl == 0 {
+			statblock.Stats[Level] = "0"
+		} else if lvl <= 0.25 {
+			statblock.Stats[Level] = "1/8"
+		} else if lvl <= 0.5 {
+			statblock.Stats[Level] = "1/4"
+		} else if lvl <= 1 {
+			statblock.Stats[Level] = "1/2"
+		} else {
+			statblock.Stats[Level] = strconv.Itoa(int(lvl))
+		}
+
+		statblock.Stats[HP] = strconv.Itoa(int(math.Ceil(float64(qCon) / 2.0 * float64(qLvl))))
+	}
 
 	return &statblock
 }

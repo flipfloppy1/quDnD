@@ -1,5 +1,17 @@
 export namespace main {
 	
+	export enum Screen {
+	    CHARACTER = "character",
+	    CONCEPTS = "concepts",
+	    CREATURES = "creatures",
+	    ITEMS = "items",
+	    LIQUIDS = "liquids",
+	    LORE = "lore",
+	    MECHANICS = "mechanics",
+	    MUTATIONS = "mutations",
+	    OTHER = "other",
+	    CUSTOM = "custom",
+	}
 	export enum Stat {
 	    AC = "ac",
 	    SPEED = "speed",
@@ -20,16 +32,6 @@ export namespace main {
 	    WISSAVE = "wissave",
 	    CHASAVE = "chasave",
 	}
-	export enum Screen {
-	    CHARACTER = "character",
-	    CONCEPTS = "concepts",
-	    CREATURES = "creatures",
-	    ITEMS = "items",
-	    LIQUIDS = "liquids",
-	    LORE = "lore",
-	    MECHANICS = "mechanics",
-	    CUSTOM = "custom",
-	}
 	export class CategoryMembers {
 	    liquids: number[];
 	    creatures: number[];
@@ -38,6 +40,7 @@ export namespace main {
 	    concepts: number[];
 	    world: number[];
 	    mechanics: number[];
+	    mutations: number[];
 	
 	    static createFrom(source: any = {}) {
 	        return new CategoryMembers(source);
@@ -52,6 +55,7 @@ export namespace main {
 	        this.concepts = source["concepts"];
 	        this.world = source["world"];
 	        this.mechanics = source["mechanics"];
+	        this.mutations = source["mutations"];
 	    }
 	}
 	export class DiceRoll {

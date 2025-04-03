@@ -252,6 +252,40 @@ footer {
     padding: 10px;
 }
 
+.statblockCoreStats {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.statblockHPImg {
+    -webkit-mask-box-image: url(assets/images/healthcropped.png);
+    background-color: var(--background-primary);
+    width: 80px;
+    height: 80px;
+}
+
+.statblockHP {
+    display: flex;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    justify-content: center;
+    align-content: center;
+    line-height: 75px;
+    font-size: 18px;
+    margin: 0;
+}
+
+.statblockHPText {
+    color: white;
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    vertical-align: middle;
+    margin: 0;
+}
+
 .statblockACImg {
     -webkit-mask-box-image: url(assets/images/ac.png);
     background-color: var(--background-primary);
