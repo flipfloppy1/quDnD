@@ -1,0 +1,14 @@
+.screenHeader {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.titleSpacer {
+  width: 30px;
+}
+
+.pageTitle {
+  display: flex;
+  flex-direction: row;
+}

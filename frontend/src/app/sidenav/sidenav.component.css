@@ -1,0 +1,9 @@
+.navContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.navItem {
+  border: none;
+}

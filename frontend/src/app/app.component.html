@@ -1,0 +1,26 @@
+<mat-sidenav-container style="height: 100vh">
+  <mat-sidenav autoFocus="false" [(opened)]="navOpened">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="screenHeader">
+      <div class="pageTitle">
+        <h3>{{ category }}</h3>
+        <div class="titleSpacer"></div>
+        <h2 class="screenTitle">{{ name }}</h2>
+      </div>
+      <div class="pageActions">
+        <button
+          mat-mini-fab
+          matTooltip="Create custom article from this page"
+          (click)="createCustom()"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab matTooltip="" (click)="toggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

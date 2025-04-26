@@ -5,6 +5,7 @@ import "github.com/PuerkitoBio/goquery"
 type Screen string
 
 const (
+	Search    Screen = "search"
 	Character Screen = "character"
 	Concepts  Screen = "concepts"
 	Creatures Screen = "creatures"
@@ -21,6 +22,7 @@ var AllScreens = []struct {
 	Value  Screen
 	TSName string
 }{
+	{Search, "SEARCH"},
 	{Character, "CHARACTER"},
 	{Concepts, "CONCEPTS"},
 	{Creatures, "CREATURES"},

@@ -1,6 +1,7 @@
 export namespace main {
 	
 	export enum Screen {
+	    SEARCH = "search",
 	    CHARACTER = "character",
 	    CONCEPTS = "concepts",
 	    CREATURES = "creatures",

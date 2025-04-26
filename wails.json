@@ -3,9 +3,9 @@
   "name": "flipfloppy/quDnD",
   "outputfilename": "quDnD",
   "frontend:install": "npm install",
-  "frontend:build": "npm run build",
-  "frontend:dev:watcher": "npm run dev",
-  "frontend:dev:serverUrl": "auto",
+  "frontend:build": "npx ng build",
+  "frontend:dev:watcher": "npx ng serve",
+  "frontend:dev:serverUrl": "http://localhost:4200",
   "author": {
     "name": "flipfloppy",
     "email": "flipfloppy.business@gmail.com"
