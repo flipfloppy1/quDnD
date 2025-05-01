@@ -105,6 +105,7 @@ type CategoryMembers struct {
 }
 
 func (c *Categories) LoadCategories() CategoryMembers {
+	fmt.Println("Loading categories...")
 	cacheDir, err := os.UserCacheDir()
 	if err != nil {
 		fmt.Println("cacheDir error")
@@ -141,6 +142,7 @@ func (c *Categories) LoadCategories() CategoryMembers {
 		jsonStr, _ := json.Marshal(categoryMap)
 		var retVal CategoryMembers
 		json.Unmarshal(jsonStr, &retVal)
+		fmt.Println("Loaded categories from cache")
 
 		return retVal
 

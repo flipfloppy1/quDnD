@@ -1,13 +1,13 @@
 <div class="navContainer">
-  <mat-nav-list>
-    <button
-      class="navItem"
-      (click)="selectScreen(category)"
-      [activated]="category == selectedScreen"
-      *ngFor="let category of categories"
-      mat-list-item
-    >
-      {{ getScreenName(category) }}
-    </button>
-  </mat-nav-list>
+    <mat-nav-list>
+        <button
+            class="navItem"
+            (click)="selectScreen(category)"
+            [activated]="category == selectedScreen()"
+            *ngFor="let category of categories"
+            mat-list-item
+        >
+            {{ getScreenName(category) }}
+        </button>
+    </mat-nav-list>
 </div>

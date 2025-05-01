@@ -1,0 +1,24 @@
+<link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+/>
+<mat-form-field>
+    <mat-label>Search the wiki</mat-label>
+    <input
+        matInput
+        type="search"
+        [(ngModel)]="searchText"
+        (keydown.enter)="submit()"
+    />
+    <button (click)="submit()" matSuffix mat-icon-button aria-label="Search">
+        <mat-icon>search</mat-icon>
+    </button>
+</mat-form-field>
+<div class="searchResults">
+    <div class="searchResult" *ngFor="let result of results">
+        <h3 (click)="changeToPage(result.id)" class="searchLink">
+            {{ result.title }}
+        </h3>
+        <div [innerHTML]="result.excerpt"></div>
+    </div>
+</div>

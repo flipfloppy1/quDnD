@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, input, output, EventEmitter, model } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
@@ -24,18 +24,19 @@ export class SidenavComponent {
     main.Screen.MUTATIONS,
     main.Screen.OTHER,
   ];
-  selectedScreen = main.Screen.SEARCH;
+  change = output<void>();
+  selectedScreen = model(main.Screen.SEARCH);
 
   getScreenName(screen: main.Screen): string {
     return screen[0].toUpperCase() + screen.slice(1);
   }
 
   ngOnInit() {
-    console.log(this.selectedScreen);
+    this.change.emit();
   }
 
   selectScreen(screen: main.Screen) {
-    this.selectedScreen = screen;
-    console.log(this.selectedScreen);
+    this.selectedScreen.set(screen);
+    this.change.emit();
   }
 }

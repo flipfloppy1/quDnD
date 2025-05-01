@@ -103,8 +103,8 @@ type StatOffset struct {
 
 type Statblock struct {
 	Stats            map[Stat]string `json:"stats"`
-	StatOffsets      StatOffset      `json:"statOffsets"`
-	DamageAffinities DmgAffinity     `json:"dmgAffinities"`
+	StatOffsets      []StatOffset    `json:"statOffsets"`
+	DamageAffinities []DmgAffinity   `json:"dmgAffinities"`
 	Weapons          []Weapon        `json:"weapons"`
 }
 

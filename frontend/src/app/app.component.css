@@ -1,14 +1,89 @@
+:root {
+    --accent-color: rgb(40, 60, 80);
+    --accent-active: rgb(30, 50, 70);
+    --accent-hover: rgb(50, 70, 90);
+    --background-primary: rgb(10, 20, 30);
+}
+
 .screenHeader {
-  display: flex;
-  padding: 20px;
-  justify-content: space-between;
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
 }
 
 .titleSpacer {
-  width: 30px;
+    width: 30px;
 }
 
 .pageTitle {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.screenTitle {
+    margin: 0px;
+    vertical-align: bottom;
+}
+
+.catTitle {
+    margin: 0px;
+    vertical-align: bottom;
+}
+
+.pageAction {
+    margin-left: 10px;
+}
+
+.pageBox {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: left;
+}
+
+#searchPage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    text-align: left;
+    padding: 20px;
+}
+
+.articleContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.articleOverview {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.articleDescription {
+    padding: 20px;
+    border-color: rgb(40, 60, 80);
+    border-width: 5px;
+    background-color: rgb(10, 20, 30);
+    border-style: solid;
+    border-radius: 0;
+    margin: 20px;
+    line-height: 1.5;
+    color: rgb(180, 235, 210);
+    font-style: italic;
+    text-align: center;
+}
+
+.articleImg {
+    padding: 5px;
+    border-color: rgb(40, 60, 80);
+    border-width: 5px;
+    background-color: rgb(10, 20, 30);
+    border-style: solid;
+    border-radius: 0;
+    margin: 20px;
+    min-height: 240px;
+    max-height: 240px;
+    min-width: 160px;
 }

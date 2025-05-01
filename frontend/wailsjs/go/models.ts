@@ -201,8 +201,8 @@ export namespace main {
 	}
 	export class Statblock {
 	    stats: Record<string, string>;
-	    statOffsets: StatOffset;
-	    dmgAffinities: DmgAffinity;
+	    statOffsets: StatOffset[];
+	    dmgAffinities: DmgAffinity[];
 	    weapons: Weapon[];
 	
 	    static createFrom(source: any = {}) {

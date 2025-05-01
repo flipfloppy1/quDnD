@@ -1,0 +1,32 @@
+.searchLink {
+    color: rgb(100, 180, 140);
+    cursor: pointer;
+    user-select: none;
+}
+
+.searchResult {
+    color: rgb(90, 110, 130);
+}
+
+.searchmatch {
+    color: rgb(160, 170, 215);
+}
+
+.searchLink:hover {
+    color: rgb(115, 195, 155);
+}
+
+.searchLink:active {
+    color: rgb(60, 140, 100);
+}
+
+.searchResult {
+    text-align: start;
+}
+
+.searchResults {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    height: -webkit-fill-available;
+}
