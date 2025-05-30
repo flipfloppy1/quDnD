@@ -14,11 +14,14 @@
         <mat-icon>search</mat-icon>
     </button>
 </mat-form-field>
-<div class="searchResults">
+<div class="searchResults" *ngIf="!searching">
     <div class="searchResult" *ngFor="let result of results">
         <h3 (click)="changeToPage(result.id)" class="searchLink">
             {{ result.title }}
         </h3>
         <div [innerHTML]="result.excerpt"></div>
     </div>
+</div>
+<div class="searchIndicator" *ngIf="searching">
+    <mat-spinner></mat-spinner>
 </div>

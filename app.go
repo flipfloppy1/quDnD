@@ -317,5 +317,5 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 	var imgLink *string
 	imgLink = GetPageImg(doc)
 
-	return PageInfo{Screen(category), resp.Parse.Title, imgLink, description, statblock}
+	return PageInfo{Screen(category), resp.Parse.Title, imgLink, description, statblock, pageid}
 }

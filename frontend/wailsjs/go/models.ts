@@ -241,6 +241,7 @@ export namespace main {
 	    imgSrc?: string;
 	    description?: string;
 	    statblock?: Statblock;
+	    pageid: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new PageInfo(source);
@@ -253,6 +254,7 @@ export namespace main {
 	        this.imgSrc = source["imgSrc"];
 	        this.description = source["description"];
 	        this.statblock = this.convertValues(source["statblock"], Statblock);
+	        this.pageid = source["pageid"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

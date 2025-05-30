@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SidenavComponent } from "./sidenav/sidenav.component";
 import { SearchPageComponent } from "./search-page/search-page.component";
@@ -7,6 +8,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatExpansionModule } from "@angular/material/expansion";
 import { main } from "../../wailsjs/go/models";
 import * as cat from "../../wailsjs/go/main/Categories";
 import * as app from "../../wailsjs/go/main/App";
@@ -26,17 +29,25 @@ interface SearchPage {
     MatIconModule,
     MatInputModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatExpansionModule,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })
 export class AppComponent {
+  constructor(sanitizer: DomSanitizer) {
+    this.sanitizer = sanitizer;
+  }
+  sanitizer: DomSanitizer;
   title: string = "quDnD";
   name: string = "";
+  iframeUrl: string = "";
   category: main.Screen = main.Screen.SEARCH;
   navOpened: boolean = true;
   openedPages: Map<main.Screen, main.PageInfo> = new Map();
   currPage: main.PageInfo | SearchPage | main.Screen = { query: "" };
+  loadingPage: boolean = false;
 
   ngOnInit() {
     document.addEventListener("keydown", (event) => {
@@ -64,12 +75,16 @@ export class AppComponent {
   }
 
   goToPage(pageid: number) {
-    app.GeneratePage(pageid).then((page) => {
-      cat.GetScreen(pageid).then((screen) => {
+    cat.GetScreen(pageid).then((screen) => {
+      this.category = screen;
+      this.loadingPage = true;
+      this.iframeUrl =
+        "https://wiki.cavesofqud.com/Special:Redirect/page/" + pageid;
+      app.GeneratePage(pageid).then((page) => {
         this.openedPages.set(screen, page);
         this.currPage = page;
-        this.category = screen;
         this.name = page.pageTitle;
+        this.loadingPage = false;
       });
     });
   }
@@ -91,6 +106,16 @@ export class AppComponent {
       return (this.currPage as main.PageInfo).description ?? "";
     }
     return "";
+  }
+
+  getPageInfo(): main.PageInfo | undefined {
+    if (this.currPage instanceof main.PageInfo) return this.currPage;
+
+    return undefined;
+  }
+
+  getIframeUrl(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.iframeUrl);
   }
 
   getImgSrc(): string {

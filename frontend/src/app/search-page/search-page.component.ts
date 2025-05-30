@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import * as app from "../../../wailsjs/go/main/App";
 import { main } from "../../../wailsjs/go/models";
 
@@ -15,12 +16,14 @@ import { main } from "../../../wailsjs/go/models";
     MatIconModule,
     CommonModule,
     FormsModule,
+    MatProgressSpinnerModule,
   ],
   encapsulation: ViewEncapsulation.ShadowDom,
   templateUrl: "./search-page.component.html",
   styleUrl: "./search-page.component.css",
 })
 export class SearchPageComponent {
+  searching: boolean = false;
   searchText: string = "";
   results: main.RestPageSearchResults[] = [];
   changePage = output<number>({ alias: "search" });
@@ -30,8 +33,10 @@ export class SearchPageComponent {
   }
 
   submit() {
+    this.searching = true;
     app.SearchForPage(this.searchText).then((result) => {
       this.results = result.pages;
+      this.searching = false;
     });
   }
 }

@@ -41,6 +41,7 @@ type PageInfo struct {
 	ImgLink     *string    `json:"imgSrc"`
 	Description *string    `json:"description"`
 	Statblock   *Statblock `json:"statblock"`
+	PageId      int        `json:"pageid"`
 }
 
 func GetDescription(doc *goquery.Document) *string {

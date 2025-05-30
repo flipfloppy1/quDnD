@@ -36,13 +36,16 @@
                 id="searchPage"
                 [style]="isSearchPage() ? 'flex-grow: 1;' : 'display: none;'"
             >
-                <app-search-page (search)="goToPage($event)"></app-search-page>
+                <app-search-page
+                    class="searchPageContent"
+                    (search)="goToPage($event)"
+                ></app-search-page>
             </div>
             <div
                 id="articlePage"
                 [style]="isSearchPage() ? 'display: none;' : 'flex-grow: 1;'"
             >
-                <ng-container *ngIf="!isEmptyPage()">
+                <ng-container *ngIf="!isEmptyPage() && !loadingPage">
                     <div class="articleContent">
                         <div class="articleOverview">
                             <p
@@ -59,9 +62,28 @@
                                 "
                             />
                         </div>
-                        <div></div>
+                        <mat-expansion-panel class="statblockDropdown">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title> Statblock </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="statblockContainer"></div>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel class="referencePageDropdown">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title> Wiki Page </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="referencePageContainer">
+                                <iframe
+                                    class="referencePage"
+                                    [src]="getIframeUrl()"
+                                ></iframe>
+                            </div>
+                        </mat-expansion-panel>
                     </div>
                 </ng-container>
+                <div class="articleSpinner" *ngIf="loadingPage">
+                    <mat-spinner></mat-spinner>
+                </div>
             </div>
         </div>
     </mat-sidenav-content>

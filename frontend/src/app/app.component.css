@@ -53,12 +53,14 @@
 .articleContent {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .articleOverview {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .articleDescription {
@@ -86,4 +88,45 @@
     min-height: 240px;
     max-height: 240px;
     min-width: 160px;
+}
+
+.searchPageContent {
+    width: 100%;
+    height: 100%;
+}
+
+.articleSpinner {
+    width: 100%;
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.referencePageContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.referencePage {
+    width: 100%;
+    min-height: 900px;
+    border-width: 4px;
+    border-color: rgb(10, 20, 30);
+    background-image: url(https://wiki.cavesofqud.com/resources/assets/cavebg.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-style: solid;
+}
+
+.referencePageDropdown {
+    width: 90%;
+    background-color: rgb(40, 60, 80);
+}
+
+.statblockDropdown {
+    background-color: rgb(40, 60, 80);
+    margin-bottom: 20px;
+    width: 90%;
 }
