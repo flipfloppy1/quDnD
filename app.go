@@ -312,6 +312,7 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 	println(doc)
 	var statblock *Statblock
 	statblock = ComposeStatblock(doc)
+	fmt.Println(statblock)
 	var description *string
 	description = GetDescription(doc)
 	var imgLink *string

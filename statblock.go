@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -105,7 +107,7 @@ type Statblock struct {
 	Stats            map[Stat]string `json:"stats"`
 	StatOffsets      []StatOffset    `json:"statOffsets"`
 	DamageAffinities []DmgAffinity   `json:"dmgAffinities"`
-	Weapons          []Weapon        `json:"weapons"`
+	Items            []Weapon        `json:"items"`
 }
 
 type WpnProperty string
@@ -144,14 +146,89 @@ type WpnUsageCondition struct {
 
 type Weapon struct {
 	Name         string              `json:"name"`
+	ImageUrl     string              `json:"imageUrl"`
 	DmgType      DamageType          `json:"dmgType"`
 	Dmg          DiceRoll            `json:"dmg"`
 	DmgVersatile *DiceRoll           `json:"dmgVersatile"`
-	Reach        int                 `json:"reach"`
+	Penetration  int                 `json:"penetration"`
 	WpnRange     WeaponRange         `json:"wpnRange"`
 	Conditions   []WpnUsageCondition `json:"conditions"`
 	Effects      []WpnEffect         `json:"effects"`
 	StatOffsets  []StatOffset        `json:"statOffsets"`
+	PageId       int                 `json:"pageid"`
+}
+
+func setItemStats(weapon *Weapon, itemUrl string) error {
+	errorFormat := "Item stats error: %s"
+	resp, err := http.Get("https://wiki.cavesofqud.com" + itemUrl)
+
+	if err != nil {
+		resp.Body.Close()
+		return fmt.Errorf(errorFormat, err.Error())
+	}
+
+	if resp.StatusCode < 300 && resp.StatusCode >= 200 {
+		doc, err := goquery.NewDocumentFromReader(resp.Body)
+
+		bodyClasses, exists := doc.Find("body").Attr("class")
+		if exists {
+			var pageName string
+			classStrings := strings.Split(bodyClasses, " ")
+			for _, str := range classStrings {
+				if strings.HasPrefix(str, "page-") {
+					pageName, _ = strings.CutPrefix(str, "page-")
+				}
+			}
+			if pageName == "" {
+				return fmt.Errorf("Unable to parse article friendly ID")
+			}
+			friendlyId, _ := strings.CutPrefix(itemUrl, "/wiki/")
+			pageidResp := qudAction("action=query&titles=" + friendlyId)
+			fmt.Println(pageidResp)
+			var pageResp RestPagesResultJson
+			err = json.Unmarshal([]byte(pageidResp), &pageResp)
+			if err != nil {
+				return fmt.Errorf("Unable to get item pageid: %s", err.Error())
+			}
+			fmt.Println(pageResp.Query.PageMap)
+			for _, pageRes := range pageResp.Query.PageMap {
+				weapon.PageId = pageRes.Pageid
+			}
+		} else {
+			return fmt.Errorf("Unable to find classes in body")
+		}
+
+		statSelect := doc.Find(".qud-item-stat-value")
+
+		if len(statSelect.Nodes) > 0 {
+			for index, node := range statSelect.Nodes {
+				if index == 0 {
+					penetration, err := strconv.Atoi(node.FirstChild.Data)
+					if err != nil {
+						return fmt.Errorf("Unable to parse penetration: %s", err.Error())
+					}
+					weapon.Penetration = penetration
+				} else if index == 1 {
+					weapon.Dmg.Dice = append(weapon.Dmg.Dice, node.FirstChild.Data)
+				}
+			}
+		} else {
+			return fmt.Errorf("Unable to read item stats for %s", itemUrl)
+		}
+
+		titleSelect := doc.Find(".mw-first-heading")
+
+		if len(titleSelect.Nodes) > 0 {
+			weapon.Name = titleSelect.Nodes[0].FirstChild.Data
+		} else {
+			return fmt.Errorf("Unable to find item name for %s", itemUrl)
+		}
+
+	} else {
+		return fmt.Errorf(errorFormat, resp.Status)
+	}
+
+	return nil
 }
 
 func ComposeStatblock(doc *goquery.Document) *Statblock {
@@ -163,6 +240,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	speedSelect := doc.Find(".qud-attribute-ms")
 	healthSelect := doc.Find(".qud-stats-health")
 	attrSelect := doc.Find(".qud-attributes-wrapper")
+	invSelect := doc.Find(".qud-inventory-item")
 	var av *string
 	var dv *string
 	var health *string
@@ -241,6 +319,30 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 		}
 
 		statblock.Stats[HP] = strconv.Itoa(int(math.Ceil(float64(qCon) / 2.0 * float64(qLvl))))
+	}
+
+	if len(invSelect.Nodes) > 0 {
+		invLinkSelect := invSelect.Find(".qud-image-link-image-container")
+
+		for _, node := range invLinkSelect.Nodes {
+			equipmentItem := Weapon{}
+			for _, attr := range node.FirstChild.FirstChild.Attr {
+				if attr.Key == "src" {
+					equipmentItem.ImageUrl = "https://wiki.cavesofqud.com" + attr.Val
+				}
+			}
+			for _, attr := range node.FirstChild.Attr {
+				if attr.Key == "href" {
+					err := setItemStats(&equipmentItem, attr.Val)
+					if err != nil {
+						fmt.Println(err.Error())
+						continue
+					} else {
+						statblock.Items = append(statblock.Items, equipmentItem)
+					}
+				}
+			}
+		}
 	}
 
 	return &statblock

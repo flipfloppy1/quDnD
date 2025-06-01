@@ -1,0 +1,198 @@
+.statblockIconImg {
+    background-color: rgb(10, 20, 30);
+    width: 80px;
+    height: 80px;
+    image-rendering: pixelated;
+}
+
+.statblockAc {
+    -webkit-mask-box-image: url(../../../public/assets/images/ac.png);
+}
+
+.statblockHp {
+    -webkit-mask-box-image: url(../../../public/assets/images/healthcropped.png);
+    width: 85px;
+}
+
+.statblockSpeed {
+    -webkit-mask-box-image: url(../../../public/assets/images/speedcropped.png);
+    width: 100px;
+}
+
+.statblockIcon {
+    display: flex;
+    position: relative;
+    width: 100px;
+    height: 80px;
+    user-select: none;
+    justify-content: center;
+    align-content: center;
+    line-height: 75px;
+    font-size: 18px;
+    margin: 0;
+}
+
+.statblockIconText {
+    color: white;
+    position: absolute;
+    text-align: center;
+    width: 80px;
+    height: 20px;
+    vertical-align: middle;
+    margin: 0;
+}
+
+.statblockAc {
+    display: flex;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    justify-content: center;
+    align-content: center;
+    line-height: 75px;
+    font-size: 18px;
+    margin: 0;
+}
+.statblockAcText {
+    color: white;
+    position: absolute;
+    text-align: center;
+    width: 80px;
+    height: 20px;
+    vertical-align: middle;
+    margin: 0;
+}
+
+.statblockContent {
+    padding: 10px;
+    display: flex;
+}
+
+.statblockCoreStats {
+    display: flex;
+    flex-direction: row;
+    align-content: space-evenly;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.detailedStatsDropdown {
+    width: 90%;
+}
+
+.detailedStats {
+    display: flex;
+    flex-direction: column;
+    border-color: grey;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.detailedStatEntry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.detailedStatLabel {
+    margin-left: 10px;
+}
+
+.detailedStatValue {
+    margin-right: 10px;
+}
+
+.statblockAttributes {
+    display: flex;
+    flex-grow: 3;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    width: 30%;
+}
+
+.statblockEquipment {
+    display: flex;
+    width: 60%;
+    flex-direction: column;
+    align-content: center;
+}
+
+.detailedEquipment {
+    display: flex;
+    flex-direction: column;
+}
+
+.detailedEquipmentEntry {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.itemImg {
+    image-rendering: pixelated;
+    display: inline;
+    margin-right: 5px;
+}
+
+.itemLabel {
+    display: flex;
+    align-content: center;
+}
+
+.statblockAbilityScores {
+    width: 100%;
+    justify-content: stretch;
+    display: grid;
+    margin-bottom: 10px;
+}
+
+.abilityScoreEntry {
+    display: flex;
+    height: 100px;
+    flex-direction: column;
+    text-align: center;
+    user-select: none;
+    justify-content: space-evenly;
+    background-image: url(../../../public/assets/images/AbilityScoreDark.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 50%;
+}
+
+.abilityScoreEntry > p {
+    margin: 3px;
+}
+
+.abilityStr {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.abilityDex {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.abilityCon {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.abilityInt {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.abilityWis {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.abilityCha {
+    grid-column: 3;
+    grid-row: 2;
+}

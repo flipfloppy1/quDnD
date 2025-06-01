@@ -88,6 +88,7 @@
     min-height: 240px;
     max-height: 240px;
     min-width: 160px;
+    image-rendering: pixelated;
 }
 
 .searchPageContent {

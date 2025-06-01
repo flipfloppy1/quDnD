@@ -3,6 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SidenavComponent } from "./sidenav/sidenav.component";
 import { SearchPageComponent } from "./search-page/search-page.component";
+import { StatblockComponent } from "./statblock/statblock.component";
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
@@ -31,6 +32,7 @@ interface SearchPage {
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    StatblockComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
@@ -59,7 +61,7 @@ export class AppComponent {
   }
 
   frontendInit() {
-    cat.LoadCategories().then((categories) => {});
+    cat.LoadCategories();
   }
 
   isSearchPage(): boolean {
@@ -83,6 +85,7 @@ export class AppComponent {
       app.GeneratePage(pageid).then((page) => {
         this.openedPages.set(screen, page);
         this.currPage = page;
+        console.log(page.statblock);
         this.name = page.pageTitle;
         this.loadingPage = false;
       });
@@ -109,9 +112,22 @@ export class AppComponent {
   }
 
   getPageInfo(): main.PageInfo | undefined {
-    if (this.currPage instanceof main.PageInfo) return this.currPage;
+    if (typeof this.currPage === "object") {
+      return this.currPage as main.PageInfo;
+    }
 
     return undefined;
+  }
+
+  getStatblock(): main.Statblock {
+    if (typeof this.currPage === "object") {
+      let currPage = this.currPage as main.PageInfo;
+      if (currPage.statblock) {
+        return currPage.statblock;
+      }
+    }
+
+    return new main.Statblock();
   }
 
   getIframeUrl(): SafeResourceUrl {
@@ -136,6 +152,7 @@ export class AppComponent {
       this.name = catPage.pageTitle;
     } else {
       this.name = "";
+      this.currPage = this.category;
     }
     this.navOpened = false;
   }

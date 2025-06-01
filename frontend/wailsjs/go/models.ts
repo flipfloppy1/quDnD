@@ -137,14 +137,16 @@ export namespace main {
 	}
 	export class Weapon {
 	    name: string;
+	    imageUrl: string;
 	    dmgType: string;
 	    dmg: DiceRoll;
 	    dmgVersatile?: DiceRoll;
-	    reach: number;
+	    penetration: number;
 	    wpnRange: WeaponRange;
 	    conditions: WpnUsageCondition[];
 	    effects: WpnEffect[];
 	    statOffsets: StatOffset[];
+	    pageid: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new Weapon(source);
@@ -153,14 +155,16 @@ export namespace main {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.name = source["name"];
+	        this.imageUrl = source["imageUrl"];
 	        this.dmgType = source["dmgType"];
 	        this.dmg = this.convertValues(source["dmg"], DiceRoll);
 	        this.dmgVersatile = this.convertValues(source["dmgVersatile"], DiceRoll);
-	        this.reach = source["reach"];
+	        this.penetration = source["penetration"];
 	        this.wpnRange = this.convertValues(source["wpnRange"], WeaponRange);
 	        this.conditions = this.convertValues(source["conditions"], WpnUsageCondition);
 	        this.effects = this.convertValues(source["effects"], WpnEffect);
 	        this.statOffsets = this.convertValues(source["statOffsets"], StatOffset);
+	        this.pageid = source["pageid"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -203,7 +207,7 @@ export namespace main {
 	    stats: Record<string, string>;
 	    statOffsets: StatOffset[];
 	    dmgAffinities: DmgAffinity[];
-	    weapons: Weapon[];
+	    items: Weapon[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Statblock(source);
@@ -214,7 +218,7 @@ export namespace main {
 	        this.stats = source["stats"];
 	        this.statOffsets = this.convertValues(source["statOffsets"], StatOffset);
 	        this.dmgAffinities = this.convertValues(source["dmgAffinities"], DmgAffinity);
-	        this.weapons = this.convertValues(source["weapons"], Weapon);
+	        this.items = this.convertValues(source["items"], Weapon);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

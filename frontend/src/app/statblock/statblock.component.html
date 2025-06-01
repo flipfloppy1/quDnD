@@ -1,0 +1,96 @@
+<div class="statblockContent">
+    <div class="statblockAttributes">
+        <div class="statblockCoreStats">
+            <div class="statblockIcon">
+                <img class="statblockIconImg statblockAc" />
+                <p class="statblockIconText">
+                    {{ statblock().stats["ac"] }}
+                </p>
+            </div>
+            <div class="statblockIcon">
+                <img class="statblockIconImg statblockHp" />
+                <p class="statblockIconText">
+                    {{ statblock().stats["hp"] }}
+                </p>
+            </div>
+            <div class="statblockIcon" *ngIf="statblock().stats['speed']">
+                <img class="statblockIconImg statblockSpeed" />
+                <p class="statblockIconText">
+                    {{ statblock().stats["speed"] }}
+                </p>
+            </div>
+        </div>
+        <div class="statblockAbilityScores" *ngIf="hasAbilityScores()">
+            <div class="abilityScoreEntry abilityStr">
+                <p>STR</p>
+                <p>{{ statblock().stats["str"] }}</p>
+                <p>{{ getAbilityMod("str") }}</p>
+            </div>
+            <div class="abilityScoreEntry abilityDex">
+                <p>DEX</p>
+                <p>{{ statblock().stats["dex"] }}</p>
+                <p>{{ getAbilityMod("dex") }}</p>
+            </div>
+            <div class="abilityScoreEntry abilityCon">
+                <p>CON</p>
+                <p>{{ statblock().stats["con"] }}</p>
+                <p>{{ getAbilityMod("con") }}</p>
+            </div>
+            <div class="abilityScoreEntry abilityInt">
+                <p>INT</p>
+                <p>{{ statblock().stats["int"] }}</p>
+                <p>{{ getAbilityMod("int") }}</p>
+            </div>
+            <div class="abilityScoreEntry abilityWis">
+                <p>WIS</p>
+                <p>{{ statblock().stats["wis"] }}</p>
+                <p>{{ getAbilityMod("wis") }}</p>
+            </div>
+            <div class="abilityScoreEntry abilityCha">
+                <p>CHA</p>
+                <p>{{ statblock().stats["cha"] }}</p>
+                <p>{{ getAbilityMod("cha") }}</p>
+            </div>
+        </div>
+        <mat-expansion-panel
+            class="detailedStatsDropdown"
+            *ngIf="hasDetailedStats()"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title> Other Stats </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailedStats">
+                <div
+                    class="detailedStatEntry"
+                    *ngFor="let stat of detailedStats() | keyvalue; index as i"
+                    [style]="
+                        i % 2 == 0
+                            ? 'background-color: rgb(40,60,80);'
+                            : 'background-color: rgb(10,20,30);'
+                    "
+                >
+                    <span class="detailedStatLabel">{{ stat.key }}</span>
+                    <span class="detailedStatValue">{{ stat.value }}</span>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+    <div class="statblockEquipment">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title> Equipment </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailedEquipment">
+                <div
+                    class="detailedEquipmentEntry"
+                    *ngFor="let item of statblock().items"
+                >
+                    <p class="itemLabel">
+                        <img class="itemImg" [src]="item.imageUrl" />
+                        {{ item.name }}
+                    </p>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</div>

@@ -47,6 +47,19 @@ type CategoryMembersJson struct {
 	} `json:"query"`
 }
 
+type PageData struct {
+	Pageid    int    `json:"pageid"`
+	Namespace int    `json:"ns"`
+	Title     string `json:"title"`
+}
+
+type RestPagesResultJson struct {
+	Batchcomplete string `json:"batchcomplete"`
+	Query         struct {
+		PageMap map[string]PageData `json:"pages"`
+	} `json:"query"`
+}
+
 func qudRest(endpoint string) string {
 	resp, err := http.Get("https://wiki.cavesofqud.com/rest.php/v1" + endpoint)
 	if err != nil {

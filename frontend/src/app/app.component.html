@@ -62,11 +62,18 @@
                                 "
                             />
                         </div>
-                        <mat-expansion-panel class="statblockDropdown">
+                        <mat-expansion-panel
+                            class="statblockDropdown"
+                            *ngIf="getPageInfo()?.statblock"
+                        >
                             <mat-expansion-panel-header>
                                 <mat-panel-title> Statblock </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <div class="statblockContainer"></div>
+                            <div class="statblockContainer">
+                                <app-statblock
+                                    [statblock]="getStatblock()"
+                                ></app-statblock>
+                            </div>
                         </mat-expansion-panel>
                         <mat-expansion-panel class="referencePageDropdown">
                             <mat-expansion-panel-header>
