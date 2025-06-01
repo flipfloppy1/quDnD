@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -170,32 +171,17 @@ func setItemStats(weapon *Weapon, itemUrl string) error {
 	if resp.StatusCode < 300 && resp.StatusCode >= 200 {
 		doc, err := goquery.NewDocumentFromReader(resp.Body)
 
-		bodyClasses, exists := doc.Find("body").Attr("class")
-		if exists {
-			var pageName string
-			classStrings := strings.Split(bodyClasses, " ")
-			for _, str := range classStrings {
-				if strings.HasPrefix(str, "page-") {
-					pageName, _ = strings.CutPrefix(str, "page-")
-				}
-			}
-			if pageName == "" {
-				return fmt.Errorf("Unable to parse article friendly ID")
-			}
-			friendlyId, _ := strings.CutPrefix(itemUrl, "/wiki/")
-			pageidResp := qudAction("action=query&titles=" + friendlyId)
-			fmt.Println(pageidResp)
-			var pageResp RestPagesResultJson
-			err = json.Unmarshal([]byte(pageidResp), &pageResp)
-			if err != nil {
-				return fmt.Errorf("Unable to get item pageid: %s", err.Error())
-			}
-			fmt.Println(pageResp.Query.PageMap)
-			for _, pageRes := range pageResp.Query.PageMap {
-				weapon.PageId = pageRes.Pageid
-			}
-		} else {
-			return fmt.Errorf("Unable to find classes in body")
+		friendlyId, _ := strings.CutPrefix(itemUrl, "/wiki/")
+		pageidResp := qudAction("action=query&titles=" + friendlyId)
+		fmt.Println(pageidResp)
+		var pageResp RestPagesResultJson
+		err = json.Unmarshal([]byte(pageidResp), &pageResp)
+		if err != nil {
+			return fmt.Errorf("Unable to get item pageid: %s", err.Error())
+		}
+		fmt.Println(pageResp.Query.PageMap)
+		for _, pageRes := range pageResp.Query.PageMap {
+			weapon.PageId = pageRes.Pageid
 		}
 
 		statSelect := doc.Find(".qud-item-stat-value")
@@ -219,7 +205,7 @@ func setItemStats(weapon *Weapon, itemUrl string) error {
 		titleSelect := doc.Find(".mw-first-heading")
 
 		if len(titleSelect.Nodes) > 0 {
-			weapon.Name = titleSelect.Nodes[0].FirstChild.Data
+			weapon.Name, _ = strings.CutPrefix(titleSelect.Nodes[0].FirstChild.Data, "Data:")
 		} else {
 			return fmt.Errorf("Unable to find item name for %s", itemUrl)
 		}
@@ -323,6 +309,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 
 	if len(invSelect.Nodes) > 0 {
 		invLinkSelect := invSelect.Find(".qud-image-link-image-container")
+		currItems := make([]string, 0)
 
 		for _, node := range invLinkSelect.Nodes {
 			equipmentItem := Weapon{}
@@ -330,6 +317,11 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 				if attr.Key == "src" {
 					equipmentItem.ImageUrl = "https://wiki.cavesofqud.com" + attr.Val
 				}
+			}
+			if slices.Contains(currItems, equipmentItem.ImageUrl) {
+				break
+			} else {
+				currItems = append(currItems, equipmentItem.ImageUrl)
 			}
 			for _, attr := range node.FirstChild.Attr {
 				if attr.Key == "href" {

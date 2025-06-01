@@ -2,7 +2,6 @@ import { Component, input, signal } from "@angular/core";
 import { KeyValuePipe, CommonModule } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { main } from "../../../wailsjs/go/models";
-import { P } from "@angular/cdk/keycodes";
 
 @Component({
   selector: "app-statblock",
