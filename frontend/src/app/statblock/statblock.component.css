@@ -132,6 +132,13 @@
     justify-content: space-between;
 }
 
+.featEntry {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
 .itemImg {
     image-rendering: pixelated;
     display: inline;
@@ -140,6 +147,12 @@
 
 .itemLabel {
     display: flex;
+    align-content: center;
+}
+
+.featLabel {
+    display: flex;
+    text-align: center;
     align-content: center;
 }
 
@@ -195,4 +208,8 @@
 .abilityCha {
     grid-column: 3;
     grid-row: 2;
+}
+
+.equipmentDropdown {
+    margin-bottom: 20px;
 }

@@ -76,7 +76,7 @@
         </mat-expansion-panel>
     </div>
     <div class="statblockEquipment">
-        <mat-expansion-panel>
+        <mat-expansion-panel class="equipmentDropdown">
             <mat-expansion-panel-header>
                 <mat-panel-title> Equipment </mat-panel-title>
             </mat-expansion-panel-header>
@@ -88,6 +88,23 @@
                     <p class="itemLabel">
                         <img class="itemImg" [src]="item.imageUrl" />
                         {{ item.name }}
+                    </p>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title> Feats </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="detailedEquipment">
+                <div class="featEntry" *ngFor="let feat of statblock().feats">
+                    <p
+                        class="featLabel"
+                        matTooltip="{{ feat.description }}"
+                        matTooltipPosition="above"
+                    >
+                        <!--img class="itemImg" [src]="item.imageUrl" /-->
+                        {{ feat.name }}
                     </p>
                 </div>
             </div>

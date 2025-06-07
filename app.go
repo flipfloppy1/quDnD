@@ -309,10 +309,8 @@ func (a *App) GeneratePage(pageid int) PageInfo {
 	json.Unmarshal([]byte(qudAction("action=parse&prop=text&pageid="+strconv.Itoa(pageid))), &resp)
 	nodes, _ := html.ParseFragment(strings.NewReader(resp.Parse.Text.Root), nil)
 	doc := goquery.NewDocumentFromNode(nodes[0])
-	println(doc)
 	var statblock *Statblock
 	statblock = ComposeStatblock(doc)
-	fmt.Println(statblock)
 	var description *string
 	description = GetDescription(doc)
 	var imgLink *string

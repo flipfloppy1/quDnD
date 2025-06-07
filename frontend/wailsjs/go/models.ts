@@ -33,6 +33,120 @@ export namespace main {
 	    WISSAVE = "wissave",
 	    CHASAVE = "chasave",
 	}
+	export enum Duration {
+	    ACTION = "action",
+	    REACTION = "reaction",
+	    ITEM_INTERACTION = "item_interaction",
+	    BONUS_ACTION = "bonus_action",
+	    FREE_ACTION = "free_action",
+	}
+	export enum DamageType {
+	    DMGACID = "dmgacid",
+	    DMGBLUDGEONING = "dmgbludgeoning",
+	    DMGCOLD = "dmgcold",
+	    DMGFIRE = "dmgfire",
+	    DMGFORCE = "dmgforce",
+	    DMGLIGHTNING = "dmglightning",
+	    DMGNECROTIC = "dmgnecrotic",
+	    DMGPIERCING = "dmgpiercing",
+	    DMGPOISON = "dmgpoison",
+	    DMGPSYCHIC = "dmgpsychic",
+	    DMGRADIANT = "dmgradiant",
+	    DMGSLASHING = "dmgslashing",
+	    DMGTHUNDER = "dmgthunder",
+	}
+	export enum DmgAffinityLevel {
+	    RESISTANT = "resistant",
+	    WEAK = "weak",
+	    IMMUNE = "immune",
+	}
+	export class DiceRoll {
+	    dice: string[];
+	    offset: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new DiceRoll(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.dice = source["dice"];
+	        this.offset = source["offset"];
+	    }
+	}
+	export class Attack {
+	    dmgType: DamageType;
+	    damage: DiceRoll;
+	    conditions: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Attack(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.dmgType = source["dmgType"];
+	        this.damage = this.convertValues(source["damage"], DiceRoll);
+	        this.conditions = source["conditions"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Ability {
+	    duration: Duration;
+	    summary: string;
+	    description: string;
+	    conditions: string[];
+	    attacks: Attack[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Ability(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.duration = source["duration"];
+	        this.summary = source["summary"];
+	        this.description = source["description"];
+	        this.conditions = source["conditions"];
+	        this.attacks = this.convertValues(source["attacks"], Attack);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class CategoryMembers {
 	    liquids: number[];
 	    creatures: number[];
@@ -59,23 +173,10 @@ export namespace main {
 	        this.mutations = source["mutations"];
 	    }
 	}
-	export class DiceRoll {
-	    dice: string[];
-	    offset: number;
 	
-	    static createFrom(source: any = {}) {
-	        return new DiceRoll(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.dice = source["dice"];
-	        this.offset = source["offset"];
-	    }
-	}
 	export class DmgAffinity {
-	    level: string;
-	    dmgType: string;
+	    level: DmgAffinityLevel;
+	    dmgType: DamageType;
 	    reason?: string;
 	    condition?: string;
 	
@@ -91,13 +192,13 @@ export namespace main {
 	        this.condition = source["condition"];
 	    }
 	}
-	export class WpnEffect {
+	export class Effect {
 	    effect: string;
-	    condition?: string;
-	    reason?: string;
+	    condition: string[];
+	    reason: string[];
 	
 	    static createFrom(source: any = {}) {
-	        return new WpnEffect(source);
+	        return new Effect(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -107,9 +208,64 @@ export namespace main {
 	        this.reason = source["reason"];
 	    }
 	}
+	export class FeatBuff {
+	    stat: Stat;
+	    value: string;
+	    conditions: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new FeatBuff(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.stat = source["stat"];
+	        this.value = source["value"];
+	        this.conditions = source["conditions"];
+	    }
+	}
+	export class Feat {
+	    id: string;
+	    name: string;
+	    buffs: FeatBuff[];
+	    abilities: Ability[];
+	    description: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Feat(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.name = source["name"];
+	        this.buffs = this.convertValues(source["buffs"], FeatBuff);
+	        this.abilities = this.convertValues(source["abilities"], Ability);
+	        this.description = source["description"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class WpnUsageCondition {
 	    condition: string;
-	    reason?: string;
+	    reason: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new WpnUsageCondition(source);
@@ -138,13 +294,13 @@ export namespace main {
 	export class Weapon {
 	    name: string;
 	    imageUrl: string;
-	    dmgType: string;
+	    dmgType: DamageType;
 	    dmg: DiceRoll;
 	    dmgVersatile?: DiceRoll;
 	    penetration: number;
 	    wpnRange: WeaponRange;
 	    conditions: WpnUsageCondition[];
-	    effects: WpnEffect[];
+	    effects: Effect[];
 	    statOffsets: StatOffset[];
 	    pageid: number;
 	
@@ -162,7 +318,7 @@ export namespace main {
 	        this.penetration = source["penetration"];
 	        this.wpnRange = this.convertValues(source["wpnRange"], WeaponRange);
 	        this.conditions = this.convertValues(source["conditions"], WpnUsageCondition);
-	        this.effects = this.convertValues(source["effects"], WpnEffect);
+	        this.effects = this.convertValues(source["effects"], Effect);
 	        this.statOffsets = this.convertValues(source["statOffsets"], StatOffset);
 	        this.pageid = source["pageid"];
 	    }
@@ -208,6 +364,7 @@ export namespace main {
 	    statOffsets: StatOffset[];
 	    dmgAffinities: DmgAffinity[];
 	    items: Weapon[];
+	    feats: Feat[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Statblock(source);
@@ -219,6 +376,7 @@ export namespace main {
 	        this.statOffsets = this.convertValues(source["statOffsets"], StatOffset);
 	        this.dmgAffinities = this.convertValues(source["dmgAffinities"], DmgAffinity);
 	        this.items = this.convertValues(source["items"], Weapon);
+	        this.feats = this.convertValues(source["feats"], Feat);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -352,7 +510,6 @@ export namespace main {
 		    return a;
 		}
 	}
-	
 	
 	
 	

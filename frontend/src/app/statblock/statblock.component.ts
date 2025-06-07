@@ -1,11 +1,12 @@
 import { Component, input, signal } from "@angular/core";
 import { KeyValuePipe, CommonModule } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { main } from "../../../wailsjs/go/models";
 
 @Component({
   selector: "app-statblock",
-  imports: [MatExpansionModule, KeyValuePipe, CommonModule],
+  imports: [MatExpansionModule, KeyValuePipe, CommonModule, MatTooltipModule],
   templateUrl: "./statblock.component.html",
   styleUrl: "./statblock.component.css",
 })
@@ -84,7 +85,7 @@ export class StatblockComponent {
       (Number(this.statblock().stats[ability]) - 10) / 2,
     );
     if (mod < 0) {
-      return "-" + mod;
+      return String(mod);
     } else {
       return "+" + mod;
     }

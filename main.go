@@ -46,6 +46,9 @@ func main() {
 		EnumBind: []any{
 			AllScreens,
 			AllStats,
+			AllActions,
+			AllDamageTypes,
+			AllDmgAffinityLevels,
 		},
 		Mac: &mac.Options{
 			WebviewIsTransparent: true,

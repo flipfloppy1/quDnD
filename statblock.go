@@ -12,6 +12,76 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type Attack struct {
+	DamageType DamageType `json:"dmgType"`
+	Damage     DiceRoll   `json:"damage"`
+	Conditions []string   `json:"conditions"`
+}
+
+type Ability struct {
+	Duration    Duration `json:"duration"`
+	Summary     string   `json:"summary"`
+	Description string   `json:"description"`
+	Conditions  []string `json:"conditions"`
+	Attacks     []Attack `json:"attacks"`
+}
+
+type Feat struct {
+	Id          string     `json:"id"`
+	Name        string     `json:"name"`
+	Buffs       []FeatBuff `json:"buffs"`
+	Abilities   []Ability  `json:"abilities"`
+	Description string     `json:"description"`
+}
+
+type FeatBuff struct {
+	Stat       Stat     `json:"stat"`
+	Value      string   `json:"value"`
+	Conditions []string `json:"conditions"`
+}
+
+var (
+	AbilityJuke Ability = Ability{Action, "Whirl past an opponent, swapping places with it", "You use an action to swap places with a creature within 5ft of you that is your size or smaller. You and your allies will not provoke opportunity attacks from the target until your next turn.", []string{"1 action", "target is within 5ft", "target is creature's size or smaller"}, []Attack{}}
+)
+
+var (
+	FeatSprint               Feat            = Feat{"sprint", "Sprint", []FeatBuff{{Speed, "10", []string{}}}, []Ability{}, "This creature is capable of moving quickly"}
+	FeatSwiftReflexes        Feat            = Feat{"swift reflexes", "Swift Reflexes", []FeatBuff{{AC, "2", []string{"As a reaction to a projectile attack that targets the creature"}}}, []Ability{}, "This creature has a +2 AC bonus when flinching away from projectile attacks"}
+	FeatSpry                 Feat            = Feat{"spry", "Spry", []FeatBuff{{DEX, "3", []string{}}}, []Ability{}, "This creature is nimble and gains a +3 bonus to its DEX"}
+	FeatTumble               Feat            = Feat{"tumble", "Tumble", []FeatBuff{{DEX, "1", []string{}}}, []Ability{}, "This creature gains a +1 bonus to its DEX and can Juke as a bonus action if it has the feat"}
+	FeatJuke                 Feat            = Feat{"juke", "Juke", []FeatBuff{}, []Ability{AbilityJuke}, "This creature can whirl past an opponent, swapping places with it"}
+	FeatAxeProficiency       Feat            = Feat{"axe proficiency", "Axe Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using an axe"}}}, []Ability{}, "This creature is proficient with axes"}
+	FeatSteadyHands          Feat            = Feat{"steady hands", "Bow and Rifle Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a bow or rifle"}}}, []Ability{}, "This creature is skilled with bows and rifles"}
+	FeatCudgelProficiency    Feat            = Feat{"cudgel proficiency", "Cudgel Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a cudgel"}}}, []Ability{}, "This creature is skilled with crushing and bludgeoning weapons"}
+	FeatLongBladeProficiency Feat            = Feat{"long blade proficiency", "Long Blade Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a long blade"}}}, []Ability{}, "This creature is skilled with long thrusting and slashing blades"}
+	FeatSteadyHand           Feat            = Feat{"steady hand", "Pistol Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a pistol"}}}, []Ability{}, "This creature is skilled with pistols of various kinds"}
+	FeatShortBladeExpertise  Feat            = Feat{"short blade expertise", "Short Blade Expertise", []FeatBuff{{TOHIT, "proficiency", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades"}
+	FeatShortBlade           Feat            = Feat{"short blade", "Short Blade Proficiency", []FeatBuff{{TOHIT, "2", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades"}
+	FeatFlurry               Feat            = Feat{}
+	Feats                    map[string]Feat = map[string]Feat{FeatSprint.Id: FeatSprint, FeatSwiftReflexes.Id: FeatSwiftReflexes, FeatSpry.Id: FeatSpry, FeatTumble.Id: FeatTumble, FeatJuke.Id: FeatJuke, FeatAxeProficiency.Id: FeatAxeProficiency, FeatSteadyHands.Id: FeatSteadyHands, FeatCudgelProficiency.Id: FeatCudgelProficiency, FeatLongBladeProficiency.Id: FeatLongBladeProficiency, FeatSteadyHand.Id: FeatSteadyHand, FeatShortBladeExpertise.Id: FeatShortBladeExpertise, FeatFlurry.Id: FeatFlurry, FeatShortBlade.Id: FeatShortBlade}
+)
+
+type Duration string
+
+var AllActions = []struct {
+	Value  Duration
+	TSName string
+}{
+	{Action, "ACTION"},
+	{Reaction, "REACTION"},
+	{ItemInteraction, "ITEM_INTERACTION"},
+	{BonusAction, "BONUS_ACTION"},
+	{FreeAction, "FREE_ACTION"},
+}
+
+const (
+	Action          Duration = "action"
+	Reaction        Duration = "reaction"
+	ItemInteraction Duration = "item_interaction"
+	BonusAction     Duration = "bonus_action"
+	FreeAction      Duration = "free_action"
+)
+
 type Stat string
 
 const (
@@ -26,6 +96,7 @@ const (
 	INT     Stat = "int"
 	WIS     Stat = "wis"
 	CHA     Stat = "cha"
+	TOHIT   Stat = "tohit"
 	IN      Stat = "initiative"
 	STRSave Stat = "strsave"
 	DEXSave Stat = "dexsave"
@@ -59,6 +130,25 @@ var AllStats = []struct {
 	{CHASave, "CHASAVE"},
 }
 
+var AllDamageTypes = []struct {
+	Value  DamageType
+	TSName string
+}{
+	{Acid, "DMGACID"},
+	{Blg, "DMGBLUDGEONING"},
+	{Cold, "DMGCOLD"},
+	{Fire, "DMGFIRE"},
+	{Force, "DMGFORCE"},
+	{Lightning, "DMGLIGHTNING"},
+	{Necrotic, "DMGNECROTIC"},
+	{Piercing, "DMGPIERCING"},
+	{Poison, "DMGPOISON"},
+	{Psychic, "DMGPSYCHIC"},
+	{Radiant, "DMGRADIANT"},
+	{Slashing, "DMGSLASHING"},
+	{Thunder, "DMGTHUNDER"},
+}
+
 type DamageType string
 
 const (
@@ -76,6 +166,15 @@ const (
 	Slashing  DamageType = "dmgslashing"
 	Thunder   DamageType = "dmgthunder"
 )
+
+var AllDmgAffinityLevels = []struct {
+	Value  DmgAffinityLevel
+	TSName string
+}{
+	{AffinityResistant, "RESISTANT"},
+	{AffinityWeak, "WEAK"},
+	{AffinityImmune, "IMMUNE"},
+}
 
 type DmgAffinityLevel string
 
@@ -109,6 +208,7 @@ type Statblock struct {
 	StatOffsets      []StatOffset    `json:"statOffsets"`
 	DamageAffinities []DmgAffinity   `json:"dmgAffinities"`
 	Items            []Weapon        `json:"items"`
+	Feats            []Feat          `json:"feats"`
 }
 
 type WpnProperty string
@@ -134,15 +234,15 @@ type WeaponRange struct {
 	Long   int `json:"long"`
 }
 
-type WpnEffect struct {
-	Effect    string  `json:"effect"`
-	Condition *string `json:"condition"`
-	Reason    *string `json:"reason"`
+type Effect struct {
+	Effect     string   `json:"effect"`
+	Conditions []string `json:"condition"`
+	Reasons    []string `json:"reason"`
 }
 
 type WpnUsageCondition struct {
-	Condition string  `json:"condition"`
-	Reason    *string `json:"reason"`
+	Condition string   `json:"condition"`
+	Reasons   []string `json:"reason"`
 }
 
 type Weapon struct {
@@ -154,7 +254,7 @@ type Weapon struct {
 	Penetration  int                 `json:"penetration"`
 	WpnRange     WeaponRange         `json:"wpnRange"`
 	Conditions   []WpnUsageCondition `json:"conditions"`
-	Effects      []WpnEffect         `json:"effects"`
+	Effects      []Effect            `json:"effects"`
 	StatOffsets  []StatOffset        `json:"statOffsets"`
 	PageId       int                 `json:"pageid"`
 }
@@ -173,13 +273,11 @@ func setItemStats(weapon *Weapon, itemUrl string) error {
 
 		friendlyId, _ := strings.CutPrefix(itemUrl, "/wiki/")
 		pageidResp := qudAction("action=query&titles=" + friendlyId)
-		fmt.Println(pageidResp)
 		var pageResp RestPagesResultJson
 		err = json.Unmarshal([]byte(pageidResp), &pageResp)
 		if err != nil {
 			return fmt.Errorf("Unable to get item pageid: %s", err.Error())
 		}
-		fmt.Println(pageResp.Query.PageMap)
 		for _, pageRes := range pageResp.Query.PageMap {
 			weapon.PageId = pageRes.Pageid
 		}
@@ -218,11 +316,11 @@ func setItemStats(weapon *Weapon, itemUrl string) error {
 }
 
 func ComposeStatblock(doc *goquery.Document) *Statblock {
-	fmt.Println("Before error?")
 	statblock := Statblock{}
 	statblock.Stats = make(map[Stat]string)
 	avSelect := doc.Find(".qud-stats-av")
 	dvSelect := doc.Find(".qud-stats-dv")
+	skillSelect := doc.Find("#collapsible-qud-qud-skills")
 	speedSelect := doc.Find(".qud-attribute-ms")
 	healthSelect := doc.Find(".qud-stats-health")
 	attrSelect := doc.Find(".qud-attributes-wrapper")
@@ -332,6 +430,48 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 					} else {
 						statblock.Items = append(statblock.Items, equipmentItem)
 					}
+				}
+			}
+		}
+	}
+
+	if len(skillSelect.Nodes) > 0 {
+		skills := skillSelect.Find(".qud-skill-entry")
+		for _, node := range skills.Nodes {
+			if node.FirstChild != nil && node.FirstChild.FirstChild != nil {
+				statblock.Feats = append(statblock.Feats, Feats[strings.ToLower(node.FirstChild.FirstChild.Data)])
+			}
+		}
+	}
+
+	for _, feat := range statblock.Feats {
+		for _, buff := range feat.Buffs {
+			if !(len(buff.Conditions) > 0) {
+				stat := statblock.Stats[buff.Stat]
+				if buff.Value == "proficiency" {
+					num, err := strconv.Atoi(stat)
+					if err != nil {
+						continue
+					}
+					lvl := 0.0
+					if strings.Contains(statblock.Stats[Level], "/") {
+						numer, _ := strconv.Atoi(strings.Split(statblock.Stats[Level], "/")[0])
+						denom, _ := strconv.Atoi(strings.Split(statblock.Stats[Level], "/")[1])
+						lvl = float64(numer) / float64(denom)
+					} else {
+						lvlInt, _ := strconv.Atoi(statblock.Stats[Level])
+						lvl = float64(lvlInt)
+					}
+					num += min(int(lvl/(1/3)), 2)
+					statblock.Stats[buff.Stat] = strconv.FormatInt(int64(num), 10)
+				} else {
+					stat, err := strconv.Atoi(statblock.Stats[buff.Stat])
+					if err != nil {
+						continue
+					}
+					buffVal, err := strconv.Atoi(buff.Value)
+					stat += buffVal
+					statblock.Stats[buff.Stat] = strconv.FormatInt(int64(stat), 10)
 				}
 			}
 		}
