@@ -88,6 +88,12 @@ export class AppComponent {
         console.log(page.statblock);
         this.name = page.pageTitle;
         this.loadingPage = false;
+        setTimeout(() => {
+          let iframe = document.getElementsByClassName(
+            "referencePage",
+          )[0] as HTMLIFrameElement;
+          iframe.src = this.iframeUrl;
+        }, 100);
       });
     });
   }

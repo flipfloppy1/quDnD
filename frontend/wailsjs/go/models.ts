@@ -1,18 +1,5 @@
 export namespace main {
 	
-	export enum Screen {
-	    SEARCH = "search",
-	    CHARACTER = "character",
-	    CONCEPTS = "concepts",
-	    CREATURES = "creatures",
-	    ITEMS = "items",
-	    LIQUIDS = "liquids",
-	    LORE = "lore",
-	    MECHANICS = "mechanics",
-	    MUTATIONS = "mutations",
-	    OTHER = "other",
-	    CUSTOM = "custom",
-	}
 	export enum Stat {
 	    AC = "ac",
 	    SPEED = "speed",
@@ -59,6 +46,19 @@ export namespace main {
 	    RESISTANT = "resistant",
 	    WEAK = "weak",
 	    IMMUNE = "immune",
+	}
+	export enum Screen {
+	    SEARCH = "search",
+	    CHARACTER = "character",
+	    CONCEPTS = "concepts",
+	    CREATURES = "creatures",
+	    ITEMS = "items",
+	    LIQUIDS = "liquids",
+	    LORE = "lore",
+	    MECHANICS = "mechanics",
+	    MUTATIONS = "mutations",
+	    OTHER = "other",
+	    CUSTOM = "custom",
 	}
 	export class Effect {
 	    effect: string;
