@@ -322,6 +322,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	dvSelect := doc.Find(".qud-stats-dv")
 	skillSelect := doc.Find("#collapsible-qud-qud-skills")
 	speedSelect := doc.Find(".qud-attribute-ms")
+	quicknessSelect := doc.Find(".qud-attribute-qn")
 	healthSelect := doc.Find(".qud-stats-health")
 	attrSelect := doc.Find(".qud-attributes-wrapper")
 	invSelect := doc.Find(".qud-inventory-item")
@@ -475,6 +476,20 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 				}
 			}
 		}
+	}
+
+	if len(quicknessSelect.Nodes) > 0 {
+		quickStr := quicknessSelect.Nodes[0].NextSibling.FirstChild.Data
+		quickness, _ := strconv.Atoi(quickStr)
+
+		quicknessMul := math.Pow((float64(quickness) / 100.0), 1.5)
+		speed, _ := strconv.Atoi(statblock.Stats[Speed])
+		speed = int(float64(speed) * quicknessMul)
+
+		// Round to nearest 5ft
+		speed = speed - speed%5
+
+		statblock.Stats[Speed] = strconv.FormatInt(int64(speed), 10)
 	}
 
 	return &statblock
