@@ -24,14 +24,16 @@ type Ability struct {
 	Description string   `json:"description"`
 	Conditions  []string `json:"conditions"`
 	Attacks     []Attack `json:"attacks"`
+	Effects     []Effect `json:"effects"`
 }
 
 type Feat struct {
-	Id          string     `json:"id"`
-	Name        string     `json:"name"`
-	Buffs       []FeatBuff `json:"buffs"`
-	Abilities   []Ability  `json:"abilities"`
-	Description string     `json:"description"`
+	Id            string     `json:"id"`
+	Name          string     `json:"name"`
+	Buffs         []FeatBuff `json:"buffs"`
+	Abilities     []Ability  `json:"abilities"`
+	Description   string     `json:"description"`
+	Prerequisites []string   `json:"prereqs"`
 }
 
 type FeatBuff struct {
@@ -41,24 +43,35 @@ type FeatBuff struct {
 }
 
 var (
-	AbilityJuke Ability = Ability{Action, "Whirl past an opponent, swapping places with it", "You use an action to swap places with a creature within 5ft of you that is your size or smaller. You and your allies will not provoke opportunity attacks from the target until your next turn.", []string{"1 action", "target is within 5ft", "target is creature's size or smaller"}, []Attack{}}
+	AbilityJuke     Ability = Ability{Action, "Whirl past an opponent, swapping places with it", "You use an action to swap places with a creature within 5ft of you that is your size or smaller. You and your allies will not provoke opportunity attacks from the target until your next turn.", []string{"1 action", "target is within 5 feet", "target is creature's size or smaller"}, []Attack{}, []Effect{}}
+	AbilityFlurry   Ability = Ability{Action, "Make an attack action with every hand at once, including hands granted by mutation or technology", "Once per encounter, you may expend an action to make an attack using every hand you have. For the purposes of other abilities, these attacks count as discrete attack actions.", []string{"1 action", "target is in melee range", "once per encounter"}, []Attack{}, []Effect{}}
+	AbilityCharge   Ability = Ability{Action, "Perform a melee attack after charging between 10-20ft forward", "Once per encounter, you can charge between 10-20ft towards an enemy of your choosing, making an attack with your primary weapon with +1 to-hit.", []string{"1 action", "target is between 10 and 20 feet", "once per encounter"}, []Attack{}, []Effect{}}
+	AbilityBludgeon Ability = Ability{Action, "Make an attack with a cudgel, dazing an opponent", "When you attack with a cudgel, roll a d4. On a 4, your attack inflicts Dazed on your opponent. If your opponent is already Dazed you instead Stun them for 1 round.", []string{"1 action", "target is in melee range"}, []Attack{}, []Effect{{DAZED, []string{"opponent is not already dazed", "4 on 1d4 to Daze"}, []string{}, DiceRoll{[]string{"1d4"}, 0, StatNone}}, {STUNNED, []string{"opponent is already dazed", "4 on 1d4 to Daze"}, []string{}, DiceRoll{[]string{}, 1, StatNone}}}}
 )
 
 var (
-	FeatSprint               Feat            = Feat{"sprint", "Sprint", []FeatBuff{{Speed, "10", []string{}}}, []Ability{}, "This creature is capable of moving quickly"}
-	FeatSwiftReflexes        Feat            = Feat{"swift reflexes", "Swift Reflexes", []FeatBuff{{AC, "2", []string{"As a reaction to a projectile attack that targets the creature"}}}, []Ability{}, "This creature has a +2 AC bonus when flinching away from projectile attacks"}
-	FeatSpry                 Feat            = Feat{"spry", "Spry", []FeatBuff{{DEX, "3", []string{}}}, []Ability{}, "This creature is nimble and gains a +3 bonus to its DEX"}
-	FeatTumble               Feat            = Feat{"tumble", "Tumble", []FeatBuff{{DEX, "1", []string{}}}, []Ability{}, "This creature gains a +1 bonus to its DEX and can Juke as a bonus action if it has the feat"}
-	FeatJuke                 Feat            = Feat{"juke", "Juke", []FeatBuff{}, []Ability{AbilityJuke}, "This creature can whirl past an opponent, swapping places with it"}
-	FeatAxeProficiency       Feat            = Feat{"axe proficiency", "Axe Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using an axe"}}}, []Ability{}, "This creature is proficient with axes"}
-	FeatSteadyHands          Feat            = Feat{"steady hands", "Bow and Rifle Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a bow or rifle"}}}, []Ability{}, "This creature is skilled with bows and rifles"}
-	FeatCudgelProficiency    Feat            = Feat{"cudgel proficiency", "Cudgel Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a cudgel"}}}, []Ability{}, "This creature is skilled with crushing and bludgeoning weapons"}
-	FeatLongBladeProficiency Feat            = Feat{"long blade proficiency", "Long Blade Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a long blade"}}}, []Ability{}, "This creature is skilled with long thrusting and slashing blades"}
-	FeatSteadyHand           Feat            = Feat{"steady hand", "Pistol Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a pistol"}}}, []Ability{}, "This creature is skilled with pistols of various kinds"}
-	FeatShortBladeExpertise  Feat            = Feat{"short blade expertise", "Short Blade Expertise", []FeatBuff{{TOHIT, "proficiency", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades"}
-	FeatShortBlade           Feat            = Feat{"short blade", "Short Blade Proficiency", []FeatBuff{{TOHIT, "2", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades"}
-	FeatFlurry               Feat            = Feat{}
-	Feats                    map[string]Feat = map[string]Feat{FeatSprint.Id: FeatSprint, FeatSwiftReflexes.Id: FeatSwiftReflexes, FeatSpry.Id: FeatSpry, FeatTumble.Id: FeatTumble, FeatJuke.Id: FeatJuke, FeatAxeProficiency.Id: FeatAxeProficiency, FeatSteadyHands.Id: FeatSteadyHands, FeatCudgelProficiency.Id: FeatCudgelProficiency, FeatLongBladeProficiency.Id: FeatLongBladeProficiency, FeatSteadyHand.Id: FeatSteadyHand, FeatShortBladeExpertise.Id: FeatShortBladeExpertise, FeatFlurry.Id: FeatFlurry, FeatShortBlade.Id: FeatShortBlade}
+	FeatSprint                 Feat            = Feat{"sprint", "Sprint", []FeatBuff{{Speed, "10", []string{}}}, []Ability{}, "This creature is capable of moving quickly", []string{}}
+	FeatSwiftReflexes          Feat            = Feat{"swift reflexes", "Swift Reflexes", []FeatBuff{{AC, "2", []string{"As a reaction to a projectile attack that targets the creature"}}}, []Ability{}, "This creature has a +2 AC bonus when flinching away from projectile attacks", []string{}}
+	FeatSpry                   Feat            = Feat{"spry", "Spry", []FeatBuff{{DEX, "3", []string{}}}, []Ability{}, "This creature is nimble and gains a +3 bonus to its DEX", []string{}}
+	FeatTumble                 Feat            = Feat{"tumble", "Tumble", []FeatBuff{{DEX, "1", []string{}}}, []Ability{}, "This creature gains a +1 bonus to its DEX and can Juke as a bonus action if it has the feat", []string{}}
+	FeatJuke                   Feat            = Feat{"juke", "Juke", []FeatBuff{}, []Ability{AbilityJuke}, "This creature can whirl past an opponent, swapping places with it", []string{}}
+	FeatAxeProficiency         Feat            = Feat{"axe proficiency", "Axe Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using an axe"}}}, []Ability{}, "This creature is proficient with axes", []string{}}
+	FeatSteadyHands            Feat            = Feat{"steady hands", "Bow and Rifle Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a bow or rifle"}}}, []Ability{}, "This creature is skilled with bows and rifles", []string{}}
+	FeatCudgelProficiency      Feat            = Feat{"cudgel proficiency", "Cudgel Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a cudgel"}}}, []Ability{}, "This creature is skilled with crushing and bludgeoning weapons", []string{}}
+	FeatLongBladeProficiency   Feat            = Feat{"long blade proficiency", "Long Blade Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a long blade"}}}, []Ability{}, "This creature is skilled with long thrusting and slashing blades", []string{}}
+	FeatSteadyHand             Feat            = Feat{"steady hand", "Pistol Proficiency", []FeatBuff{{TOHIT, "proficiency", []string{"using a pistol"}}}, []Ability{}, "This creature is skilled with pistols of various kinds", []string{}}
+	FeatShortBladeExpertise    Feat            = Feat{"short blade expertise", "Short Blade Expertise", []FeatBuff{{TOHIT, "proficiency", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades", []string{}}
+	FeatShortBlade             Feat            = Feat{"short blade", "Short Blade Proficiency", []FeatBuff{{TOHIT, "2", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades", []string{}}
+	FeatFlurry                 Feat            = Feat{"flurry", "Flurry", []FeatBuff{}, []Ability{AbilityFlurry}, "This creature can make an attack with every hand at once", []string{}}
+	FeatMultiweaponFighting    Feat            = Feat{"multiweapon fighting", "Multiweapon Fighting", []FeatBuff{}, []Ability{}, "This creature can fight with multiple weapons at a time", []string{}}
+	FeatMultiweaponProficiency Feat            = Feat{"multiweapon proficiency", "Multiweapon Proficiency I", []FeatBuff{}, []Ability{}, "This creature has a chance to strike with its offhand weapons", []string{"multiweapon fighting"}}
+	FeatMultiweaponExpertise   Feat            = Feat{"multiweapon expertise", "Multiweapon Proficiency II", []FeatBuff{}, []Ability{}, "This creature has an improved chance to strike with its offhand weapons", []string{"multiweapon proficiency", "multiweapon fighting"}}
+	FeatMultiweaponMastery     Feat            = Feat{"multiweapon mastery", "Multiweapon Proficiency III", []FeatBuff{}, []Ability{}, "This creature has a high chance to strike with its offhand weapons", []string{"multiweapon proficiency", "multiweapon expertise", "multiweapon fighting"}}
+	FeatTactics                Feat            = Feat{"tactics", "Tactics", []FeatBuff{}, []Ability{}, "This creature understands basic battle tactics", []string{}}
+	FeatCudgel                 Feat            = Feat{"cudgel", "Cudgel Use", []FeatBuff{}, []Ability{}, "This creature can use crushing and bludgeoning weapons", []string{}}
+	FeatBludgeon               Feat            = Feat{"bludgeon", "Bludgeon", []FeatBuff{}, []Ability{}, "This creature can daze opponents while using a cudgel weapon", []string{"cudgel"}}
+	FeatCharge                 Feat            = Feat{"charge", "Charge", []FeatBuff{{TOHIT, "1", []string{"during a charge"}}}, []Ability{AbilityCharge}, "This creature can charge forward to attack an enemy", []string{"tactics"}}
+	Feats                      map[string]Feat = map[string]Feat{FeatSprint.Id: FeatSprint, FeatSwiftReflexes.Id: FeatSwiftReflexes, FeatSpry.Id: FeatSpry, FeatTumble.Id: FeatTumble, FeatJuke.Id: FeatJuke, FeatAxeProficiency.Id: FeatAxeProficiency, FeatSteadyHands.Id: FeatSteadyHands, FeatCudgelProficiency.Id: FeatCudgelProficiency, FeatLongBladeProficiency.Id: FeatLongBladeProficiency, FeatSteadyHand.Id: FeatSteadyHand, FeatShortBladeExpertise.Id: FeatShortBladeExpertise, FeatFlurry.Id: FeatFlurry, FeatShortBlade.Id: FeatShortBlade, FeatMultiweaponProficiency.Id: FeatMultiweaponProficiency, FeatMultiweaponExpertise.Id: FeatMultiweaponExpertise, FeatMultiweaponMastery.Id: FeatMultiweaponMastery, FeatMultiweaponFighting.Id: FeatMultiweaponFighting, FeatTactics.Id: FeatTactics, FeatCudgel.Id: FeatCudgel, FeatBludgeon.Id: FeatBludgeon, FeatCharge.Id: FeatCharge}
 )
 
 type Duration string
@@ -85,25 +98,32 @@ const (
 type Stat string
 
 const (
-	AC      Stat = "ac"
-	Speed   Stat = "speed"
-	Level   Stat = "level"
-	PB      Stat = "proficiency"
-	HP      Stat = "hp"
-	STR     Stat = "str"
-	DEX     Stat = "dex"
-	CON     Stat = "con"
-	INT     Stat = "int"
-	WIS     Stat = "wis"
-	CHA     Stat = "cha"
-	TOHIT   Stat = "tohit"
-	IN      Stat = "initiative"
-	STRSave Stat = "strsave"
-	DEXSave Stat = "dexsave"
-	CONSave Stat = "consave"
-	INTSave Stat = "intsave"
-	WISSave Stat = "wissave"
-	CHASave Stat = "chasave"
+	StatNone  Stat = "none"
+	AC        Stat = "ac"
+	Speed     Stat = "speed"
+	Level     Stat = "level"
+	PB        Stat = "proficiency"
+	HP        Stat = "hp"
+	STR       Stat = "str"
+	DEX       Stat = "dex"
+	CON       Stat = "con"
+	INT       Stat = "int"
+	WIS       Stat = "wis"
+	CHA       Stat = "cha"
+	STR_BONUS Stat = "strBonus"
+	DEX_BONUS Stat = "dexBonus"
+	CON_BONUS Stat = "conBonus"
+	INT_BONUS Stat = "intBonus"
+	WIS_BONUS Stat = "wisBonus"
+	CHA_BONUS Stat = "chaBonus"
+	TOHIT     Stat = "tohit"
+	IN        Stat = "initiative"
+	STRSave   Stat = "strsave"
+	DEXSave   Stat = "dexsave"
+	CONSave   Stat = "consave"
+	INTSave   Stat = "intsave"
+	WISSave   Stat = "wissave"
+	CHASave   Stat = "chasave"
 )
 
 var AllStats = []struct {
@@ -192,8 +212,9 @@ type DmgAffinity struct {
 }
 
 type DiceRoll struct {
-	Dice   []string `json:"dice"`
-	Offset int      `json:"offset"`
+	Dice      []string `json:"dice"`
+	Offset    int      `json:"offset"`
+	StatBonus Stat     `json:"statBonus"`
 }
 
 type StatOffset struct {
@@ -234,10 +255,18 @@ type WeaponRange struct {
 	Long   int `json:"long"`
 }
 
+type EffectType string
+
+const (
+	DAZED   EffectType = "Dazed"
+	STUNNED EffectType = "Stunned"
+)
+
 type Effect struct {
-	Effect     string   `json:"effect"`
-	Conditions []string `json:"condition"`
-	Reasons    []string `json:"reason"`
+	Effect     EffectType `json:"effect"`
+	Conditions []string   `json:"conditions"`
+	Reasons    []string   `json:"reasons"`
+	Rounds     DiceRoll
 }
 
 type WpnUsageCondition struct {
@@ -486,7 +515,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 		speed, _ := strconv.Atoi(statblock.Stats[Speed])
 		speed = int(float64(speed) * quicknessMul)
 
-		// Round to nearest 5ft
+		// Round down to the nearest 5ft
 		speed = speed - speed%5
 
 		statblock.Stats[Speed] = strconv.FormatInt(int64(speed), 10)
