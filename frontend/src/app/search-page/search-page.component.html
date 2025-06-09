@@ -15,6 +15,7 @@
     </button>
 </mat-form-field>
 <div class="searchResults" *ngIf="!searching">
+    <p class="noResults" *ngIf="noResults">No results.</p>
     <div class="searchResult" *ngFor="let result of results">
         <h3 (click)="changeToPage(result.id)" class="searchLink">
             {{ result.title }}

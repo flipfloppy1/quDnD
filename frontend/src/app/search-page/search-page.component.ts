@@ -24,6 +24,7 @@ import { main } from "../../../wailsjs/go/models";
 })
 export class SearchPageComponent {
   searching: boolean = false;
+  noResults: boolean = false;
   searchText: string = "";
   results: main.RestPageSearchResults[] = [];
   changePage = output<number>({ alias: "search" });
@@ -36,6 +37,7 @@ export class SearchPageComponent {
     this.searching = true;
     app.SearchForPage(this.searchText).then((result) => {
       this.results = result.pages;
+      this.noResults = !this.results.length;
       this.searching = false;
     });
   }
