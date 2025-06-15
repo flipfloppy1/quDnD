@@ -434,7 +434,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 			statblock.Stats[Level] = strconv.Itoa(int(lvl))
 		}
 
-		statblock.Stats[HP] = strconv.Itoa(int(math.Ceil(float64(qCon) / 2.0 * float64(qLvl))))
+		statblock.Stats[HP] = strconv.Itoa(int(math.Ceil(float64(qCon)/2.0+float64(qLvl)*float64(qLvl))) / 2)
 	}
 
 	if len(invSelect.Nodes) > 0 {
