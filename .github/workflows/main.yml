@@ -50,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-build
-          path: build/bin/quDnD*
+          path: ${{ github.workspace }}/bin/quDnD*
