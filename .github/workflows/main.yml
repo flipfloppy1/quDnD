@@ -41,7 +41,8 @@ jobs:
       - run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
               sudo apt-get update
-              sudo apt-get install -y libwebkit-dev
+              sudo apt install -y libwebkitgtk-6.0-4
+              sudo apt install -y libwebkitgtk-6.0-dev
           fi
         shell: bash
       - name: Build quDnD
