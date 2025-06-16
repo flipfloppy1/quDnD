@@ -48,10 +48,9 @@ jobs:
         shell: bash
       - name: Build quDnD
         run: cd ${{ github.workspace }} && wails build
-      - run: ls -R ${{ github.workspace }}/build
         shell: bash
       - name: Upload build
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-build
-          path: ${{ github.workspace }}/build/bin/quDnD*
+          path: ${{ github.workspace }}/src/bin/quDnD*
