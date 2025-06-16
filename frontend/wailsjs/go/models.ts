@@ -162,28 +162,6 @@ export namespace pageUtils {
 
 export namespace statblock {
 	
-	export enum Duration {
-	    ACTION = "action",
-	    REACTION = "reaction",
-	    ITEM_INTERACTION = "item_interaction",
-	    BONUS_ACTION = "bonus_action",
-	    FREE_ACTION = "free_action",
-	}
-	export enum DamageType {
-	    DMGACID = "dmgacid",
-	    DMGBLUDGEONING = "dmgbludgeoning",
-	    DMGCOLD = "dmgcold",
-	    DMGFIRE = "dmgfire",
-	    DMGFORCE = "dmgforce",
-	    DMGLIGHTNING = "dmglightning",
-	    DMGNECROTIC = "dmgnecrotic",
-	    DMGPIERCING = "dmgpiercing",
-	    DMGPOISON = "dmgpoison",
-	    DMGPSYCHIC = "dmgpsychic",
-	    DMGRADIANT = "dmgradiant",
-	    DMGSLASHING = "dmgslashing",
-	    DMGTHUNDER = "dmgthunder",
-	}
 	export enum DmgAffinityLevel {
 	    RESISTANT = "resistant",
 	    WEAK = "weak",
@@ -208,6 +186,28 @@ export namespace statblock {
 	    INTSAVE = "intsave",
 	    WISSAVE = "wissave",
 	    CHASAVE = "chasave",
+	}
+	export enum Duration {
+	    ACTION = "action",
+	    REACTION = "reaction",
+	    ITEM_INTERACTION = "item_interaction",
+	    BONUS_ACTION = "bonus_action",
+	    FREE_ACTION = "free_action",
+	}
+	export enum DamageType {
+	    DMGACID = "dmgacid",
+	    DMGBLUDGEONING = "dmgbludgeoning",
+	    DMGCOLD = "dmgcold",
+	    DMGFIRE = "dmgfire",
+	    DMGFORCE = "dmgforce",
+	    DMGLIGHTNING = "dmglightning",
+	    DMGNECROTIC = "dmgnecrotic",
+	    DMGPIERCING = "dmgpiercing",
+	    DMGPOISON = "dmgpoison",
+	    DMGPSYCHIC = "dmgpsychic",
+	    DMGRADIANT = "dmgradiant",
+	    DMGSLASHING = "dmgslashing",
+	    DMGTHUNDER = "dmgthunder",
 	}
 	export class Effect {
 	    effect: string;

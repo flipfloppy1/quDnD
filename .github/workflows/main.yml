@@ -49,8 +49,18 @@ jobs:
       - name: Build quDnD
         run: cd ${{ github.workspace }} && wails build
         shell: bash
-      - name: Upload build
+      - name: Upload Linux build
+        uses: actions/upload-artifact@v4
+        with:
+          name: quDnD-linux
+          path: ${{ github.workspace }}/build/bin/quDnD*
+      - name: Upload MacOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: quDnD-macos
+          path: ${{ github.workspace }}/build/darwin/quDnD*
+      - name: Upload Windows build
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-build
-          path: ${{ github.workspace }}/src/bin/quDnD*
+          path: ${{ github.workspace }}/build/windows/quDnD*
