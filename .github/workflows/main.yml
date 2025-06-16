@@ -29,11 +29,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Build wails
-        uses: dAppServer/wails-build-action@main
-        id: build
+      - name: Setup go
+        uses: actions/setup-go@v5
         with:
-          build-name: ${{ matrix.build.name }}
-          build-platform: ${{ matrix.build.platform }}
-          package: false
-          go-version: "1.23"
+          go-version: ">=1.23"
+      - name: Install npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: "latest"
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - name: Build quDnD
+        run: wails build
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: quDnD-build
+          path: build/bin/quDnD*
