@@ -1,6 +1,8 @@
-package main
+package pageUtils
 
-import "github.com/PuerkitoBio/goquery"
+import (
+	"github.com/PuerkitoBio/goquery"
+)
 
 type Screen string
 
@@ -33,15 +35,6 @@ var AllScreens = []struct {
 	{Mutations, "MUTATIONS"},
 	{Other, "OTHER"},
 	{Custom, "CUSTOM"},
-}
-
-type PageInfo struct {
-	PageType    Screen     `json:"pageType"`
-	PageTitle   string     `json:"pageTitle"`
-	ImgLink     *string    `json:"imgSrc"`
-	Description *string    `json:"description"`
-	Statblock   *Statblock `json:"statblock"`
-	PageId      int        `json:"pageid"`
 }
 
 func GetDescription(doc *goquery.Document) *string {

@@ -1,4 +1,4 @@
-package main
+package pageUtils
 
 import (
 	"context"
@@ -60,7 +60,7 @@ type RestPagesResultJson struct {
 	} `json:"query"`
 }
 
-func qudRest(endpoint string) string {
+func QudRest(endpoint string) string {
 	resp, err := http.Get("https://wiki.cavesofqud.com/rest.php/v1" + endpoint)
 	if err != nil {
 		return "null"
@@ -73,7 +73,7 @@ func qudRest(endpoint string) string {
 	return buf.String()
 }
 
-func qudAction(params string) string {
+func QudAction(params string) string {
 	resp, err := http.Get("https://wiki.cavesofqud.com/api.php?format=json&" + params)
 	if err != nil {
 		return "null"
@@ -86,9 +86,9 @@ func qudAction(params string) string {
 	return buf.String()
 }
 
-func getCategory(category string) []int {
+func GetCategory(category string) []int {
 	var resp CategoryMembersJson
-	json.Unmarshal([]byte(qudAction("action=query&list=categorymembers&cmtitle="+category+"&cmlimit=max")), &resp)
+	json.Unmarshal([]byte(QudAction("action=query&list=categorymembers&cmtitle="+category+"&cmlimit=max")), &resp)
 	members := []int{}
 	i := 0
 	for {
@@ -97,7 +97,7 @@ func getCategory(category string) []int {
 		}
 		member := resp.Query.Categorymembers[i]
 		if member.Ns == 14 {
-			members = append(members, getCategory(member.Title)...)
+			members = append(members, GetCategory(member.Title)...)
 		} else if member.Ns == 0 {
 			members = append(members, member.Pageid)
 		}
@@ -128,14 +128,14 @@ func (c *Categories) LoadCategories() CategoryMembers {
 	f, err := os.OpenFile(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"), os.O_RDWR, os.FileMode(0777))
 	if err != nil {
 		categoryMap = make(map[string][]int)
-		categoryMap["liquids"] = getCategory("Category:Liquids")
-		categoryMap["creatures"] = getCategory("Category:Creatures")
-		categoryMap["items"] = getCategory("Category:Items")
-		categoryMap["character"] = getCategory("Category:Character")
-		categoryMap["concepts"] = getCategory("Category:Concepts")
-		categoryMap["world"] = getCategory("Category:World")
-		categoryMap["mechanics"] = getCategory("Category:Mechanics")
-		categoryMap["mutations"] = getCategory("Category:Mutations")
+		categoryMap["liquids"] = GetCategory("Category:Liquids")
+		categoryMap["creatures"] = GetCategory("Category:Creatures")
+		categoryMap["items"] = GetCategory("Category:Items")
+		categoryMap["character"] = GetCategory("Category:Character")
+		categoryMap["concepts"] = GetCategory("Category:Concepts")
+		categoryMap["world"] = GetCategory("Category:World")
+		categoryMap["mechanics"] = GetCategory("Category:Mechanics")
+		categoryMap["mutations"] = GetCategory("Category:Mutations")
 
 		f, err = os.Create(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"))
 		if err == nil {
@@ -184,14 +184,14 @@ func (c *Categories) LoadCategories() CategoryMembers {
 }
 
 func (c *Categories) GetScreen(pageid int) Screen {
-	category := getPageCategory(pageid)
+	category := GetPageCategory(pageid)
 	if category == "none" {
 		return Other
 	} else {
 		return Screen(category)
 	}
 }
-func getPageCategory(pageid int) string {
+func GetPageCategory(pageid int) string {
 	for cat, ids := range categoryMap {
 		if slices.Contains(ids, pageid) {
 			return cat

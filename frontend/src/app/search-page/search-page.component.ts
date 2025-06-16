@@ -6,7 +6,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import * as app from "../../../wailsjs/go/main/App";
-import { main } from "../../../wailsjs/go/models";
+import { pageUtils } from "../../../wailsjs/go/models";
 
 @Component({
   selector: "app-search-page",
@@ -26,7 +26,7 @@ export class SearchPageComponent {
   searching: boolean = false;
   noResults: boolean = false;
   searchText: string = "";
-  results: main.RestPageSearchResults[] = [];
+  results: pageUtils.RestPageSearchResults[] = [];
   changePage = output<number>({ alias: "search" });
 
   changeToPage(pageid: number) {

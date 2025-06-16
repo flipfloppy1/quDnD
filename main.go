@@ -3,6 +3,9 @@ package main
 import (
 	"embed"
 
+	"flipfloppy/quDnD/src/pageUtils"
+	"flipfloppy/quDnD/src/statblock"
+
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -27,8 +30,8 @@ var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
-	app := NewApp()
-	categories := &Categories{}
+	appInst := NewApp()
+	categories := &pageUtils.Categories{}
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "quDnD",
@@ -38,17 +41,17 @@ func main() {
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 15, G: 59, B: 58, A: 1},
-		OnStartup:        app.startup,
+		OnStartup:        appInst.startup,
 		Bind: []any{
-			app,
+			appInst,
 			categories,
 		},
 		EnumBind: []any{
-			AllScreens,
-			AllStats,
-			AllActions,
-			AllDamageTypes,
-			AllDmgAffinityLevels,
+			pageUtils.AllScreens,
+			statblock.AllStats,
+			statblock.AllActions,
+			statblock.AllDamageTypes,
+			statblock.AllDmgAffinityLevels,
 		},
 		Mac: &mac.Options{
 			WebviewIsTransparent: true,

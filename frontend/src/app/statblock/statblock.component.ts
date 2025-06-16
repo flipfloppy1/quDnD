@@ -2,7 +2,7 @@ import { Component, input, signal } from "@angular/core";
 import { KeyValuePipe, CommonModule } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { main } from "../../../wailsjs/go/models";
+import { statblock } from "../../../wailsjs/go/models";
 
 @Component({
   selector: "app-statblock",
@@ -11,7 +11,7 @@ import { main } from "../../../wailsjs/go/models";
   styleUrl: "./statblock.component.css",
 })
 export class StatblockComponent {
-  statblock = input(new main.Statblock());
+  statblock = input(new statblock.Statblock());
   itemClick = signal<number>;
 
   hasDetailedStats(): boolean {

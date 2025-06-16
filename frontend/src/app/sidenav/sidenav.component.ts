@@ -2,7 +2,7 @@ import { Component, input, output, EventEmitter, model } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
-import { main } from "../../../wailsjs/go/models";
+import { pageUtils } from "../../../wailsjs/go/models";
 
 @Component({
   selector: "app-sidenav",
@@ -12,22 +12,22 @@ import { main } from "../../../wailsjs/go/models";
 })
 export class SidenavComponent {
   categories = [
-    main.Screen.SEARCH,
-    main.Screen.CHARACTER,
-    main.Screen.CONCEPTS,
-    main.Screen.CREATURES,
-    main.Screen.CUSTOM,
-    main.Screen.ITEMS,
-    main.Screen.LIQUIDS,
-    main.Screen.LORE,
-    main.Screen.MECHANICS,
-    main.Screen.MUTATIONS,
-    main.Screen.OTHER,
+    pageUtils.Screen.SEARCH,
+    pageUtils.Screen.CHARACTER,
+    pageUtils.Screen.CONCEPTS,
+    pageUtils.Screen.CREATURES,
+    pageUtils.Screen.CUSTOM,
+    pageUtils.Screen.ITEMS,
+    pageUtils.Screen.LIQUIDS,
+    pageUtils.Screen.LORE,
+    pageUtils.Screen.MECHANICS,
+    pageUtils.Screen.MUTATIONS,
+    pageUtils.Screen.OTHER,
   ];
   change = output<void>();
-  selectedScreen = model(main.Screen.SEARCH);
+  selectedScreen = model(pageUtils.Screen.SEARCH);
 
-  getScreenName(screen: main.Screen): string {
+  getScreenName(screen: pageUtils.Screen): string {
     return screen[0].toUpperCase() + screen.slice(1);
   }
 
@@ -35,7 +35,7 @@ export class SidenavComponent {
     this.change.emit();
   }
 
-  selectScreen(screen: main.Screen) {
+  selectScreen(screen: pageUtils.Screen) {
     this.selectedScreen.set(screen);
     this.change.emit();
   }

@@ -11,8 +11,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatExpansionModule } from "@angular/material/expansion";
-import { main } from "../../wailsjs/go/models";
-import * as cat from "../../wailsjs/go/main/Categories";
+import { pageUtils, main, statblock } from "../../wailsjs/go/models";
+import * as cat from "../../wailsjs/go/pageUtils/Categories";
 import * as app from "../../wailsjs/go/main/App";
 
 interface SearchPage {
@@ -45,10 +45,10 @@ export class AppComponent {
   title: string = "quDnD";
   name: string = "";
   iframeUrl: string = "";
-  category: main.Screen = main.Screen.SEARCH;
+  category: pageUtils.Screen = pageUtils.Screen.SEARCH;
   navOpened: boolean = true;
-  openedPages: Map<main.Screen, main.PageInfo> = new Map();
-  currPage: main.PageInfo | SearchPage | main.Screen = { query: "" };
+  openedPages: Map<pageUtils.Screen, main.PageInfo> = new Map();
+  currPage: main.PageInfo | SearchPage | pageUtils.Screen = { query: "" };
   loadingPage: boolean = false;
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class AppComponent {
     return this.category === "search";
   }
 
-  getScreenName(screen: main.Screen): string {
+  getScreenName(screen: pageUtils.Screen): string {
     return screen[0].toUpperCase() + screen.slice(1);
   }
 
@@ -125,7 +125,7 @@ export class AppComponent {
     return undefined;
   }
 
-  getStatblock(): main.Statblock {
+  getStatblock(): statblock.Statblock {
     if (typeof this.currPage === "object") {
       let currPage = this.currPage as main.PageInfo;
       if (currPage.statblock) {
@@ -133,7 +133,7 @@ export class AppComponent {
       }
     }
 
-    return new main.Statblock();
+    return new statblock.Statblock();
   }
 
   getIframeUrl(): SafeResourceUrl {
