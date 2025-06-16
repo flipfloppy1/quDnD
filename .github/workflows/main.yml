@@ -62,6 +62,8 @@ jobs:
         with:
           name: quDnD-build
           path: ${{ github.workspace }}/build/windows/quDnD*
+      - run: ls -R ${{ github.workspace }}/build/
+        shell: bash
       - run: ls -R ${{ github.workspace }}/build/darwin/
         shell: bash
       - run: ls -R ${{ github.workspace }}/build/windows/
