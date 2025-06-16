@@ -46,7 +46,6 @@ jobs:
         shell: bash
       - name: Build quDnD
         run: cd ${{ github.workspace }} && wails build
-        shell: bash
       - name: Upload Linux build
         uses: actions/upload-artifact@v4
         with:
@@ -56,15 +55,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-macos
-          path: ${{ github.workspace }}/build/darwin/quDnD*
+          path: ${{ github.workspace }}/build/bin/flipfloppy/quDnD.app
       - name: Upload Windows build
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-build
-          path: ${{ github.workspace }}/build/windows/quDnD*
-      - run: ls -R ${{ github.workspace }}/build/
-        shell: bash
-      - run: ls -R ${{ github.workspace }}/build/darwin/
-        shell: bash
-      - run: ls -R ${{ github.workspace }}/build/windows/
-        shell: bash
+          path: ${{ github.workspace }}/build/bin/quDnD*
