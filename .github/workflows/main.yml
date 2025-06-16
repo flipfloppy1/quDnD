@@ -2,10 +2,7 @@
 
 name: Wails build
 
-on:
-  push:
-    tags:
-      - "*"
+on: push
 
 env:
   # Necessary for most environments as build failure can occur due to OOM issues
@@ -33,7 +30,7 @@ jobs:
         with:
           submodules: recursive
       - name: Build wails
-        uses: dAppServer/wails-build-action@v2.2
+        uses: dAppServer/wails-build-action@main
         id: build
         with:
           build-name: ${{ matrix.build.name }}
