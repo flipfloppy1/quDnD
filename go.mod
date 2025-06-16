@@ -1,4 +1,4 @@
-module flipfloppy/quDnD
+module quDnD
 
 go 1.23
 

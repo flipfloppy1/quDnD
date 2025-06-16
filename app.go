@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"flipfloppy/quDnD/src/pageUtils"
-	"flipfloppy/quDnD/src/statblock"
+	"quDnD/src/pageUtils"
+	"quDnD/src/statblock"
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
