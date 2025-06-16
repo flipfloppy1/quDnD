@@ -40,7 +40,8 @@ jobs:
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-              sudo apt-get install webkit2gtk
+              sudo apt update
+              sudo apt install webkit2gtk
           fi
         shell: bash
       - name: Build quDnD
