@@ -40,8 +40,8 @@ jobs:
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-              sudo apt update
-              sudo apt install -y libwebkit-dev
+              sudo apt-get update
+              sudo apt-get install -y libwebkit-dev
           fi
         shell: bash
       - name: Build quDnD
