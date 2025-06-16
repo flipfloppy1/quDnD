@@ -4,10 +4,10 @@ A stat generator/wiki browser for Caves of Qud that can create equivalent DnD st
 ## Features
 
 ### Creature Statblocks, Equipment and Feats
-![Puma Preview](images/puma_preview_transparent.png)
+![Puma Preview](images/puma_preview.png)
 
 ### Embedded Wiki Page for Reference
-![Lead Slug Preview](images/lead_slug_transparent.png)
+![Lead Slug Preview](images/lead_slug.png)
 
 ## More to do
 * Equipment stats (AC, damage, special effects)
