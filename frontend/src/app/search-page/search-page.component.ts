@@ -18,9 +18,10 @@ import { pageUtils } from "../../../wailsjs/go/models";
     FormsModule,
     MatProgressSpinnerModule,
   ],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  //encapsulation: ViewEncapsulation.ShadowDom,
   templateUrl: "./search-page.component.html",
   styleUrl: "./search-page.component.css",
+  standalone: true,
 })
 export class SearchPageComponent {
   searching: boolean = false;

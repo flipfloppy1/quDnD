@@ -218,7 +218,7 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 						lvlInt, _ := strconv.Atoi(statblock.Stats[Level])
 						lvl = float64(lvlInt)
 					}
-					num += min(int(lvl/(1/3)), 2)
+					num += min(int(lvl/(1.0/3.0)), 2)
 					statblock.Stats[buff.Stat] = strconv.FormatInt(int64(num), 10)
 				} else {
 					stat, err := strconv.Atoi(statblock.Stats[buff.Stat])
