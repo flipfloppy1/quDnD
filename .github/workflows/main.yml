@@ -14,13 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - name: "quDnD"
+          - name: "quDnD-linux"
             platform: "linux/amd64"
             os: "ubuntu-22.04"
-          - name: "quDnD"
+          - name: "quDnD-windows"
             platform: "windows/amd64"
             os: "windows-latest"
-          - name: "quDnD"
+          - name: "quDnD-macos"
             platform: "darwin/universal"
             os: "macos-latest"
     runs-on: ${{ matrix.build.os }}
@@ -49,15 +49,5 @@ jobs:
       - name: Upload Linux build
         uses: actions/upload-artifact@v4
         with:
-          name: quDnD-linux
-          path: ${{ github.workspace }}/build/bin/quDnD
-      - name: Upload MacOS build
-        uses: actions/upload-artifact@v4
-        with:
-          name: quDnD-macos
-          path: ${{ github.workspace }}/build/bin/quDnD.app
-      - name: Upload Windows build
-        uses: actions/upload-artifact@v4
-        with:
-          name: quDnD-windows
-          path: ${{ github.workspace }}/build/bin/quDnD.exe
+          name: ${{ matrix.build.name }}
+          path: ${{ github.workspace }}/build/bin/quDnD*
