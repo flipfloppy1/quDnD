@@ -27,18 +27,18 @@ jobs:
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Cross-platform build
         run: |
-          sudo apt-get update &&
-          sudo apt-get install build-essential libgtk-3-dev libwebkitgtk-6.0-dev libwebkitgtk-6.0-4 libwebkit2gtk-4.0-dev webkit2gtk-4.0 &&
-          cd ${{ github.workspace}} &&
-          wails build -platform darwin/universal &&
-          wails build -platform windows/amd64 &&
-          wails build -platform linux/amd64 &&
+          sudo apt-get update
+          sudo apt-get install build-essential libgtk-3-dev libwebkitgtk-6.0-dev libwebkitgtk-6.0-4 libwebkit2gtk-4.0-dev webkit2gtk-4.0
+          cd ${{ github.workspace}}
+          wails build -platform darwin/universal
+          wails build -platform windows/amd64
+          wails build -platform linux/amd64
         shell: bash
       - name: Upload Linux build
         uses: actions/upload-artifact@v4
         with:
           name: quDnD-linux
-          path: ${{ github.workspace }}/build/bin/quDnD*
+          path: ${{ github.workspace }}/build/bin/quDnD
       - name: Upload MacOS build
         uses: actions/upload-artifact@v4
         with:
