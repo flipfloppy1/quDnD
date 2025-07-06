@@ -1,15 +1,15 @@
 {
-	"fixed": {
-		"file_version": "{{.Info.ProductVersion}}"
-	},
-	"info": {
-		"0000": {
-			"ProductVersion": "{{.Info.ProductVersion}}",
-			"CompanyName": "{{.Info.CompanyName}}",
-			"FileDescription": "{{.Info.ProductName}}",
-			"LegalCopyright": "{{.Info.Copyright}}",
-			"ProductName": "{{.Info.ProductName}}",
-			"Comments": "{{.Info.Comments}}"
-		}
-	}
+  "fixed": {
+    "file_version": "1.0.0"
+  },
+  "info": {
+    "0000": {
+      "ProductVersion": "1.0.0",
+      "CompanyName": "flipfloppy",
+      "FileDescription": "quDnD",
+      "LegalCopyright": "flipfloppy 2025 - MIT License",
+      "ProductName": "quDnD",
+      "Comments": "A statblock generator and wiki browser for Caves of Qud x DnD"
+    }
+  }
 }

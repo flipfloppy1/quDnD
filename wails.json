@@ -1,6 +1,6 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "flipfloppy/quDnD",
+  "name": "quDnD",
   "outputfilename": "quDnD",
   "build:dir": "build",
   "frontend:install": "npm install",
