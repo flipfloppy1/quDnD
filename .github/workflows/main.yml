@@ -21,7 +21,7 @@ jobs:
             platform: "windows/amd64"
             os: "windows-latest"
           - name: "quDnD-macos"
-            platform: "darwin/universal"
+            platform: "darwin/arm64"
             os: "macos-latest"
     runs-on: ${{ matrix.build.os }}
     steps:
@@ -45,7 +45,7 @@ jobs:
               fi
         shell: bash
       - name: Build quDnD
-        run: cd ${{ github.workspace }} && wails build
+        run: cd ${{ github.workspace }} && wails build -platform ${{ matrix.build.platform }}
       - name: Upload build
         uses: actions/upload-artifact@v4
         with:

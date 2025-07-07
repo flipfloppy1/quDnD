@@ -162,11 +162,6 @@ export namespace pageUtils {
 
 export namespace statblock {
 	
-	export enum DmgAffinityLevel {
-	    RESISTANT = "resistant",
-	    WEAK = "weak",
-	    IMMUNE = "immune",
-	}
 	export enum Stat {
 	    AC = "ac",
 	    SPEED = "speed",
@@ -208,6 +203,11 @@ export namespace statblock {
 	    DMGRADIANT = "dmgradiant",
 	    DMGSLASHING = "dmgslashing",
 	    DMGTHUNDER = "dmgthunder",
+	}
+	export enum DmgAffinityLevel {
+	    RESISTANT = "resistant",
+	    WEAK = "weak",
+	    IMMUNE = "immune",
 	}
 	export class Effect {
 	    effect: string;
