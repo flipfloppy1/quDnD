@@ -162,26 +162,6 @@ export namespace pageUtils {
 
 export namespace statblock {
 	
-	export enum DamageType {
-	    DMGACID = "dmgacid",
-	    DMGBLUDGEONING = "dmgbludgeoning",
-	    DMGCOLD = "dmgcold",
-	    DMGFIRE = "dmgfire",
-	    DMGFORCE = "dmgforce",
-	    DMGLIGHTNING = "dmglightning",
-	    DMGNECROTIC = "dmgnecrotic",
-	    DMGPIERCING = "dmgpiercing",
-	    DMGPOISON = "dmgpoison",
-	    DMGPSYCHIC = "dmgpsychic",
-	    DMGRADIANT = "dmgradiant",
-	    DMGSLASHING = "dmgslashing",
-	    DMGTHUNDER = "dmgthunder",
-	}
-	export enum DmgAffinityLevel {
-	    RESISTANT = "resistant",
-	    WEAK = "weak",
-	    IMMUNE = "immune",
-	}
 	export enum Stat {
 	    AC = "ac",
 	    SPEED = "speed",
@@ -208,6 +188,26 @@ export namespace statblock {
 	    ITEM_INTERACTION = "item_interaction",
 	    BONUS_ACTION = "bonus_action",
 	    FREE_ACTION = "free_action",
+	}
+	export enum DamageType {
+	    DMGACID = "dmgacid",
+	    DMGBLUDGEONING = "dmgbludgeoning",
+	    DMGCOLD = "dmgcold",
+	    DMGFIRE = "dmgfire",
+	    DMGFORCE = "dmgforce",
+	    DMGLIGHTNING = "dmglightning",
+	    DMGNECROTIC = "dmgnecrotic",
+	    DMGPIERCING = "dmgpiercing",
+	    DMGPOISON = "dmgpoison",
+	    DMGPSYCHIC = "dmgpsychic",
+	    DMGRADIANT = "dmgradiant",
+	    DMGSLASHING = "dmgslashing",
+	    DMGTHUNDER = "dmgthunder",
+	}
+	export enum DmgAffinityLevel {
+	    RESISTANT = "resistant",
+	    WEAK = "weak",
+	    IMMUNE = "immune",
 	}
 	export class Effect {
 	    effect: string;

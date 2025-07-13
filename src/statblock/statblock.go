@@ -41,28 +41,20 @@ func setItemStats(weapon *Weapon, itemUrl string) error {
 
 		if len(statSelect.Nodes) > 0 {
 			for index, node := range statSelect.Nodes {
-				if index == 0 {
+				switch index {
+				case 0:
 					penetration, err := strconv.Atoi(node.FirstChild.Data)
 					if err != nil {
 						return fmt.Errorf("Unable to parse penetration: %s", err.Error())
 					}
 					weapon.Penetration = penetration
-				} else if index == 1 {
+				case 1:
 					weapon.Dmg.Dice = append(weapon.Dmg.Dice, node.FirstChild.Data)
 				}
 			}
 		} else {
 			return fmt.Errorf("Unable to read item stats for %s", itemUrl)
 		}
-
-		titleSelect := doc.Find(".mw-first-heading")
-
-		if len(titleSelect.Nodes) > 0 {
-			weapon.Name, _ = strings.CutPrefix(titleSelect.Nodes[0].FirstChild.Data, "Data:")
-		} else {
-			return fmt.Errorf("Unable to find item name for %s", itemUrl)
-		}
-
 	} else {
 		return fmt.Errorf(errorFormat, resp.Status)
 	}
@@ -162,29 +154,35 @@ func ComposeStatblock(doc *goquery.Document) *Statblock {
 	}
 
 	if len(invSelect.Nodes) > 0 {
-		invLinkSelect := invSelect.Find(".qud-image-link-image-container")
-		currItems := make([]string, 0)
+		if invLinkSelect := invSelect.Find(".qud-image-link-image-container"); invLinkSelect != nil {
+			if invImgSelect := invLinkSelect.Find(".mw-file-element"); invImgSelect != nil {
+				currItems := make([]string, 0)
 
-		for _, node := range invLinkSelect.Nodes {
-			equipmentItem := Weapon{}
-			for _, attr := range node.FirstChild.FirstChild.Attr {
-				if attr.Key == "src" {
-					equipmentItem.ImageUrl = "https://wiki.cavesofqud.com" + attr.Val
-				}
-			}
-			if slices.Contains(currItems, equipmentItem.ImageUrl) {
-				break
-			} else {
-				currItems = append(currItems, equipmentItem.ImageUrl)
-			}
-			for _, attr := range node.FirstChild.Attr {
-				if attr.Key == "href" {
-					err := setItemStats(&equipmentItem, attr.Val)
+				for _, sibling := range invImgSelect.EachIter() {
+					equipmentItem := Weapon{}
+					equipmentItem.ImageUrl, _ = sibling.Attr("src")
+					equipmentItem.ImageUrl = "https://wiki.cavesofqud.com" + equipmentItem.ImageUrl
+					if slices.Contains(currItems, equipmentItem.ImageUrl) {
+						continue
+					} else {
+						currItems = append(currItems, equipmentItem.ImageUrl)
+					}
+					itemLink, exists := sibling.Parent().Attr("href")
+					if !exists {
+						fmt.Printf("Link for item %s did not exist\n", equipmentItem.ImageUrl)
+						continue
+					}
+					err := setItemStats(&equipmentItem, itemLink)
 					if err != nil {
 						fmt.Println(err.Error())
 						continue
 					} else {
 						statblock.Items = append(statblock.Items, equipmentItem)
+					}
+					if invNameSelect := sibling.ParentsUntil("qud-inv-favilink-wrapper").Find(".qud-image-link"); invNameSelect != nil {
+						invNameSelect = invNameSelect.First().Children().First().Children().First()
+
+						statblock.Items[len(statblock.Items)-1].Name = invNameSelect.AttrOr("title", "item")
 					}
 				}
 			}
