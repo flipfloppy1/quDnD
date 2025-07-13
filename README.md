@@ -16,3 +16,8 @@ A stat generator/wiki browser for Caves of Qud that can create equivalent DnD st
 * Starting gear examples for creatures
 * Ability to tweak stats and create custom pages
 * Ability to save + load those custom pages
+
+------
+
+> [!NOTE]
+> This project is in no way affiliated with Freehold Games or Kitfox Games.
