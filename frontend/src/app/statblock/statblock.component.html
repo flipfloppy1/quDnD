@@ -84,6 +84,7 @@
                 <div
                     class="detailedEquipmentEntry"
                     *ngFor="let item of statblock().items"
+                    (click)="itemClick.emit(item.pageid)"
                 >
                     <p class="itemLabel">
                         <img class="itemImg" [src]="item.imageUrl" />

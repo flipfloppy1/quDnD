@@ -1,0 +1,11 @@
+<div class="tab" [class]="selected() ? 'active-tab' : ''">
+    <div class="tab-title" (click)="selectTab.emit()">
+        <img *ngIf="icon()" [src]="icon()" class="tab-icon" />
+        <span class="tab-text">{{name()}}</span>
+    </div>
+    <button class="tab-close-btn" (click)="closeTab($event)"
+        mat-icon-button
+    >
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

@@ -1,0 +1,45 @@
+:root {
+    --accent-color: rgb(40, 60, 80);
+    --accent-active: rgb(30, 50, 70);
+    --accent-hover: rgb(50, 70, 90);
+    --background-primary: rgb(10, 20, 30);
+}
+
+.tab {
+    background-color: rgb(40, 60, 80);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px;
+}
+
+.tab:hover {
+    background-color: rgb(50, 70, 90);
+}
+
+.active-tab {
+    background-color: rgb(70, 90, 110);
+}
+
+.tab-title {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tab-text {
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+.tab-icon {
+    height: 40px;
+    background: linear-gradient(
+        to bottom left,
+        rgb(10, 20, 30),
+        rgb(30, 50, 70)
+    );
+}

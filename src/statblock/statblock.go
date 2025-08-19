@@ -14,6 +14,20 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type DbPage struct {
+	Page   PageInfo `json:"pageInfo"`
+	Exists bool     `json:"exists"`
+}
+
+type PageInfo struct {
+	PageType    pageUtils.Screen `json:"pageType"`
+	PageTitle   string           `json:"pageTitle"`
+	ImgLink     *string          `json:"imgSrc"`
+	Description *string          `json:"description"`
+	Statblock   *Statblock       `json:"statblock"`
+	PageId      int              `json:"pageid"`
+}
+
 func setItemStats(weapon *Weapon, itemUrl string) error {
 	errorFormat := "Item stats error: %s"
 	resp, err := http.Get("https://wiki.cavesofqud.com" + itemUrl)

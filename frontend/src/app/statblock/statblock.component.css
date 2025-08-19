@@ -130,6 +130,7 @@
     flex-direction: row;
     align-content: center;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .featEntry {

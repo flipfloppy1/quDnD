@@ -1,6 +1,9 @@
 package pageUtils
 
 import (
+	"encoding/json"
+	"strconv"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -86,4 +89,17 @@ func GetPageImg(doc *goquery.Document) *string {
 	}
 
 	return nil
+}
+
+// Returns -1 on error
+func GetPageIdFromFriendly(friendlyId string) int {
+	bodyStr := QudAction("action=query&titles=" + friendlyId)
+	var body RestPagesResultJson
+	json.Unmarshal([]byte(bodyStr), &body)
+	for key, _ := range body.Query.PageMap {
+		pageid, _ := strconv.Atoi(key)
+		return pageid
+	}
+
+	return -1
 }

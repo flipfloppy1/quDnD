@@ -1,4 +1,4 @@
-import { Component, input, signal } from "@angular/core";
+import { Component, input, output, signal } from "@angular/core";
 import { KeyValuePipe, CommonModule } from "@angular/common";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatTooltipModule } from "@angular/material/tooltip";
@@ -12,7 +12,7 @@ import { statblock } from "../../../wailsjs/go/models";
 })
 export class StatblockComponent {
   statblock = input(new statblock.Statblock());
-  itemClick = signal<number>;
+  itemClick = output<number>();
 
   hasDetailedStats(): boolean {
     return (

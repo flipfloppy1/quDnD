@@ -1,0 +1,21 @@
+<div cdkDropList
+    class="tabs"
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)"
+>
+    @for (tab of tabs(); track tab) {
+    <app-tab
+        [name]="tab.name"
+        [id]="tab.id"
+        [icon]="tab.icon"
+        [selected]="selection() === tab.id"
+        (cdkDragStarted)="selection.set(tab.id)"
+        (selectTab)="selection.set(tab.id)"
+        (close)="closeTab(tab.id)"
+        class="tab"
+        cdkDrag
+        cdkDragBoundary=".tabs"
+    >
+    </app-tab>
+    }
+</div>

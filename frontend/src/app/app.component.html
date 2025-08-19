@@ -6,6 +6,7 @@
         ></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
+        <app-tabs #tabsComponent [(tabs)]="tabs" (selectionChange)="goToPage(Number($event))"></app-tabs>
         <div class="pageBox">
             <div class="screenHeader">
                 <div class="pageTitle">
@@ -72,6 +73,7 @@
                             <div class="statblockContainer">
                                 <app-statblock
                                     [statblock]="getStatblock()"
+                                    (itemClick)="goToPage($event)"
                                 ></app-statblock>
                             </div>
                         </mat-expansion-panel>

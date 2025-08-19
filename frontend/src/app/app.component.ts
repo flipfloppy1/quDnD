@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject, ViewChild, ViewChildren } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { SidenavComponent } from "./sidenav/sidenav.component";
@@ -11,9 +11,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatExpansionModule } from "@angular/material/expansion";
-import { pageUtils, main, statblock } from "../../wailsjs/go/models";
+import { TabsComponent, TabData } from "./tabs/tabs.component";
+import { pageUtils, statblock } from "../../wailsjs/go/models";
 import * as cat from "../../wailsjs/go/pageUtils/Categories";
 import * as app from "../../wailsjs/go/main/App";
+import { filter } from "rxjs";
 
 interface SearchPage {
   query: string;
@@ -32,6 +34,7 @@ interface SearchPage {
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    TabsComponent,
     StatblockComponent,
   ],
   templateUrl: "./app.component.html",
@@ -45,10 +48,12 @@ export class AppComponent {
   title: string = "quDnD";
   name: string = "";
   iframeUrl: string = "";
+  tabs: TabData[] = [];
+  isCtrl: boolean = false;
   category: pageUtils.Screen = pageUtils.Screen.SEARCH;
   navOpened: boolean = true;
-  openedPages: Map<pageUtils.Screen, main.PageInfo> = new Map();
-  currPage: main.PageInfo | SearchPage | pageUtils.Screen = { query: "" };
+  openedPages: Map<pageUtils.Screen, statblock.PageInfo> = new Map();
+  currPage: statblock.PageInfo | SearchPage | pageUtils.Screen = { query: "" };
   loadingPage: boolean = false;
 
   ngOnInit() {
@@ -57,7 +62,30 @@ export class AppComponent {
         this.toggleSidenav();
       }
     });
+    document.addEventListener("keyup", (event) => {
+      if (event.ctrlKey) {
+        this.isCtrl = false;
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey) {
+        this.isCtrl = true;
+      }
+    });
     this.frontendInit();
+  }
+
+  @ViewChild("tabsComponent") tabsComponent!: TabsComponent;
+
+  ngAfterViewInit() {
+    document.addEventListener("keypress", (event) => {
+      if (event.key === "T") {
+        if (this.isCtrl) {
+          event.preventDefault();
+          this.tabsComponent.restoreLastTab();
+        }
+      }
+    });
   }
 
   frontendInit() {
@@ -76,50 +104,83 @@ export class AppComponent {
     return typeof this.currPage !== "object";
   }
 
+  Number(input: string): number {
+    return Number(input);
+  }
+
   goToPage(pageid: number) {
     cat.GetScreen(pageid).then((screen) => {
       this.category = screen;
       this.loadingPage = true;
       this.iframeUrl =
         "https://wiki.cavesofqud.com/Special:Redirect/page/" + pageid;
-      app.GeneratePage(pageid).then((page) => {
-        this.openedPages.set(screen, page);
-        this.currPage = page;
-        console.log(page.statblock);
-        this.name = page.pageTitle;
-        this.loadingPage = false;
-        setTimeout(() => {
-          let iframe = document.getElementsByClassName(
-            "referencePage",
-          )[0] as HTMLIFrameElement;
-          iframe.src = this.iframeUrl;
-        }, 100);
+      app.GetCachedPage(pageid).then((page) => {
+        if (page.exists) {
+          this.openedPages.set(screen, page.pageInfo);
+          this.name = page.pageInfo.pageTitle;
+          this.loadingPage = false;
+          this.currPage = page.pageInfo;
+          setTimeout(() => {
+            let iframe = document.getElementsByClassName(
+              "referencePage",
+            )[0] as HTMLIFrameElement;
+            iframe.src = this.iframeUrl;
+            if (
+              !this.tabs.filter((val) => {
+                return val.id === String(pageid);
+              }).length
+            ) {
+              this.tabs.push({
+                id: String(pageid),
+                name: this.name,
+                icon: String(
+                  "https://wiki.cavesofqud.com" + page.pageInfo.imgSrc,
+                ),
+              });
+            }
+          }, 100);
+        } else {
+          app.GeneratePage(pageid).then((page) => {
+            this.openedPages.set(screen, page);
+            this.currPage = page;
+            app.SetCachedPage(page);
+            console.log(page.statblock);
+            this.name = page.pageTitle;
+            this.loadingPage = false;
+            setTimeout(() => {
+              let iframe = document.getElementsByClassName(
+                "referencePage",
+              )[0] as HTMLIFrameElement;
+              iframe.src = this.iframeUrl;
+            }, 100);
+          });
+        }
       });
     });
   }
 
   articleHasDesc(): boolean {
     if (typeof this.currPage === "object")
-      return Boolean((this.currPage as main.PageInfo).description);
+      return Boolean((this.currPage as statblock.PageInfo).description);
     else return false;
   }
 
   articleHasImg(): boolean {
     if (typeof this.currPage === "object")
-      return Boolean((this.currPage as main.PageInfo).imgSrc);
+      return Boolean((this.currPage as statblock.PageInfo).imgSrc);
     else return false;
   }
 
   getDescription(): string {
     if (typeof this.currPage === "object") {
-      return (this.currPage as main.PageInfo).description ?? "";
+      return (this.currPage as statblock.PageInfo).description ?? "";
     }
     return "";
   }
 
-  getPageInfo(): main.PageInfo | undefined {
+  getPageInfo(): statblock.PageInfo | undefined {
     if (typeof this.currPage === "object") {
-      return this.currPage as main.PageInfo;
+      return this.currPage as statblock.PageInfo;
     }
 
     return undefined;
@@ -127,7 +188,7 @@ export class AppComponent {
 
   getStatblock(): statblock.Statblock {
     if (typeof this.currPage === "object") {
-      let currPage = this.currPage as main.PageInfo;
+      let currPage = this.currPage as statblock.PageInfo;
       if (currPage.statblock) {
         return currPage.statblock;
       }
@@ -142,7 +203,7 @@ export class AppComponent {
 
   getImgSrc(): string {
     if (typeof this.currPage === "object") {
-      return (this.currPage as main.PageInfo).imgSrc ?? "";
+      return (this.currPage as statblock.PageInfo).imgSrc ?? "";
     }
     return "";
   }
