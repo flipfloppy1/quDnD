@@ -114,6 +114,7 @@ export class AppComponent {
       this.loadingPage = true;
       this.iframeUrl =
         "https://wiki.cavesofqud.com/Special:Redirect/page/" + pageid;
+      this.tabsComponent.selection.set(String(pageid));
       app.GetCachedPage(pageid).then((page) => {
         if (page.exists) {
           this.openedPages.set(screen, page.pageInfo);
@@ -152,6 +153,17 @@ export class AppComponent {
                 "referencePage",
               )[0] as HTMLIFrameElement;
               iframe.src = this.iframeUrl;
+              if (
+                !this.tabs.filter((val) => {
+                  return val.id === String(pageid);
+                }).length
+              ) {
+                this.tabs.push({
+                  id: String(pageid),
+                  name: this.name,
+                  icon: String("https://wiki.cavesofqud.com" + page.imgSrc),
+                });
+              }
             }, 100);
           });
         }

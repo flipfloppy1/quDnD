@@ -2,6 +2,10 @@
 A stat generator/wiki browser for Caves of Qud that can create equivalent DnD statblocks on the fly.
 
 ## Features
+### New! Tabs!
+Tabs are automatically created when you visit a page.
+When closed, you can bring them back up with Ctrl+Shift+T!
+![Tabs](images/tabs.png)
 
 ### Creature Statblocks, Equipment and Feats
 ![Puma Preview](images/puma_preview_transparent.png)
