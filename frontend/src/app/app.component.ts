@@ -131,12 +131,15 @@ export class AppComponent {
                 return val.id === String(pageid);
               }).length
             ) {
+              let icon = "https://wiki.cavesofqud.com" + page.pageInfo.imgSrc;
+              if (!page.pageInfo.imgSrc) {
+                icon =
+                  "https://wiki.cavesofqud.com/images/d/d4/Torn_sheet_of_graph_paper.png";
+              }
               this.tabs.push({
                 id: String(pageid),
                 name: this.name,
-                icon: String(
-                  "https://wiki.cavesofqud.com" + page.pageInfo.imgSrc,
-                ),
+                icon: icon,
               });
             }
           }, 100);
@@ -158,10 +161,13 @@ export class AppComponent {
                   return val.id === String(pageid);
                 }).length
               ) {
+                let icon = page.imgSrc;
+                icon ??=
+                  "https://wiki.cavesofqud.com/images/d/d4/Torn_sheet_of_graph_paper.png";
                 this.tabs.push({
                   id: String(pageid),
                   name: this.name,
-                  icon: String("https://wiki.cavesofqud.com" + page.imgSrc),
+                  icon: icon,
                 });
               }
             }, 100);
