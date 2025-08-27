@@ -5,11 +5,17 @@
 <mat-form-field>
     <mat-label>Search the wiki</mat-label>
     <input
+        #input
         matInput
         type="search"
         [(ngModel)]="searchText"
         (keydown.enter)="submit()"
+        [matAutocomplete]="auto"
+        (keydown)="fuzzySearch()"
     />
+    <mat-autocomplete (optionSelected)="changeToPage($event.option.value); input.value = ''" #auto="matAutocomplete">
+        <mat-option *ngFor="let result of typeahead" [value]="result.pageid">{{result.title}}</mat-option>
+    </mat-autocomplete>
     <button (click)="submit()" matSuffix mat-icon-button aria-label="Search">
         <mat-icon>search</mat-icon>
     </button>

@@ -65,7 +65,7 @@ func (a *App) GeneratePage(pageid int) statblock.PageInfo {
 	var imgLink *string
 	imgLink = pageUtils.GetPageImg(doc)
 
-	return statblock.PageInfo{pageUtils.Screen(category), resp.Parse.Title, imgLink, description, pageSb, pageid}
+	return statblock.PageInfo{PageType: pageUtils.Screen(category), PageTitle: resp.Parse.Title, ImgLink: imgLink, Description: description, Statblock: pageSb, PageId: pageid}
 }
 
 func (a *App) GetCachedPage(pageid int) statblock.DbPage {

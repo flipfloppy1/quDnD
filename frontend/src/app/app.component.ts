@@ -86,6 +86,34 @@ export class AppComponent {
         }
       }
     });
+    document.addEventListener("keypress", (event) => {
+      if (event.key === "w") {
+        if (this.isCtrl) {
+          event.preventDefault();
+          this.tabsComponent.closeTab(this.tabsComponent.selection());
+        }
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      const shift = event.shiftKey;
+      if ((event.key === "Tab" || event.keyCode === 9) && this.isCtrl) {
+        event.preventDefault();
+        if (shift) {
+          this.tabsComponent.navLeft();
+        } else {
+          this.tabsComponent.navRight();
+        }
+      }
+    });
+  }
+
+  selectionChange(selection: string) {
+    if (selection) {
+      this.goToPage(Number(selection));
+    } else {
+      this.category = pageUtils.Screen.SEARCH;
+      this.currPage = pageUtils.Screen.SEARCH;
+    }
   }
 
   frontendInit() {
@@ -102,10 +130,6 @@ export class AppComponent {
 
   isEmptyPage(): boolean {
     return typeof this.currPage !== "object";
-  }
-
-  Number(input: string): number {
-    return Number(input);
   }
 
   goToPage(pageid: number) {
@@ -161,9 +185,11 @@ export class AppComponent {
                   return val.id === String(pageid);
                 }).length
               ) {
-                let icon = page.imgSrc;
-                icon ??=
-                  "https://wiki.cavesofqud.com/images/d/d4/Torn_sheet_of_graph_paper.png";
+                let icon = "https://wiki.cavesofqud.com" + page.imgSrc;
+                if (!page.imgSrc) {
+                  icon =
+                    "https://wiki.cavesofqud.com/images/d/d4/Torn_sheet_of_graph_paper.png";
+                }
                 this.tabs.push({
                   id: String(pageid),
                   name: this.name,

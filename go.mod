@@ -6,6 +6,7 @@ toolchain go1.24.6
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.2
+	github.com/lithammer/fuzzysearch v1.1.8
 	github.com/wailsapp/wails/v2 v2.10.1
 	golang.org/x/net v0.35.0
 	modernc.org/sqlite v1.38.2

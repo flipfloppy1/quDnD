@@ -6,7 +6,7 @@
         ></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
-        <app-tabs #tabsComponent [(tabs)]="tabs" (selectionChange)="goToPage(Number($event))"></app-tabs>
+        <app-tabs #tabsComponent [(tabs)]="tabs" (selectionChange)="selectionChange($event)"></app-tabs>
         <div class="pageBox">
             <div class="screenHeader">
                 <div class="pageTitle">

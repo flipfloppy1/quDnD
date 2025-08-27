@@ -10,13 +10,15 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+
+	"github.com/lithammer/fuzzysearch/fuzzy"
 )
 
 type Categories struct {
 	ctx context.Context
 }
 
-var categoryMap map[string][]int
+var categoryMap map[string][]PageData
 
 type categoryQueryMember struct {
 	pageid int
@@ -86,10 +88,10 @@ func QudAction(params string) string {
 	return buf.String()
 }
 
-func GetCategory(category string) []int {
+func GetCategory(category string) []PageData {
 	var resp CategoryMembersJson
-	json.Unmarshal([]byte(QudAction("action=query&list=categorymembers&cmtitle="+category+"&cmlimit=max")), &resp)
-	members := []int{}
+	json.Unmarshal([]byte(QudAction("action=query&cmtype=page|subcat&list=categorymembers&cmtitle="+category+"&cmlimit=max")), &resp)
+	members := []PageData{}
 	i := 0
 	for {
 		if len(resp.Query.Categorymembers) == i {
@@ -99,7 +101,7 @@ func GetCategory(category string) []int {
 		if member.Ns == 14 {
 			members = append(members, GetCategory(member.Title)...)
 		} else if member.Ns == 0 {
-			members = append(members, member.Pageid)
+			members = append(members, PageData{Pageid: member.Pageid, Namespace: member.Ns, Title: member.Title})
 		}
 		i++
 	}
@@ -107,14 +109,37 @@ func GetCategory(category string) []int {
 }
 
 type CategoryMembers struct {
-	Liquids   []int `json:"liquids"`
-	Creatures []int `json:"creatures"`
-	Items     []int `json:"items"`
-	Character []int `json:"characters"`
-	Concepts  []int `json:"concepts"`
-	World     []int `json:"world"`
-	Mechanics []int `json:"mechanics"`
-	Mutations []int `json:"mutations"`
+	Liquids   []PageData `json:"liquids"`
+	Creatures []PageData `json:"creatures"`
+	Items     []PageData `json:"items"`
+	Character []PageData `json:"characters"`
+	Concepts  []PageData `json:"concepts"`
+	World     []PageData `json:"world"`
+	Mechanics []PageData `json:"mechanics"`
+	Mutations []PageData `json:"mutations"`
+}
+
+func (c *Categories) FuzzySearch(query string) []PageData {
+	data := make([]string, 0, 10000)
+	for _, cat := range categoryMap {
+		for _, val := range cat {
+			data = append(data, val.Title)
+		}
+	}
+	ranks := fuzzy.RankFindFold(query, data)
+	data = nil
+	returnData := make([]PageData, 0, ranks.Len())
+	for _, rank := range ranks {
+		for _, cat := range categoryMap {
+			idx := slices.IndexFunc(cat, func(item PageData) bool {
+				return item.Title == rank.Target
+			})
+			if idx != -1 {
+				returnData = append(returnData, cat[idx])
+			}
+		}
+	}
+	return returnData
 }
 
 func (c *Categories) LoadCategories() CategoryMembers {
@@ -126,32 +151,47 @@ func (c *Categories) LoadCategories() CategoryMembers {
 	}
 	os.MkdirAll(filepath.Join(cacheDir, "quDnDFiles"), os.FileMode(0777))
 	f, err := os.OpenFile(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"), os.O_RDWR, os.FileMode(0777))
+	if err == nil {
+		fmt.Println("Found existing categories file")
+	}
 	if err != nil {
-		categoryMap = make(map[string][]int)
-		categoryMap["liquids"] = GetCategory("Category:Liquids")
-		categoryMap["creatures"] = GetCategory("Category:Creatures")
-		categoryMap["items"] = GetCategory("Category:Items")
-		categoryMap["character"] = GetCategory("Category:Character")
-		categoryMap["concepts"] = GetCategory("Category:Concepts")
-		categoryMap["world"] = GetCategory("Category:World")
-		categoryMap["mechanics"] = GetCategory("Category:Mechanics")
-		categoryMap["mutations"] = GetCategory("Category:Mutations")
+		categoryMap = make(map[string][]PageData)
 
-		f, err = os.Create(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"))
-		if err == nil {
-			_, _ = f.Seek(0, 0)
-			bytes, err := json.Marshal(categoryMap)
-			if err != nil {
-				fmt.Println("marshal result error")
-				fmt.Println(err.Error())
+		updateJson := func() {
+			f, err = os.Create(filepath.Join(cacheDir, "quDnDFiles", "pageCache.json"))
+			if err == nil {
+				_, _ = f.Seek(0, 0)
+				bytes, err := json.Marshal(categoryMap)
+				if err != nil {
+					fmt.Println("marshal result error")
+					fmt.Println(err.Error())
+				} else {
+					f.Write(bytes)
+				}
+
+				f.Close()
 			} else {
-				f.Write(bytes)
+				fmt.Println("create error")
 			}
-
-			f.Close()
-		} else {
-			fmt.Println("create error")
 		}
+
+		categoryMap["liquids"] = GetCategory("Category:Liquids")
+		updateJson()
+		categoryMap["creatures"] = GetCategory("Category:Creatures")
+		updateJson()
+		categoryMap["items"] = GetCategory("Category:Items")
+		updateJson()
+		categoryMap["character"] = GetCategory("Category:Character")
+		updateJson()
+		categoryMap["concepts"] = GetCategory("Category:Concepts")
+		updateJson()
+		categoryMap["world"] = GetCategory("Category:World")
+		updateJson()
+		categoryMap["mechanics"] = GetCategory("Category:Mechanics")
+		updateJson()
+		categoryMap["mutations"] = GetCategory("Category:Mutations")
+		updateJson()
+
 		jsonStr, _ := json.Marshal(categoryMap)
 		var retVal CategoryMembers
 		json.Unmarshal(jsonStr, &retVal)
@@ -170,7 +210,7 @@ func (c *Categories) LoadCategories() CategoryMembers {
 		var categoryJson CategoryMembers
 		json.Unmarshal(fileContents, &categoryJson)
 		f.Close()
-		categoryMap = make(map[string][]int)
+		categoryMap = make(map[string][]PageData)
 		categoryMap["world"] = categoryJson.World
 		categoryMap["creatures"] = categoryJson.Creatures
 		categoryMap["character"] = categoryJson.Character
@@ -192,8 +232,10 @@ func (c *Categories) GetScreen(pageid int) Screen {
 	}
 }
 func GetPageCategory(pageid int) string {
-	for cat, ids := range categoryMap {
-		if slices.Contains(ids, pageid) {
+	for cat, data := range categoryMap {
+		if slices.ContainsFunc(data, func(page PageData) bool {
+			return page.Pageid == pageid
+		}) {
 			return cat
 		}
 	}
