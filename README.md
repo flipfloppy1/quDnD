@@ -1,5 +1,9 @@
 # quDnD
 A stat generator/wiki browser for Caves of Qud that can create equivalent DnD statblocks on the fly.
+![GitHub License](https://img.shields.io/badge/License-MIT)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/flipfloppy1/quDnD)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/flipfloppy1/quDnD/latest)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/flipfloppy1/quDnD)
 
 ## Features
 ### New! Tabs!
