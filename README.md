@@ -8,11 +8,31 @@ When closed, you can bring them back up with Ctrl+Shift+T!
 
 ![Tabs](images/tabs.png)
 
+Tab Keybinds:
+* Navigate Left/Right: Ctrl+Shift+Tab/Ctrl+Tab
+* Close Tab: Ctrl+W
+* Open last closed tab: Ctrl+T
+
+Tabs can also be reorganised by dragging them into place.
+
 ### Creature Statblocks, Equipment and Feats
 ![Puma Preview](images/puma_preview_transparent.png)
 
 ### Embedded Wiki Page for Reference
 ![Lead Slug Preview](images/lead_slug_transparent.png)
+
+### Hidden Features (ooo!)
+#### Page Caching
+Any page that's been visited before has its statblock stored in an SQLite database,
+making things quicker and reducing the load on the Caves of Qud Wiki servers :sweat_smile:
+
+#### Category cache
+A list of basic information (pageid and title) about all pages is automatically grabbed
+and cached from the wiki servers, to avoid expensive calls to find out how to categorise
+pages later.
+
+At the moment this is used for search and to find the category of pages, but I may
+remove categorisation entirely later on now that tabs exist.
 
 ## More to do
 * Equipment stats (AC, damage, special effects)
