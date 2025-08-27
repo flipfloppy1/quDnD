@@ -10,5 +10,10 @@
   "author": {
     "name": "flipfloppy",
     "email": "flipfloppy.business@gmail.com"
+  },
+  "info": {
+    "productName": "quDnD",
+    "productVersion": "0.1.1",
+    "copyright": "https://github.com/flipfloppy1/quDnD"
   }
 }

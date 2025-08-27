@@ -11,7 +11,7 @@ When closed, you can bring them back up with Ctrl+Shift+T!
 Tab Keybinds:
 * Navigate Left/Right: Ctrl+Shift+Tab/Ctrl+Tab
 * Close Tab: Ctrl+W
-* Open last closed tab: Ctrl+T
+* Open last closed tab: Ctrl+Shift+T
 
 Tabs can also be reorganised by dragging them into place.
 
@@ -31,8 +31,8 @@ A list of basic information (pageid and title) about all pages is automatically 
 and cached from the wiki servers, to avoid expensive calls to find out how to categorise
 pages later.
 
-At the moment this is used for search and to find the category of pages, but I may
-remove categorisation entirely later on now that tabs exist.
+At the moment this is used for typeahead search and to find the category of pages, but
+I may remove categorisation entirely later on now that tabs exist.
 
 ## More to do
 * Equipment stats (AC, damage, special effects)
