@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"quDnD/src/pageUtils"
+	"flipfloppy1/quDnD/src/pageUtils"
 
 	"github.com/PuerkitoBio/goquery"
 )
