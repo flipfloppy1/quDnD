@@ -3,12 +3,13 @@ package db
 import (
 	"database/sql"
 	"encoding/json"
-	"flipfloppy1/quDnD/src/statblock"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/flipfloppy1/quDnD/src/statblock"
 
 	_ "modernc.org/sqlite"
 )

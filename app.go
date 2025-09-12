@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"flipfloppy1/quDnD/src/db"
-	"flipfloppy1/quDnD/src/pageUtils"
-	"flipfloppy1/quDnD/src/statblock"
+	"github.com/flipfloppy1/quDnD/src/db"
+	"github.com/flipfloppy1/quDnD/src/pageUtils"
+	"github.com/flipfloppy1/quDnD/src/statblock"
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"

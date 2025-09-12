@@ -1,4 +1,4 @@
-module flipfloppy1/quDnD
+module github.com/flipfloppy1/quDnD
 
 go 1.23.0
 

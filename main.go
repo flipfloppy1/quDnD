@@ -3,8 +3,8 @@ package main
 import (
 	"embed"
 
-	"flipfloppy1/quDnD/src/pageUtils"
-	"flipfloppy1/quDnD/src/statblock"
+	"github.com/flipfloppy1/quDnD/src/pageUtils"
+	"github.com/flipfloppy1/quDnD/src/statblock"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
