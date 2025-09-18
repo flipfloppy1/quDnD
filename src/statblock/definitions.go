@@ -37,7 +37,7 @@ var (
 	AbilityFlurry       Ability            = Ability{"flurry", Action, "Make an attack action with every hand at once, including hands granted by mutation or technology", "Once per encounter, you may expend an action to make an attack using every hand you have. For the purposes of other abilities, these attacks count as discrete attack actions.", []string{"1 action", "target is in melee range", "once per encounter"}, []Attack{}, []Effect{}}
 	AbilityCharge       Ability            = Ability{"charge", Action, "Perform a melee attack after charging between 10-20ft forward", "Once per encounter, you can charge between 10-20ft towards an enemy of your choosing, making an attack with your primary weapon with +1 to-hit.", []string{"1 action", "target is between 10 and 20 feet", "once per encounter"}, []Attack{}, []Effect{}}
 	AbilityExtremeSpeed Ability            = Ability{"extreme speed", Action, "Take two turns each round of combat", "When you enter combat, roll initiative twice. Use the highest roll as your first turn and the lowest as your second. Abilities that may be used every turn can be used in both turns.", []string{"must be an enemy", "150 quickness or greater"}, []Attack{}, []Effect{}}
-	AbilityBludgeon     Ability            = Ability{"bludgeon", Action, "Make an attack with a cudgel, dazing an opponent", "When you attack with a cudgel, roll a d4. On a 4, your attack inflicts Dazed on your opponent. If your opponent is already Dazed you instead Stun them for 1 round.", []string{"1 action", "target is in melee range"}, []Attack{}, []Effect{{DAZED, []string{"opponent is not already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{"1d4"}, 0, StatNone}}, {STUNNED, []string{"opponent is already dazed", "4 on 1d4 to Daze"}, []string{}, DiceRoll{[]string{}, 1, StatNone}}}}
+	AbilityBludgeon     Ability            = Ability{"bludgeon", Action, "Make an attack with a cudgel, dazing an opponent", "When you attack with a cudgel, roll a d4. On a 4, your attack inflicts Dazed on your opponent. If your opponent is already Dazed you instead Stun them for 1 round.", []string{"1 action", "target is in melee range"}, []Attack{}, []Effect{{DAZED, []string{"opponent is not already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{"1d4"}, 0, StatNone}}, {STUNNED, []string{"opponent is already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{}, 1, StatNone}}}}
 	Abilities           map[string]Ability = map[string]Ability{
 		AbilityJuke.Id:         AbilityJuke,
 		AbilityFlurry.Id:       AbilityFlurry,
@@ -98,31 +98,31 @@ type Stat string
 
 const (
 	StatNone  Stat = "none"
-	AC        Stat = "ac"
-	Speed     Stat = "speed"
-	Level     Stat = "level"
-	PB        Stat = "proficiency"
-	HP        Stat = "hp"
-	STR       Stat = "str"
-	DEX       Stat = "dex"
-	CON       Stat = "con"
-	INT       Stat = "int"
-	WIS       Stat = "wis"
-	CHA       Stat = "cha"
-	STR_BONUS Stat = "strBonus"
-	DEX_BONUS Stat = "dexBonus"
-	CON_BONUS Stat = "conBonus"
-	INT_BONUS Stat = "intBonus"
-	WIS_BONUS Stat = "wisBonus"
-	CHA_BONUS Stat = "chaBonus"
-	TOHIT     Stat = "tohit"
-	IN        Stat = "initiative"
-	STRSave   Stat = "strsave"
-	DEXSave   Stat = "dexsave"
-	CONSave   Stat = "consave"
-	INTSave   Stat = "intsave"
-	WISSave   Stat = "wissave"
-	CHASave   Stat = "chasave"
+	AC        Stat = "AC"
+	Speed     Stat = "Movement Speed"
+	Level     Stat = "Level"
+	PB        Stat = "Proficiency"
+	HP        Stat = "Max HP"
+	STR       Stat = "STR stat"
+	DEX       Stat = "DEX stat"
+	CON       Stat = "CON stat"
+	INT       Stat = "INT stat"
+	WIS       Stat = "WIS stat"
+	CHA       Stat = "CHA stat"
+	STR_BONUS Stat = "STR bonus"
+	DEX_BONUS Stat = "DEX bonus"
+	CON_BONUS Stat = "CON bonus"
+	INT_BONUS Stat = "INT bonus"
+	WIS_BONUS Stat = "WIS bonus"
+	CHA_BONUS Stat = "CHA bonus"
+	TOHIT     Stat = "to-hit"
+	IN        Stat = "Initiative"
+	STRSave   Stat = "STR save"
+	DEXSave   Stat = "DEX save"
+	CONSave   Stat = "CON save"
+	INTSave   Stat = "INT save"
+	WISSave   Stat = "WIS save"
+	CHASave   Stat = "CHA save"
 )
 
 var AllStats = []struct {
@@ -166,24 +166,28 @@ var AllDamageTypes = []struct {
 	{Radiant, "DMGRADIANT"},
 	{Slashing, "DMGSLASHING"},
 	{Thunder, "DMGTHUNDER"},
+	{Umbral, "DMGUMBRAL"},
+	{Cosmic, "DMGCOSMIC"},
 }
 
 type DamageType string
 
 const (
-	Acid      DamageType = "dmgacid"
-	Blg       DamageType = "dmgbludgeoning"
-	Cold      DamageType = "dmgcold"
-	Fire      DamageType = "dmgfire"
-	Force     DamageType = "dmgforce"
-	Lightning DamageType = "dmglightning"
-	Necrotic  DamageType = "dmgnecrotic"
-	Piercing  DamageType = "dmgpiercing"
-	Poison    DamageType = "dmgpoison"
-	Psychic   DamageType = "dmgpsychic"
-	Radiant   DamageType = "dmgradiant"
-	Slashing  DamageType = "dmgslashing"
-	Thunder   DamageType = "dmgthunder"
+	Acid      DamageType = "Acid Damage"
+	Blg       DamageType = "Bludgeoning Damage"
+	Cold      DamageType = "Cold Damage"
+	Fire      DamageType = "Fire Damage"
+	Force     DamageType = "Force Damage"
+	Lightning DamageType = "Lightning Damage"
+	Necrotic  DamageType = "Necrotic Damage"
+	Piercing  DamageType = "Piercing Damage"
+	Poison    DamageType = "Poison Damage"
+	Psychic   DamageType = "Psychic Damage"
+	Radiant   DamageType = "Radiant Damage"
+	Slashing  DamageType = "Slashing Damage"
+	Thunder   DamageType = "Thunder Damage"
+	Umbral    DamageType = "Umbral Damage"
+	Cosmic    DamageType = "Cosmic Damage"
 )
 
 var AllDmgAffinityLevels = []struct {
