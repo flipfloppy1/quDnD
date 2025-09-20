@@ -103,7 +103,7 @@ var (
 			roll a d6. On a 5 or higher, you can choose one of
 			3 random mutations to manifest. One stack of unstable genome
 			is consumed upon triggering this ability. You may acquire multiple
-			stacks of unstable genome on character creation`,
+			stacks of unstable genome on character creation.`,
 			Conditions: []string{"unstable genome is active"},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
@@ -127,7 +127,7 @@ var (
 			for 20 rounds. While it's flowing, you gain 9 + MUT quickness and
 			the rank of all other physical mutations increase by
 			1 + MUT divided by 3 (rounded down). While this ability is
-			active, you gain one quickness point`,
+			active, you gain one quickness point.`,
 			Conditions: []string{"once per encounter"},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
@@ -151,7 +151,7 @@ var (
 			Description: `This physical mutation has the following
 			forms: beak, bill, rostrum, frill and proboscis.
 			In addition to the charisma bonus, you find it easier
-			to talk to and reason with birds`,
+			to talk to and reason with birds.`,
 			Conditions: []string{},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
@@ -179,7 +179,7 @@ var (
 			rank 1-4, 1d6 damage from MUT 5-9, 1d10 damage
 			from MUT 10-12, and 1d12 damage from MUT 13+. While outside
 			of combat, you may spend 60 minutes digging a staircase up
-			or down a floor`,
+			or down a floor.`,
 			Conditions: []string{},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
@@ -216,7 +216,7 @@ var (
 				Description: `You may spend an action tightening your carapace,
 				which doubles its AC bonus. Moving or otherwise doing anything
 				other than dodging or using mental mutations will loosen the
-				carapace again`,
+				carapace again.`,
 				Conditions: []string{"not moving or making actions"},
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
