@@ -29,7 +29,7 @@ type Mutation struct {
 	Category          MutationCategory     `json:"mutationCategory"`
 	ImageUrl          string               `json:"imgUrl"`
 	Description       string               `json:"description"`
-	Abilities         []statblock.Ability  `json:"ablities"`
+	Abilities         []statblock.Ability  `json:"abilities"`
 	Conditions        []string             `json:"conditions"`
 	Incompatibilities []string             `json:"incompatibilities"`
 	Buffs             []statblock.FeatBuff `json:"buffs"`
