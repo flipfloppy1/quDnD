@@ -7,13 +7,15 @@ type Attack struct {
 }
 
 type Ability struct {
-	Id          string   `json:"id"`
-	Duration    Duration `json:"duration"`
-	Summary     string   `json:"summary"`
-	Description string   `json:"description"`
-	Conditions  []string `json:"conditions"`
-	Attacks     []Attack `json:"attacks"`
-	Effects     []Effect `json:"effects"`
+	Id          string    `json:"id"`
+	UseTime     Duration  `json:"useTime"`
+	Duration    *DiceRoll `json:"duration"`
+	Summary     string    `json:"summary"`
+	Description string    `json:"description"`
+	Conditions  []string  `json:"conditions"`
+	Attacks     []Attack  `json:"attacks"`
+	Effects     []Effect  `json:"effects"`
+	Indefinite  bool      `json:"indefinite"`
 }
 
 type Feat struct {
@@ -33,11 +35,11 @@ type FeatBuff struct {
 }
 
 var (
-	AbilityJuke         Ability            = Ability{"juke", Action, "Whirl past an opponent, swapping places with it", "You use an action to swap places with a creature within 5ft of you that is your size or smaller. You and your allies will not provoke opportunity attacks from the target until your next turn.", []string{"1 action", "target is within 5 feet", "target is creature's size or smaller"}, []Attack{}, []Effect{}}
-	AbilityFlurry       Ability            = Ability{"flurry", Action, "Make an attack action with every hand at once, including hands granted by mutation or technology", "Once per encounter, you may expend an action to make an attack using every hand you have. For the purposes of other abilities, these attacks count as discrete attack actions.", []string{"1 action", "target is in melee range", "once per encounter"}, []Attack{}, []Effect{}}
-	AbilityCharge       Ability            = Ability{"charge", Action, "Perform a melee attack after charging between 10-20ft forward", "Once per encounter, you can charge between 10-20ft towards an enemy of your choosing, making an attack with your primary weapon with +1 to-hit.", []string{"1 action", "target is between 10 and 20 feet", "once per encounter"}, []Attack{}, []Effect{}}
-	AbilityExtremeSpeed Ability            = Ability{"extreme speed", Action, "Take two turns each round of combat", "When you enter combat, roll initiative twice. Use the highest roll as your first turn and the lowest as your second. Abilities that may be used every turn can be used in both turns.", []string{"must be an enemy", "150 quickness or greater"}, []Attack{}, []Effect{}}
-	AbilityBludgeon     Ability            = Ability{"bludgeon", Action, "Make an attack with a cudgel, dazing an opponent", "When you attack with a cudgel, roll a d4. On a 4, your attack inflicts Dazed on your opponent. If your opponent is already Dazed you instead Stun them for 1 round.", []string{"1 action", "target is in melee range"}, []Attack{}, []Effect{{DAZED, []string{"opponent is not already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{"1d4"}, 0, StatNone}}, {STUNNED, []string{"opponent is already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{}, 1, StatNone}}}}
+	AbilityJuke         Ability            = Ability{"juke", Action, nil, "Whirl past an opponent, swapping places with it", "You use an action to swap places with a creature within 5ft of you that is your size or smaller. You and your allies will not provoke opportunity attacks from the target until your next turn.", []string{"1 action", "target is within 5 feet", "target is creature's size or smaller"}, []Attack{}, []Effect{}, false}
+	AbilityFlurry       Ability            = Ability{"flurry", Action, nil, "Make an attack action with every hand at once, including hands granted by mutation or technology", "Once per encounter, you may expend an action to make an attack using every hand you have. For the purposes of other abilities, these attacks count as discrete attack actions.", []string{"1 action", "target is in melee range", "once per encounter"}, []Attack{}, []Effect{}, false}
+	AbilityCharge       Ability            = Ability{"charge", Action, nil, "Perform a melee attack after charging between 10-20ft forward", "Once per encounter, you can charge between 10-20ft towards an enemy of your choosing, making an attack with your primary weapon with +1 to-hit.", []string{"1 action", "target is between 10 and 20 feet", "once per encounter"}, []Attack{}, []Effect{}, false}
+	AbilityExtremeSpeed Ability            = Ability{"extreme speed", "", nil, "Take two turns each round of combat", "When you enter combat, roll initiative twice. Use the highest roll as your first turn and the lowest as your second. Abilities that may be used every turn can be used in both turns.", []string{"must be an enemy", "150 quickness or greater"}, []Attack{}, []Effect{}, true}
+	AbilityBludgeon     Ability            = Ability{"bludgeon", Action, nil, "Make an attack with a cudgel, dazing an opponent", "When you attack with a cudgel, roll a d4. On a 4, your attack inflicts Dazed on your opponent. If your opponent is already Dazed you instead Stun them for 1 round.", []string{"1 action", "target is in melee range"}, []Attack{}, []Effect{{DAZED, []string{"opponent is not already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{"1d4"}, 0, StatNone}}, {STUNNED, []string{"opponent is already dazed", "4 on 1d4 to Daze", "attacking with a cudgel"}, []string{}, DiceRoll{[]string{}, 1, StatNone}}}, false}
 	Abilities           map[string]Ability = map[string]Ability{
 		AbilityJuke.Id:         AbilityJuke,
 		AbilityFlurry.Id:       AbilityFlurry,
@@ -84,6 +86,7 @@ var AllActions = []struct {
 	{ItemInteraction, "ITEM_INTERACTION"},
 	{BonusAction, "BONUS_ACTION"},
 	{FreeAction, "FREE_ACTION"},
+	{Indefinite, "INDEFINITE"},
 }
 
 const (
@@ -92,6 +95,7 @@ const (
 	ItemInteraction Duration = "item_interaction"
 	BonusAction     Duration = "bonus_action"
 	FreeAction      Duration = "free_action"
+	Indefinite      Duration = "indefinite"
 )
 
 type Stat string
@@ -117,6 +121,7 @@ const (
 	CHA_BONUS Stat = "CHA bonus"
 	TOHIT     Stat = "to-hit"
 	IN        Stat = "Initiative"
+	MUT       Stat = "Mutation rank"
 	STRSave   Stat = "STR save"
 	DEXSave   Stat = "DEX save"
 	CONSave   Stat = "CON save"
@@ -141,6 +146,7 @@ var AllStats = []struct {
 	{WIS, "WIS"},
 	{CHA, "CHA"},
 	{IN, "INITIATIVE"},
+	{MUT, "MUTATIONRANK"},
 	{STRSave, "STRSAVE"},
 	{DEXSave, "DEXSAVE"},
 	{CONSave, "CONSAVE"},
