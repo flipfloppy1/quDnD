@@ -192,7 +192,11 @@ var (
 		}},
 		[]string{},
 		[]string{},
-		[]statblock.FeatBuff{},
+		[]statblock.FeatBuff{statblock.FeatBuff{
+			Stat:       statblock.TOHIT,
+			Value:      "3 * MUT",
+			Conditions: []string{"targetting a wall"},
+		}},
 		3,
 	}
 	CarapaceMutation = Mutation{"carapace",
