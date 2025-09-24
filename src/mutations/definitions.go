@@ -290,7 +290,7 @@ var (
 		},
 		[]string{},
 		[]string{},
-		[]statblock.FeatBuff{},
+		[]statblock.FeatBuff{statblock.FeatBuff{Stat: statblock.STR, Value: "2 + Mutation rank / 2"}},
 		3,
 	}
 	ElectricalGenerationMutation = Mutation{"electrical generation",
