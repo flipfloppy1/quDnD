@@ -284,6 +284,7 @@ var (
 					Effect:     statblock.DAZED,
 					Conditions: []string{"greater than 20 - MUT on a d20"},
 					Rounds:     statblock.DiceRoll{Dice: []string{"1d4"}},
+					Reasons:    []string{},
 				}},
 				Indefinite: true,
 			},
