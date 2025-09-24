@@ -38,13 +38,19 @@ type Mutation struct {
 
 var (
 	Mutations map[string]Mutation = map[string]Mutation{
-		ChimeraMutation.Id:        ChimeraMutation,
-		EsperMutation.Id:          EsperMutation,
-		UnstableGenomeMutation.Id: UnstableGenomeMutation,
-		AdrenalControlMutation.Id: AdrenalControlMutation,
-		BeakMutation.Id:           BeakMutation,
-		BurrowingClawsMutation.Id: BurrowingClawsMutation,
-		CarapaceMutation.Id:       CarapaceMutation,
+		ChimeraMutation.Id:              ChimeraMutation,
+		EsperMutation.Id:                EsperMutation,
+		UnstableGenomeMutation.Id:       UnstableGenomeMutation,
+		AdrenalControlMutation.Id:       AdrenalControlMutation,
+		BeakMutation.Id:                 BeakMutation,
+		BurrowingClawsMutation.Id:       BurrowingClawsMutation,
+		CarapaceMutation.Id:             CarapaceMutation,
+		CorrosiveGasGeneration.Id:       CorrosiveGasGeneration,
+		DoubleMuscledMutation.Id:        DoubleMuscledMutation,
+		ElectricalGenerationMutation.Id: ElectricalGenerationMutation,
+		ElectromagneticPulseMutation.Id: ElectromagneticPulseMutation,
+		FlamingRayMutation.Id:           FlamingRayMutation,
+		FreezingRayMutation.Id:          FreezingRayMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
@@ -226,5 +232,187 @@ var (
 		[]string{"quills"},
 		[]statblock.FeatBuff{},
 		3,
+	}
+	CorrosiveGasGeneration = Mutation{"corrosive gas generation",
+		"Corrosive Gas Generation",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/b/b4/Corrosive_gas_generation_mutation.png",
+		"You release bursts of corrosive gas around yourself",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "generate corrosive gas",
+				UseTime: statblock.Action,
+				Summary: "You release a cloud of corrosive gas",
+				Description: `You are immune to all sources of corrosive gas.
+				Every turn this ability is active, a cloud of gas seeps from
+				you and fills the adjacent squares. When another creature steps
+				through any length of gas on their turn, roll a number of d4s
+				equal to the rank of this mutation. The creature must succeed
+				a constitution saving throw with DC 10 + MUT or take the d4s
+				in acid damage. Once the duration ends, the corrosive gas
+				dissipates. You may use this ability once per encounter.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Duration:   &statblock.DiceRoll{StatBonus: statblock.MUT},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		3,
+	}
+	DoubleMuscledMutation = Mutation{"double muscled",
+		"Double-muscled",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/8/84/Doublemuscled_mutation.png",
+		"You are possessed of hulking strength",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "double muscled",
+				Summary: "Your hulking strength gives you various bonuses",
+				Description: `Your strength attribute is increased by 2, plus
+				this mutation's rank divided by 2 (rounded down). Whenever you
+				make a melee attack, roll a d20. If your result is greater
+				than 20 - MUT, you daze your opponent for 1d4 rounds. Similarly
+				to bludgeoning, if you daze an already dazed opponent, they are
+				stunned. Dazing an opponent that is dazed by bludgeoning in the
+				same attack will instantly stun them.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects: []statblock.Effect{statblock.Effect{
+					Effect:     statblock.DAZED,
+					Conditions: []string{"greater than 20 - MUT on a d20"},
+					Rounds:     statblock.DiceRoll{Dice: []string{"1d4"}},
+				}},
+				Indefinite: true,
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		3,
+	}
+	ElectricalGenerationMutation = Mutation{"electrical generation",
+		"Electrical Generation",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/0/0e/Electrical_generation_mutation.png",
+		"You accrue electrical charge that can be used in combat or otherwise",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "electrical generation",
+				Summary: "You can accrue electrical energy",
+				Description: `You accrue 1 charge of electricity every minute,
+				up to a maximum of twice this mutation's rank, plus 2. Whenever
+				you take electrical damage, you gain charges equal to the
+				amount of damage you took divided by 10, minimum 1. You can
+				drink charges from energy cells and capacitors, and provide
+				charge to equipped devices with integrated power systems.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Indefinite: true,
+			},
+			statblock.Ability{
+				Id:      "electrical discharge",
+				Summary: "You can discharge electricity you've accrued to damage enemies",
+				Description: `You expend all your accumulated charges, dealing 1d8
+				of thunder damage for each charge to a target within 5ft. You may
+				extend the electrical discharge to target an additional creature
+				or object within 5ft of the previous arc, reducing the damage for
+				both targets by 1 charge. You can continue to do this until each
+				target is dealt 1d8 damage.`,
+				Conditions: []string{"at least one charge accrued"},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Indefinite: true,
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		4,
+	}
+	ElectromagneticPulseMutation = Mutation{"electromagnetic pulse",
+		"Electromagnetic Pulse",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/2/2d/Electromagnetic_pulse_mutation.png",
+		"You generate an electromagnetic pulse that disables nearby artifacts and machines",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "electromagnetic pulse",
+				UseTime: statblock.BonusAction,
+				Summary: "You can emit an electromagnetic pulse",
+				Description: `Once per encounter, you may emit an
+				electromagnetic pulse, disabling artifacts, machines and robots
+				in a radius around you for MUT rounds. If this mutation's rank
+				is less than 5, the radius is 2. If this mutation's rank is
+				between 5 and 9, the radius is 5. For MUT 10+, the radius is 9.`,
+				Conditions: []string{"once per encounter"},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Duration:   &statblock.DiceRoll{StatBonus: statblock.MUT},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		2,
+	}
+	FlamingRayMutation = Mutation{"flaming ray",
+		"Flaming Ray",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/1/10/Flaming_ray_mutation.png",
+		"You emit a ray of flame from your hands, feet, or face",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "flaming ray",
+				UseTime: statblock.Action,
+				Summary: "You can emit a ray of flames to incinerate targets",
+				Description: `When you gain this mutation, you may choose whether
+				it is emitted from your hands, feet or face. You emit a 9-square
+				ray of flame in the direction of your choice, dealing MUTd4 fire
+				damage and raising the temperature of the target. The flaming ray
+				may also evaporate liquids. With this mutation, your melee attacks
+				raise the temperature of your target.
+				`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{"freezing ray"},
+		[]statblock.FeatBuff{},
+		4,
+	}
+	FreezingRayMutation = Mutation{"freezing ray",
+		"Freezing Ray",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/a/af/Freezing_ray_mutation.png",
+		"You emit a ray of frost from your hands, feet, or face",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "freezing ray",
+				UseTime: statblock.Action,
+				Summary: "You can emit a ray of frost to freeze targets",
+				Description: `When you gain this mutation, you may choose whether
+				it is emitted from your hands, feet or face. You emit a 9-square
+				ray of frost in the direction of your choice, dealing MUTd4 cold
+				damage and dropping the temperature of the target. The freezing ray
+				may also freeze liquids. With this mutation, your melee attacks
+				drop the temperature of your target. You can use this mutation
+				once every two rounds. If you have double the body parts
+				usually used by this mutation, you may double the damage of the
+				freezing ray. This mutation makes you more resistant to being frozen.`,
+				Conditions: []string{"freezing ray was not used last round"},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{"flaming ray"},
+		[]statblock.FeatBuff{},
+		5,
 	}
 )
