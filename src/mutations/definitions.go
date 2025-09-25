@@ -51,6 +51,9 @@ var (
 		ElectromagneticPulseMutation.Id: ElectromagneticPulseMutation,
 		FlamingRayMutation.Id:           FlamingRayMutation,
 		FreezingRayMutation.Id:          FreezingRayMutation,
+		HeightenedHearingMutation.Id:    HeightenedHearingMutation,
+		HeightenedQuicknessMutation.Id:  HeightenedQuicknessMutation,
+		HornsMutation.Id:                HornsMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
