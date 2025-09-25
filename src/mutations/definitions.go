@@ -500,6 +500,7 @@ var (
 					Effect:     statblock.BLEEDING,
 					Conditions: []string{"on enemy failing CON save"},
 					Reasons:    []string{"enemy is hit by horns"},
+					Rounds:     statblock.DiceRoll{StatBonus: statblock.MUT},
 				}},
 			},
 		},
