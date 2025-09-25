@@ -420,4 +420,86 @@ var (
 		[]statblock.FeatBuff{},
 		5,
 	}
+	HeightenedHearingMutation = Mutation{"heightened hearing",
+		"Heightened Hearing",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/d/d0/Heightened_hearing_mutation.png",
+		"You are possessed of unnaturally acute hearing",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "heightened hearing",
+				UseTime: statblock.Action,
+				Summary: "Your acute hearing allows you to detect creatures",
+				Description: `You gain advantage to perceiving the presence of
+				creatures, both passively and actively. Whenever you successfully
+				perceive a creature, you gain knowledge of its precise location.
+				You may spend an action listening to a perceived creature,
+				rolling a DC 16 perception check and adding this mutation's
+				rank. If you succeed, you identify the type of creature.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{statblock.FeatBuff{
+			Stat:       statblock.WIS,
+			Value:      "advantage",
+			Conditions: []string{"on passive or active perception towards the presence of creatures"},
+		}},
+		2,
+	}
+	HeightenedQuicknessMutation = Mutation{"heightened quickness",
+		"Heightened Quickness",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/7/7e/Heightened_quickness_mutation.png",
+		"You are gifted with tremendous speed",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "heightened hearing",
+				Summary: "Your speed allows you to take more actions than usual sometimes",
+				Description: `When you take the first action of your turn, roll a
+				percentile die. If you roll within 13 + MUT * 2 from 100, you may
+				take another action.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		3,
+	}
+	HornsMutation = Mutation{"horns",
+		"Horns",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/0/0d/Horns_mutation.png",
+		"Horns jut out of your head",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "horns",
+				Summary: "Your horns provide versatility in combat",
+				Description: `When you acquire this mutation, you may choose
+				from the following variants: horns, a horn, a casque, antlers,
+				or a spiral horn. If you have multiple heads, the horns will
+				only be on one head. Whenever you make a melee attack, roll a
+				d4. On a 4, you make a short blade attack using your horns, with
+				a to-hit of 1 + MUT / 2, causing 2d4 damage on hit. This damage
+				increases to 2d6 at mutation rank 8, 2d8 at mutation rank
+				16, and 2d12 at mutation rank 24.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{statblock.FeatBuff{
+			Stat:  statblock.AC,
+			Value: "1 + MUT / 3",
+		}},
+		4,
+	}
 )
