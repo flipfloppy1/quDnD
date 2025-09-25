@@ -267,8 +267,9 @@ type WeaponRange struct {
 type EffectType string
 
 const (
-	DAZED   EffectType = "Dazed"
-	STUNNED EffectType = "Stunned"
+	DAZED    EffectType = "Dazed"
+	STUNNED  EffectType = "Stunned"
+	BLEEDING EffectType = "Bleeding"
 )
 
 type Effect struct {

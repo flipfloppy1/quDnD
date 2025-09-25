@@ -491,10 +491,16 @@ var (
 				d4. On a 4, you make a short blade attack using your horns, with
 				a to-hit of 1 + MUT / 2, causing 2d4 damage on hit. This damage
 				increases to 2d6 at mutation rank 8, 2d8 at mutation rank
-				16, and 2d12 at mutation rank 24.`,
+				16, and 2d12 at mutation rank 24. Whenever you make an
+				attack with your horns, your target must succeed a DC 14 + MUT
+				constitution saving throw or begin bleeding.`,
 				Conditions: []string{},
 				Attacks:    []statblock.Attack{},
-				Effects:    []statblock.Effect{},
+				Effects: []statblock.Effect{statblock.Effect{
+					Effect:     statblock.BLEEDING,
+					Conditions: []string{"on enemy failing CON save"},
+					Reasons:    []string{"enemy is hit by horns"},
+				}},
 			},
 		},
 		[]string{},
