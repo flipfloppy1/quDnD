@@ -54,6 +54,8 @@ var (
 		HeightenedHearingMutation.Id:    HeightenedHearingMutation,
 		HeightenedQuicknessMutation.Id:  HeightenedQuicknessMutation,
 		HornsMutation.Id:                HornsMutation,
+		MetamorphosisMutation.Id:        MetamorphosisMutation,
+		MultipleArmsMutation.Id:         MultipleArmsMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
@@ -510,6 +512,58 @@ var (
 			Stat:  statblock.AC,
 			Value: "1 + MUT / 3",
 		}},
+		4,
+	}
+	MetamorphosisMutation = Mutation{"metamorphosis",
+		"Metamorphosis",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/6/6d/Metamorphosis_mutation.png",
+		"You assume the form of any creature you touch",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "metamorphosis",
+				Summary: "You may inherit the properties of creatures adjacent to you",
+				Description: `You may touch a creature, assuming their form.
+				You become a near-perfect copy of the creature, inheriting their level,
+				attributes, anatomy, mutations, skills, etc. The only stats you retain from
+				your original body are your intelligence, wisdom and charisma. You lose
+				access to your own skills and mutations, but retain your inventory.
+				You may keep the ability active indefinitely, but once you end it,
+				the ability will be on cooldown until the end of your next long rest.
+				When you end Metamorphosis, you return to your original body.`,
+				Conditions: []string{"inaccessible from character creation and random mutations"},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		4,
+	}
+	MultipleArmsMutation = Mutation{"multiple arms",
+		"Multiple Arms",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/a/a0/Multiple_arms_mutation.png",
+		"You have an extra set of arms",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "multiple arms",
+				Summary: "Your extra arms can be used in melee",
+				Description: `You gain two new hands, two new arms, and one new 'worn on hands' slot when
+				you acquire this mutation. Whenever you make a melee attack, roll a d20 for each
+				arm you get from this mutation. If you roll greater than 20 - MUT, you make an
+				attack with that arm. This chance stacks with multiweapon fighting (roll both odds for
+				the arm, if at least one succeeds make an extra attack with the arm).`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Indefinite: true,
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
 		4,
 	}
 )
