@@ -56,6 +56,10 @@ var (
 		HornsMutation.Id:                HornsMutation,
 		MetamorphosisMutation.Id:        MetamorphosisMutation,
 		MultipleArmsMutation.Id:         MultipleArmsMutation,
+		MultipleLegsMutation.Id:         MultipleLegsMutation,
+		NightVisionMutation.Id:          NightVisionMutation,
+		PhasingMutation.Id:              PhasingMutation,
+		PhotosyntheticSkinMutation.Id:   PhotosyntheticSkinMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
@@ -142,6 +146,7 @@ var (
 			Conditions: []string{"once per encounter"},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
+			WillPoints: 3,
 		}},
 		[]string{"can only be chosen at character creation"},
 		[]string{},
@@ -161,8 +166,9 @@ var (
 			Summary:    "Your face bears a sightly beak",
 			Description: `This physical mutation has the following
 			forms: beak, bill, rostrum, frill and proboscis.
-			In addition to the charisma bonus, you find it easier
-			to talk to and reason with birds.`,
+			In addition to the charisma bonus, when you gain
+			this mutation the party's reputation with birds
+			increases by 8.`,
 			Conditions: []string{},
 			Attacks:    []statblock.Attack{},
 			Effects:    []statblock.Effect{},
@@ -215,8 +221,8 @@ var (
 				Indefinite: true,
 				Summary:    "Your carapace provides protection from harm and the elements",
 				Description: `You gain an AC bonus equal to this mutation's rank,
-				but you cannot wear body armor. You find it much easier to talk to
-				and reason with tortoises. Your carapace thermally insulates you,
+				but you cannot wear body armor. When you acquire this mutation, the party's
+				reputation with tortoises increases by 16. Your carapace thermally insulates you,
 				such that at MUT 10 and greater you are resistant to heat and cold
 				damage.`,
 				Conditions: []string{},
@@ -264,6 +270,7 @@ var (
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
 				Duration:   &statblock.DiceRoll{Dice: []string{}, StatBonus: statblock.MUT},
+				WillPoints: 2,
 			},
 		},
 		[]string{},
@@ -362,6 +369,7 @@ var (
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
 				Duration:   &statblock.DiceRoll{Dice: []string{}, StatBonus: statblock.MUT},
+				WillPoints: 3,
 			},
 		},
 		[]string{},
@@ -389,6 +397,7 @@ var (
 				Conditions: []string{},
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
+				WillPoints: 1,
 			},
 		},
 		[]string{},
@@ -411,13 +420,13 @@ var (
 				ray of frost in the direction of your choice, dealing MUTd4 cold
 				damage and dropping the temperature of the target. The freezing ray
 				may also freeze liquids. With this mutation, your melee attacks
-				drop the temperature of your target. You can use this mutation
-				once every two rounds. If you have double the body parts
+				drop the temperature of your target. If you have double the body parts
 				usually used by this mutation, you may double the damage of the
 				freezing ray. This mutation makes you more resistant to being frozen.`,
 				Conditions: []string{"freezing ray was not used last round"},
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
+				WillPoints: 1,
 			},
 		},
 		[]string{},
@@ -465,7 +474,7 @@ var (
 				Id:      "heightened hearing",
 				Summary: "Your speed allows you to take more actions than usual sometimes",
 				Description: `When you take the first action of your turn, roll a
-				percentile die. If you roll within 13 + MUT * 2 from 100, you may
+				percentile die. If you roll within 13 + MUT * 2 of 100, you may
 				take another action.`,
 				Conditions: []string{},
 				Attacks:    []statblock.Attack{},
@@ -495,7 +504,9 @@ var (
 				increases to 2d6 at mutation rank 8, 2d8 at mutation rank
 				16, and 2d12 at mutation rank 24. Whenever you make an
 				attack with your horns, your target must succeed a DC 14 + MUT
-				constitution saving throw or begin bleeding.`,
+				constitution saving throw or begin bleeding. When you gain
+				this mutation, the party's reputation with antelopes and
+				goatfolk increases by 4.`,
 				Conditions: []string{},
 				Attacks:    []statblock.Attack{},
 				Effects: []statblock.Effect{statblock.Effect{
@@ -553,8 +564,8 @@ var (
 				Description: `You gain two new hands, two new arms, and one new 'worn on hands' slot when
 				you acquire this mutation. Whenever you make a melee attack, roll a d20 for each
 				arm you get from this mutation. If you roll greater than 20 - MUT, you make an
-				attack with that arm. This chance stacks with multiweapon fighting (roll both odds for
-				the arm, if at least one succeeds make an extra attack with the arm).`,
+				attack with that arm. This chance stacks with multiweapon fighting (roll both odds per
+				arm, if at least one succeeds make an extra attack with that arm).`,
 				Conditions: []string{},
 				Attacks:    []statblock.Attack{},
 				Effects:    []statblock.Effect{},
@@ -565,5 +576,110 @@ var (
 		[]string{},
 		[]statblock.FeatBuff{},
 		4,
+	}
+	MultipleLegsMutation = Mutation{"multiple legs",
+		"Multiple Legs",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/1/17/Multiple_legs_mutation.png",
+		"You have an extra set of legs",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "multiple legs",
+				Summary: "Your extra legs augment your speed and carry capacity",
+				Description: `You gain 5ft of movement speed and 10lbs carry weight for
+				each rank you have in Multiple Legs.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Indefinite: true,
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{{Stat: statblock.Speed, Value: "MUT * 5ft"}},
+		5,
+	}
+	NightVisionMutation = Mutation{"night vision",
+		"Night Vision",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/4/49/Night_vision_mutation.png",
+		"You can see in the dark",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "night vision",
+				Summary: "Your night vision allows you to see in the dark",
+				Description: `You can see up to 15ft in darkness as if it were bright light,
+				and from 15 to 25ft as if it were dim light.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Indefinite: true,
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		1,
+	}
+	PhasingMutation = Mutation{"phasing",
+		"Phasing",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/4/47/Phasing_mutation.png",
+		"You can phase through solid objects for brief periods of time",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "phasing",
+				Summary: "You can phase through solid objects for brief periods of time",
+				Description: `When you activate this ability, you shift out of phase, becoming
+				physically intangible to any creature or object that is not out-of-phase itself.
+				Most creatures cannot harm you in this state, and you cannot harm them. This
+				effect lasts 6 + MUT rounds, and can be used once per long rest from mutation
+				ranks 1-4, once per short rest from mutation ranks 5-9, and for 3 will points
+				at mutation rank 10+. If you are forced to phase back in by reality-stabilizing
+				effects, you take 2d6 astral damage.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+				Duration:   &statblock.DiceRoll{StatBonus: statblock.MUT, Offset: 6, Dice: []string{}},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		4,
+	}
+	PhotosyntheticSkinMutation = Mutation{"photosynthetic skin",
+		"Photosynthetic Skin",
+		PhysicalMutations,
+		"https://wiki.cavesofqud.com/images/b/bb/Photosynthetic_skin_mutation.png",
+		"You replenish yourself by absorbing sunlight through your hearty green skin",
+		[]statblock.Ability{
+			statblock.Ability{
+				Id:      "photosynthetic sustenance",
+				Summary: "You can bask in sunlight instead of eating meals",
+				Description: `When above ground during the day, you can bask in sunlight,
+				increasing your movement speed by MUT * 5ft and giving you an AC bonus
+				of 1 + MUT / 4. This effect lasts for 1 + MUT / 4 days.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+			statblock.Ability{
+				Id:      "photosynthetic skin",
+				Summary: "Your photosynthetic skin gives you a number of bonuses",
+				Description: `While in sunlight, you accrue a maximum of 1 + MUT / 4 starch and
+				lignin that you can use as ingredients in meals that you cook. You gain
+				a 1 + MUT / 4 AC bonus while in dense foliage, and upon gaining this
+				mutation your reputation with roots, trees, vines and the Consortium of Phyta
+				increases by 8.`,
+				Conditions: []string{},
+				Attacks:    []statblock.Attack{},
+				Effects:    []statblock.Effect{},
+			},
+		},
+		[]string{},
+		[]string{},
+		[]statblock.FeatBuff{},
+		2,
 	}
 )
