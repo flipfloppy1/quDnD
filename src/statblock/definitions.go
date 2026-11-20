@@ -25,9 +25,9 @@ type Feat struct {
 	Buffs         []FeatBuff `json:"buffs"`
 	Abilities     []Ability  `json:"abilities"`
 	Description   string     `json:"description"`
-	Prerequisites []Feat   `json:"prereqs"`
+	Prerequisites []Feat     `json:"prereqs"`
 	ImageUrl      string     `json:"imgUrl"`
-	Cost int `json:"cost"`
+	Cost          int        `json:"cost"`
 }
 
 type FeatBuff struct {
@@ -66,9 +66,9 @@ var (
 	FeatShortBlade             Feat            = Feat{"short blade", "Short Blade Proficiency", []FeatBuff{{TOHIT, "2", []string{"using a short blade"}}}, []Ability{}, "This creature is skilled with small one-handed knives and blades", []Feat{}, "https://wiki.cavesofqud.com/images/4/49/Short_blade_skill.png", 2}
 	FeatFlurry                 Feat            = Feat{"flurry", "Flurry", []FeatBuff{}, []Ability{AbilityFlurry}, "This creature can make an attack with every hand at once", []Feat{}, "https://wiki.cavesofqud.com/images/2/20/Flurry_skill.png", 0}
 	FeatMultiweaponFighting    Feat            = Feat{"multiweapon fighting", "Multiweapon Fighting", []FeatBuff{}, []Ability{}, "This creature can fight with multiple weapons at a time", []Feat{}, "https://wiki.cavesofqud.com/images/7/70/Multiweapon_fighting_skill.png", 6}
-	FeatMultiweaponProficiency Feat            = Feat{"multiweapon proficiency", "Multiweapon Proficiency I", []FeatBuff{}, []Ability{}, "This creature has a chance to strike with its offhand weapons", []Feat{FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/f/ff/Multiweapon_proficiency_skill.png", 0}
-	FeatMultiweaponExpertise   Feat            = Feat{"multiweapon expertise", "Multiweapon Proficiency II", []FeatBuff{}, []Ability{}, "This creature has an improved chance to strike with its offhand weapons", []Feat{FeatMultiweaponProficiency, FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/d/d6/Multiweapon_expertise_skill.png", 6}
-	FeatMultiweaponMastery     Feat            = Feat{"multiweapon mastery", "Multiweapon Proficiency III", []FeatBuff{}, []Ability{}, "This creature has a high chance to strike with its offhand weapons", []Feat{FeatMultiweaponProficiency, FeatMultiweaponExpertise, FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/2/25/Multiweapon_mastery_skill.png", 8}
+	FeatMultiweaponProficiency Feat            = Feat{"multiweapon proficiency", "Multiweapon Proficiency", []FeatBuff{}, []Ability{}, "This creature has a chance to strike with its offhand weapons", []Feat{FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/f/ff/Multiweapon_proficiency_skill.png", 0}
+	FeatMultiweaponExpertise   Feat            = Feat{"multiweapon expertise", "Multiweapon Expertise", []FeatBuff{}, []Ability{}, "This creature has an improved chance to strike with its offhand weapons", []Feat{FeatMultiweaponProficiency, FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/d/d6/Multiweapon_expertise_skill.png", 6}
+	FeatMultiweaponMastery     Feat            = Feat{"multiweapon mastery", "Multiweapon Mastery", []FeatBuff{}, []Ability{}, "This creature has a high chance to strike with its offhand weapons", []Feat{FeatMultiweaponProficiency, FeatMultiweaponExpertise, FeatMultiweaponFighting}, "https://wiki.cavesofqud.com/images/2/25/Multiweapon_mastery_skill.png", 8}
 	FeatTactics                Feat            = Feat{"tactics", "Tactics", []FeatBuff{}, []Ability{}, "This creature understands basic battle tactics", []Feat{}, "https://wiki.cavesofqud.com/images/d/de/Tactics_skill.png", 4}
 	FeatCudgel                 Feat            = Feat{"cudgel", "Cudgel Use", []FeatBuff{}, []Ability{}, "This creature can use crushing and bludgeoning weapons", []Feat{}, "https://wiki.cavesofqud.com/images/f/f9/Cudgel_skill.png", 2}
 	FeatBludgeon               Feat            = Feat{"bludgeon", "Bludgeon", []FeatBuff{}, []Ability{AbilityBludgeon}, "This creature can daze opponents while using a cudgel weapon", []Feat{FeatCudgel}, "https://wiki.cavesofqud.com/images/d/d8/Bludgeon_skill.png", 6}
@@ -261,6 +261,24 @@ const (
 	WpnNatural    WpnProperty = "Natural;This weapon is a part of this creature's body and can only be disarmed through dismemberment."
 )
 
+func WpnProperties() []WpnProperty {
+	return []WpnProperty{
+		WpnFinesse,
+		WpnAmmunition,
+		WpnHeavy,
+		WpnLight,
+		WpnLoading,
+		WpnRange,
+		WpnSpecial,
+		WpnThrown,
+		WpnTwoHanded,
+		WpnVersatile,
+		WpnImprovised,
+		WpnSilvered,
+		WpnNatural,
+	}
+}
+
 type WeaponRange struct {
 	Normal int `json:"normal"`
 	Long   int `json:"long"`
@@ -272,7 +290,13 @@ const (
 	DAZED    EffectType = "Dazed"
 	STUNNED  EffectType = "Stunned"
 	BLEEDING EffectType = "Bleeding"
+	ASLEEP   EffectType = "Asleep"
+	WAKEFUL  EffectType = "Wakeful"
 )
+
+func EffectTypes() []EffectType {
+	return []EffectType{DAZED, STUNNED, BLEEDING, ASLEEP, WAKEFUL}
+}
 
 type Effect struct {
 	Effect     EffectType `json:"effect"`

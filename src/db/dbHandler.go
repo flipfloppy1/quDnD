@@ -47,6 +47,14 @@ func NewSqliteHandler(logger *log.Logger) (*DbHandler, error) {
 	if err != nil {
 		logger.Println("Error creating cachedpages table:", err.Error())
 	}
+	_, err = db.Exec(`
+		create table if not exists tabs (
+			tabsjson text not null
+		) strict;
+		`)
+	if err != nil {
+		logger.Println("Error creating tabs table:", err.Error())
+	}
 
 	return &DbHandler{db, logger}, nil
 }

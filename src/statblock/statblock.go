@@ -14,6 +14,12 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type DbTab struct {
+	Ordinal      int  `json:"ordinal"`
+	PageId       *int `json:"pageId"`
+	CustomPageId *int `json:"customPageId"`
+}
+
 type DbPage struct {
 	Page   PageInfo `json:"pageInfo"`
 	Exists bool     `json:"exists"`
