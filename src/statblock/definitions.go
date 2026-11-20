@@ -15,8 +15,11 @@ type Ability struct {
 	Conditions  []string  `json:"conditions"`
 	Attacks     []Attack  `json:"attacks"`
 	Effects     []Effect  `json:"effects"`
-	Indefinite  bool      `json:"indefinite"`
-	WillPoints  int       `json:"willPoints"`
+	// Indefinite is true if the ability is a passive,
+	// generally permanent effect,
+	// or false if it is an ability that must be actively used.
+	Indefinite bool `json:"indefinite"`
+	WillPoints int  `json:"willPoints"`
 }
 
 type Feat struct {
@@ -292,10 +295,11 @@ const (
 	BLEEDING EffectType = "Bleeding"
 	ASLEEP   EffectType = "Asleep"
 	WAKEFUL  EffectType = "Wakeful"
+	POISONED EffectType = "Poisoned"
 )
 
 func EffectTypes() []EffectType {
-	return []EffectType{DAZED, STUNNED, BLEEDING, ASLEEP, WAKEFUL}
+	return []EffectType{DAZED, STUNNED, BLEEDING, ASLEEP, WAKEFUL, POISONED}
 }
 
 type Effect struct {

@@ -60,6 +60,19 @@ var (
 		NightVisionMutation.Id:          NightVisionMutation,
 		PhasingMutation.Id:              PhasingMutation,
 		PhotosyntheticSkinMutation.Id:   PhotosyntheticSkinMutation,
+		QuillsMutation.Id:               QuillsMutation,
+		RegenerationMutation.Id:         RegenerationMutation,
+		SleepGasGenerationMutation.Id:   SleepGasGenerationMutation,
+		SlimeGlandsMutation.Id:          SlimeGlandsMutation,
+		SpinneretsMutation.Id:           SpinneretsMutation,
+		StingerConfusingMutation.Id:     StingerConfusingMutation,
+		StingerParalyzingMutation.Id:    StingerParalyzingMutation,
+		StingerPoisoningMutation.Id:     StingerPoisoningMutation,
+		ThickFurMutation.Id:             ThickFurMutation,
+		TripleJointedMutation.Id:        TripleJointedMutation,
+		TwoHeadedMutation.Id:            TwoHeadedMutation,
+		TwoHeartedMutation.Id:           TwoHeartedMutation,
+		WingsMutation.Id:                WingsMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
@@ -893,5 +906,193 @@ var (
 		},
 		Incompatibilities: []string{"paralyzing stinger", "poisoning stinger"},
 		Cost:              3,
+	}
+	StingerParalyzingMutation = Mutation{
+		Id:          "paralyzing stinger",
+		Name:        "Stinger (Paralyzing Venom)",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/f/fa/Stinger_paralyzing_venom_mutation.png",
+		Description: "You bear a tail with a stinger that delivers paralyzing venom to your enemies",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "paralyzing venom sting",
+				Summary: "You can sting opponents with your stinger, inflicting paralyzing venom",
+				Description: `Whenever you make a melee attack, roll a d10. On a 9 or 10, you make an additional attack with your stinger.
+				The stinger is a natural long blade that can only be attacked with once per turn. Its to-hit bonus is 6 + (MUT + 2) / 3 (rounded down).
+				The stinger's damage starts at 1d6 and increases at 4th, 7th, 10th, 13th, and 20th mutation levels to 1d8, 1d10, 1d12, 2d6, 2d6+1 and 2d8, respectively.
+				Any living creature hit by the stinger must succeed a DC 12 + MUT constitution saving throw or be
+				stunned for 1 + MUT rounds. Non-living creatures are immune to this effect.
+				`,
+				Effects: []statblock.Effect{
+					{
+						Effect:     statblock.STUNNED,
+						Conditions: []string{"target fails CON save", "target is a living creature", "hit by stinger"},
+						Reasons:    []string{"stung by paralyzing venom"},
+						Rounds:     statblock.DiceRoll{Dice: []string{}, Offset: 1, StatBonus: statblock.MUT},
+					},
+				},
+			},
+			{
+				Id:      "venomous strike",
+				UseTime: statblock.Action,
+				Summary: "You can drive your stinger into a creature, guaranteeing a hit",
+				Description: `You may spend an action to plunge your stinger into a creature within reach, automatically
+				hitting and dealing full stinger damage without rolling to-hit, and without needing a second attack roll to
+				apply its venom. You cannot use this ability again until you finish a short or long rest.`,
+				Conditions: []string{"once per short or long rest"},
+				WillPoints: 2,
+			},
+		},
+		Incompatibilities: []string{"confusing stinger", "poisoning stinger"},
+		Cost:              4,
+	}
+	StingerPoisoningMutation = Mutation{
+		Id:          "poisoning stinger",
+		Name:        "Stinger (Poisoning Venom)",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/1/18/Stinger_poisoning_venom_mutation.png",
+		Description: "You bear a tail with a stinger that delivers poisoning venom to your enemies",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "poisoning venom sting",
+				Summary: "You can sting opponents with your stinger, inflicting poisoning venom",
+				Description: `Whenever you make a melee attack, roll a d10. On a 9 or 10, you make an additional attack with your stinger.
+				The stinger is a natural long blade that can only be attacked with once per turn. Its to-hit bonus is 6 + (MUT + 2) / 3 (rounded down).
+				The stinger's damage starts at 1d6 and increases at 4th, 7th, 10th, 13th, and 20th mutation levels to 1d8, 1d10, 1d12, 2d6, 2d6+1 and 2d8, respectively.
+				Any creature hit by the stinger is poisoned, taking 1d4 + MUT poison damage at the start of each of its turns.
+				A poisoned creature cannot regain hit points from any source other than finishing a long rest until the poison ends.
+				`,
+				Effects: []statblock.Effect{
+					{
+						Effect:     statblock.POISONED,
+						Conditions: []string{"hit by stinger"},
+						Reasons:    []string{"stung by poisoning venom"},
+						Rounds:     statblock.DiceRoll{Dice: []string{"1d4"}, Offset: 4, StatBonus: statblock.StatNone},
+					},
+				},
+			},
+		},
+		Incompatibilities: []string{"confusing stinger", "paralyzing stinger"},
+		Cost:              4,
+	}
+	ThickFurMutation = Mutation{
+		Id:          "thick fur",
+		Name:        "Thick Fur",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/d/d1/Thick_fur_mutation.png",
+		Description: "You are covered in a thick coat of fur, which protects you from the elements",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "thick fur",
+				Indefinite: true,
+				Summary:    "Your coat insulates you from the cold, but burns easily",
+				Description: `You are resistant to cold damage, and automatically succeed on saving throws against
+				mundane cold weather. Your coat is no protection against heat; you are instead weak to fire damage.
+				When you gain this mutation, the party's reputation with apes, bears and grazing hedonists increases by 6.`,
+			},
+		},
+		Cost: 1,
+	}
+	TripleJointedMutation = Mutation{
+		Id:          "triple-jointed",
+		Name:        "Triple-jointed",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/9/98/Triplejointed_mutation.png",
+		Description: "Your joints bend much further than is natural",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "triple-jointed",
+				Indefinite: true,
+				Summary:    "Your flexibility grants a DEX bonus and can refund spent will points",
+				Description: `You gain a DEX bonus of 2 + MUT / 2 (rounded down). Whenever you spend will points on an
+				ability that relies on Dexterity (such as Juke or Flurry), roll a d20. On a roll of MUT or lower, you
+				regain half the will points you spent, rounded up.`,
+			},
+		},
+		Buffs: []statblock.FeatBuff{
+			{Stat: statblock.DEX, Value: "2 + Mutation rank / 2"},
+		},
+		Cost: 3,
+	}
+	TwoHeadedMutation = Mutation{
+		Id:          "two-headed",
+		Name:        "Two-headed",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/2/2d/Twoheaded_mutation.png",
+		Description: "You have a second head, with its own face",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "second head",
+				Indefinite: true,
+				Summary:    "Your second head can wear its own helmet or mask and lets you act twice as fast mentally",
+				Description: `You grow a second head, bearing its own face, which can wear its own helmet or mask.
+				The AC bonus from head and face armor you wear is halved unless both heads are equally protected.
+				Once per turn, you may use a bonus action to activate a mental mutation ability that would
+				normally require an action.`,
+			},
+			{
+				Id:         "redundant mind",
+				Indefinite: true,
+				Summary:    "Your second mind can take over when the first falters",
+				Description: `You have advantage on saving throws made to resist or end the Dazed, Stunned, or
+				Asleep conditions.`,
+			},
+		},
+		Cost: 3,
+	}
+	TwoHeartedMutation = Mutation{
+		Id:          "two-hearted",
+		Name:        "Two-hearted",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/2/22/Twohearted_mutation.png",
+		Description: "You have a second heart, keeping you alive when the first fails",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "second heart",
+				Indefinite: true,
+				Summary:    "Your extra heart improves your constitution and keeps you standing",
+				Description: `You gain a CON bonus of 1 + MUT / 4 (rounded down), and advantage on death saving throws.
+				Once per long rest, plus one additional time for every 10 mutation ranks you have in this mutation,
+				when you would be reduced to 0 hit points, you are instead reduced to 1.`,
+			},
+		},
+		Buffs: []statblock.FeatBuff{
+			{Stat: statblock.CON, Value: "1 + Mutation rank / 4"},
+		},
+		Cost: 3,
+	}
+	WingsMutation = Mutation{
+		Id:          "wings",
+		Name:        "Wings",
+		Category:    PhysicalMutations,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/7/71/Wings_mutation.png",
+		Description: "You bear a pair of wings, granting you the ability to fly",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "wings",
+				Indefinite: true,
+				Summary:    "Your wings let you fly, ignoring difficult terrain below you",
+				Description: `You grow a pair of wings, which you can extend or retract as a free action. While flying,
+				you ignore difficult terrain and cannot be the target of opportunity attacks from creatures that don't
+				have a flying or reaching speed, but you gain no benefit from cover against ranged attacks from above.
+				You cannot fly indoors or underground unless the ceiling is at least 10ft high. You gain a flying speed
+				equal to your walking speed, plus 5 + MUT * 5ft. When you gain this mutation, the party's reputation
+				with birds and winged beings increases by 8.`,
+			},
+			{
+				Id:      "swoop",
+				UseTime: statblock.Action,
+				Summary: "You can dive at a target, attacking with advantage before returning to your prior altitude",
+				Description: `While flying, you may dive at a creature within 30ft, making a melee attack against it
+				with advantage before returning to your prior altitude. After swooping, roll a d20. If you roll
+				6 - MUT or lower (minimum 0), you crash, falling prone and taking fall damage as normal.`,
+				Conditions: []string{"currently flying"},
+				WillPoints: 1,
+			},
+		},
+		Buffs: []statblock.FeatBuff{
+			{Stat: statblock.Speed, Value: "5 + Mutation rank * 5", Conditions: []string{"while flying"}},
+		},
+		Cost: 4,
 	}
 )
