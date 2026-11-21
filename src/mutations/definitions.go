@@ -38,41 +38,53 @@ type Mutation struct {
 
 var (
 	Mutations map[string]Mutation = map[string]Mutation{
-		ChimeraMutation.Id:              ChimeraMutation,
-		EsperMutation.Id:                EsperMutation,
-		UnstableGenomeMutation.Id:       UnstableGenomeMutation,
-		AdrenalControlMutation.Id:       AdrenalControlMutation,
-		BeakMutation.Id:                 BeakMutation,
-		BurrowingClawsMutation.Id:       BurrowingClawsMutation,
-		CarapaceMutation.Id:             CarapaceMutation,
-		CorrosiveGasGeneration.Id:       CorrosiveGasGeneration,
-		DoubleMuscledMutation.Id:        DoubleMuscledMutation,
-		ElectricalGenerationMutation.Id: ElectricalGenerationMutation,
-		ElectromagneticPulseMutation.Id: ElectromagneticPulseMutation,
-		FlamingRayMutation.Id:           FlamingRayMutation,
-		FreezingRayMutation.Id:          FreezingRayMutation,
-		HeightenedHearingMutation.Id:    HeightenedHearingMutation,
-		HeightenedQuicknessMutation.Id:  HeightenedQuicknessMutation,
-		HornsMutation.Id:                HornsMutation,
-		MetamorphosisMutation.Id:        MetamorphosisMutation,
-		MultipleArmsMutation.Id:         MultipleArmsMutation,
-		MultipleLegsMutation.Id:         MultipleLegsMutation,
-		NightVisionMutation.Id:          NightVisionMutation,
-		PhasingMutation.Id:              PhasingMutation,
-		PhotosyntheticSkinMutation.Id:   PhotosyntheticSkinMutation,
-		QuillsMutation.Id:               QuillsMutation,
-		RegenerationMutation.Id:         RegenerationMutation,
-		SleepGasGenerationMutation.Id:   SleepGasGenerationMutation,
-		SlimeGlandsMutation.Id:          SlimeGlandsMutation,
-		SpinneretsMutation.Id:           SpinneretsMutation,
-		StingerConfusingMutation.Id:     StingerConfusingMutation,
-		StingerParalyzingMutation.Id:    StingerParalyzingMutation,
-		StingerPoisoningMutation.Id:     StingerPoisoningMutation,
-		ThickFurMutation.Id:             ThickFurMutation,
-		TripleJointedMutation.Id:        TripleJointedMutation,
-		TwoHeadedMutation.Id:            TwoHeadedMutation,
-		TwoHeartedMutation.Id:           TwoHeartedMutation,
-		WingsMutation.Id:                WingsMutation,
+		ChimeraMutation.Id:                ChimeraMutation,
+		EsperMutation.Id:                  EsperMutation,
+		UnstableGenomeMutation.Id:         UnstableGenomeMutation,
+		AdrenalControlMutation.Id:         AdrenalControlMutation,
+		BeakMutation.Id:                   BeakMutation,
+		BurrowingClawsMutation.Id:         BurrowingClawsMutation,
+		CarapaceMutation.Id:               CarapaceMutation,
+		CorrosiveGasGeneration.Id:         CorrosiveGasGeneration,
+		DoubleMuscledMutation.Id:          DoubleMuscledMutation,
+		ElectricalGenerationMutation.Id:   ElectricalGenerationMutation,
+		ElectromagneticPulseMutation.Id:   ElectromagneticPulseMutation,
+		FlamingRayMutation.Id:             FlamingRayMutation,
+		FreezingRayMutation.Id:            FreezingRayMutation,
+		HeightenedHearingMutation.Id:      HeightenedHearingMutation,
+		HeightenedQuicknessMutation.Id:    HeightenedQuicknessMutation,
+		HornsMutation.Id:                  HornsMutation,
+		MetamorphosisMutation.Id:          MetamorphosisMutation,
+		MultipleArmsMutation.Id:           MultipleArmsMutation,
+		MultipleLegsMutation.Id:           MultipleLegsMutation,
+		NightVisionMutation.Id:            NightVisionMutation,
+		PhasingMutation.Id:                PhasingMutation,
+		PhotosyntheticSkinMutation.Id:     PhotosyntheticSkinMutation,
+		QuillsMutation.Id:                 QuillsMutation,
+		RegenerationMutation.Id:           RegenerationMutation,
+		SleepGasGenerationMutation.Id:     SleepGasGenerationMutation,
+		SlimeGlandsMutation.Id:            SlimeGlandsMutation,
+		SpinneretsMutation.Id:             SpinneretsMutation,
+		StingerConfusingMutation.Id:       StingerConfusingMutation,
+		StingerParalyzingMutation.Id:      StingerParalyzingMutation,
+		StingerPoisoningMutation.Id:       StingerPoisoningMutation,
+		ThickFurMutation.Id:               ThickFurMutation,
+		TripleJointedMutation.Id:          TripleJointedMutation,
+		TwoHeadedMutation.Id:              TwoHeadedMutation,
+		TwoHeartedMutation.Id:             TwoHeartedMutation,
+		WingsMutation.Id:                  WingsMutation,
+		AlbinoMutation.Id:                 AlbinoMutation,
+		AmphibiousMutation.Id:             AmphibiousMutation,
+		BrittleBonesMutation.Id:           BrittleBonesMutation,
+		CarnivorousMutation.Id:            CarnivorousMutation,
+		ColdBloodedMutation.Id:            ColdBloodedMutation,
+		ElectromagneticImpulseMutation.Id: ElectromagneticImpulseMutation,
+		HooksForFeetMutation.Id:           HooksForFeetMutation,
+		IrritableGenomeMutation.Id:        IrritableGenomeMutation,
+		MyopicMutation.Id:                 MyopicMutation,
+		NervePoppyMutation.Id:             NervePoppyMutation,
+		SpontaneousCombustionMutation.Id:  SpontaneousCombustionMutation,
+		TonicAllergyMutation.Id:           TonicAllergyMutation,
 	}
 	ChimeraMutation = Mutation{"chimera",
 		"Chimera",
@@ -1004,7 +1016,7 @@ var (
 				Id:         "triple-jointed",
 				Indefinite: true,
 				Summary:    "Your flexibility grants a DEX bonus and can refund spent will points",
-				Description: `You gain a DEX bonus of 2 + MUT / 2 (rounded down). Whenever you spend will points on an
+				Description: `You gain a DEX bonus of 2 + MUT / 3 (rounded down). Whenever you spend will points on an
 				ability that relies on Dexterity (such as Juke or Flurry), roll a d20. On a roll of MUT or lower, you
 				regain half the will points you spent, rounded up.`,
 			},
@@ -1051,9 +1063,9 @@ var (
 				Id:         "second heart",
 				Indefinite: true,
 				Summary:    "Your extra heart improves your constitution and keeps you standing",
-				Description: `You gain a CON bonus of 1 + MUT / 4 (rounded down), and advantage on death saving throws.
+				Description: `You gain a CON bonus of 1 + MUT / 3 (rounded down), and advantage on death saving throws.
 				Once per long rest, plus one additional time for every 10 mutation ranks you have in this mutation,
-				when you would be reduced to 0 hit points, you are instead reduced to 1.`,
+				when you would be reduced to 0 hit points you are instead reduced to 1.`,
 			},
 		},
 		Buffs: []statblock.FeatBuff{
@@ -1094,5 +1106,223 @@ var (
 			{Stat: statblock.Speed, Value: "5 + Mutation rank * 5", Conditions: []string{"while flying"}},
 		},
 		Cost: 4,
+	}
+	AlbinoMutation = Mutation{
+		Id:          "albino",
+		Name:        "Albino",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/1/16/Albino_mutation.png",
+		Description: "Your skin, hair and eyes are without pigment",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "albino",
+				Indefinite: true,
+				Summary:    "Your skin burns easily, impairing your natural healing in sunlight",
+				Description: `While you are in direct sunlight above ground, your regeneration falters: you cannot
+				spend hit dice to heal during a short rest in sunlight, and if you finish a long rest after spending most of your waking hours in the sun,
+				you only regain one hit dice. These effects do not apply underground or after dark.`,
+			},
+		},
+		Cost: -3,
+	}
+	AmphibiousMutation = Mutation{
+		Id:          "amphibious",
+		Name:        "Amphibious",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/c/c7/Amphibious_mutation.png",
+		Description: "Your skin must be kept moist with fresh water",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "amphibious",
+				Indefinite: true,
+				Summary:    "You need much more water than most to stay hydrated",
+				Description: `You pour water over yourself rather than drinking it to quench your thirst.
+				You must drink double your thirst rate to maintain your current level of hydration.
+				When you gain this mutation, the party's reputation with frogs and amphibious creatures increases by 6.`,
+			},
+		},
+		Cost: -3,
+	}
+	BrittleBonesMutation = Mutation{
+		Id:          "brittle bones",
+		Name:        "Brittle Bones",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/7/78/Brittle_bones_mutation.png",
+		Description: "Your bones fracture easily",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "brittle bones",
+				Indefinite: true,
+				Summary:    "You take extra damage from blunt impacts",
+				Description: `Whenever you take bludgeoning damage or falling damage, increase the damage you take
+				by half, rounded up.`,
+			},
+		},
+		Cost: -4,
+	}
+	CarnivorousMutation = Mutation{
+		Id:          "carnivorous",
+		Name:        "Carnivorous",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/9/99/Carnivorous_mutation.png",
+		Description: "You can only draw sustenance from meat",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "carnivorous",
+				Indefinite: true,
+				Summary:    "You must eat meat, but can safely eat it raw",
+				Description: `Meals, rations or other food made from plants or fungus do not satiate your hunger,
+				though you may still eat them without becoming sick. You suffer no ill effects from eating raw or
+				spoiled meat.`,
+			},
+		},
+		Cost: -2,
+	}
+	ColdBloodedMutation = Mutation{
+		Id:          "cold-blooded",
+		Name:        "Cold-Blooded",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/8/8b/Coldblooded_mutation.png",
+		Description: "Your body temperature dictates how quickly you react",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "cold-blooded",
+				Indefinite: true,
+				Summary:    "Your initiative suffers in the cold, but improves in the heat",
+				Description: `In an environment of ordinary temperature, you take a -2 penalty to initiative. In a
+				cold environment, you instead have disadvantage on initiative rolls. In a hot environment, you
+				instead have advantage on initiative rolls.`,
+			},
+		},
+		Buffs: []statblock.FeatBuff{
+			{Stat: statblock.IN, Value: "-2", Conditions: []string{"in an environment of ordinary temperature"}},
+			{Stat: statblock.IN, Value: "disadvantage", Conditions: []string{"in a cold environment"}},
+			{Stat: statblock.IN, Value: "advantage", Conditions: []string{"in a hot environment"}},
+		},
+		Cost: -2,
+	}
+	ElectromagneticImpulseMutation = Mutation{
+		Id:          "electromagnetic impulse",
+		Name:        "Electromagnetic Impulse",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/5/50/Electromagnetic_impulse_mutation.png",
+		Description: "You occasionally discharge an involuntary electromagnetic pulse",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "involuntary pulse",
+				Summary: "You have a small chance to involuntarily disable nearby machines in combat",
+				Description: `At the start of each of your turns while you are in combat, roll a d20. On a 1, you
+				emit an electromagnetic pulse in a 15ft radius centred on you, disabling artifacts,
+				machines and robots within range (including your own gear) for 2 rounds.`,
+			},
+		},
+		Cost: -2,
+	}
+	HooksForFeetMutation = Mutation{
+		Id:          "hooks for feet",
+		Name:        "Hooks for Feet",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/e/ef/Hooks_for_feet_mutation.png",
+		Description: "Your feet have been replaced by sharp, hooked claws",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "hooked feet",
+				Summary: "Your hooked feet can lash out on their own during a melee attack",
+				Description: `Whenever you make a melee attack, roll a d20. On an 18 or higher, you also make an
+				attack with your feet. This natural short blade deals 1 piercing damage with a to-hit bonus of +0.
+				On a hit, the target must succeed a DC 12 constitution saving throw or begin bleeding for 1 round.
+				Your hooked feet cannot wear boots or other footwear, grant no AC on their own, and cannot be removed
+				except through dismemberment.`,
+			},
+		},
+		Cost: -4,
+	}
+	IrritableGenomeMutation = Mutation{
+		Id:          "irritable genome",
+		Name:        "Irritable Genome",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/2/2d/Irritable_genome_mutation.png",
+		Description: "Your genome destabilises unpredictably whenever you change it",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "irritable genome",
+				Summary: "Spending mutation points makes your next gained mutation point unpredictable",
+				Description: `Whenever you spend mutation points to acquire a new mutation, the next mutation point
+				you gain must immediately be spent on a mutation chosen randomly by your DM, rather than letting you
+				choose between 3 options. This does not apply to mutation points gained through Unstable Genome.`,
+			},
+		},
+		Cost: -4,
+	}
+	MyopicMutation = Mutation{
+		Id:          "myopic",
+		Name:        "Myopic",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/2/25/Myopic_mutation.png",
+		Description: "Your eyesight is poor",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "myopic",
+				Indefinite: true,
+				Summary:    "You cannot see clearly beyond 30ft without corrective eyewear",
+				Description: `You cannot perceive fine details beyond 30ft, and have disadvantage on sight-based
+				Perception checks against anything beyond that range. Wearing corrective eyewear, such as spectacles
+				or mirrorshades, completely negates this defect.`,
+			},
+		},
+		Cost: -3,
+	}
+	NervePoppyMutation = Mutation{
+		Id:          "nerve poppy",
+		Name:        "Nerve Poppy",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/4/48/Nerve_poppy_mutation.png",
+		Description: "Your nerves are dulled to the fine details of your own injuries",
+		Abilities: []statblock.Ability{
+			{
+				Id:         "nerve poppy",
+				Indefinite: true,
+				Summary:    "You can't track your exact hit points, but resist being stunned more easily",
+				Description: `Your DM will not tell you your exact remaining hit points, only a general sense of your
+				condition (perfect, fine, injured, wounded, or badly wounded). Saving throws you make to resist or end
+				the Stunned condition target a DC 2 lower than normal.`,
+			},
+		},
+		Cost: -2,
+	}
+	SpontaneousCombustionMutation = Mutation{
+		Id:          "spontaneous combustion",
+		Name:        "Spontaneous Combustion",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/3/31/Spontaneous_combustion_mutation.png",
+		Description: "You are prone to catching fire for no reason at all",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "spontaneous combustion",
+				Summary: "You have a small chance to spontaneously combust in combat",
+				Description: `At the start of each of your turns while you are in combat, roll a d100. On a 1, you
+				spontaneously combust, taking 1d6 fire damage at the start of each of your turns until you use an
+				action to extinguish yourself or are submerged in water.`,
+			},
+		},
+		Cost: -3,
+	}
+	TonicAllergyMutation = Mutation{
+		Id:          "tonic allergy",
+		Name:        "Tonic Allergy",
+		Category:    PhysicalDefects,
+		ImageUrl:    "https://wiki.cavesofqud.com/images/a/a2/Tonic_allergy_mutation.png",
+		Description: "Your body reacts poorly to medicine",
+		Abilities: []statblock.Ability{
+			{
+				Id:      "tonic allergy",
+				Summary: "You have a heightened chance of adverse reactions to tonics",
+				Description: `Whenever you drink a tonic or consume an alchemical product,
+				roll a d6 in addition to any other effects. On a 1 or 2, you also suffer a
+				random adverse side effect chosen by your DM (nausea, confusion, paralysis, or similar),
+				even from tonics such as salves.`,
+			},
+		},
+		Cost: -4,
 	}
 )
